@@ -1,26 +1,47 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5WB7FJ4V');</script>
+    <!-- End Google Tag Manager -->
+
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Kevin Pramudya's Portfolio</title>
+    
+    <!-- Scripts & Styles -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
-    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX');
-    </script>
+    
     <style>
         body {
             font-family: 'Roboto', sans-serif;
+            scroll-behavior: smooth;
         }
     </style>
+
+    <!-- TikTok Pixel (Placeholder - Replace YOUR_PIXEL_ID) -->
+    <script>
+    !function (w, d, t) {
+      w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e};ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=i,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n;var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
+      
+      // ttq.load('YOUR_PIXEL_ID_HERE'); 
+      // ttq.page();
+    }(window, document, 'ttq');
+    </script>
 </head>
 <body class="bg-gray-100 text-gray-800">
-    <header class="bg-white shadow-md fixed w-full z-10">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5WB7FJ4V"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <header class="bg-white shadow-md fixed w-full z-10 top-0">
         <div class="container mx-auto px-6 py-3 flex justify-between items-center">
             <div class="text-2xl font-bold text-gray-800">Kevin Pramudya</div>
             <nav class="space-x-4">
@@ -31,122 +52,129 @@
             </nav>
         </div>
     </header>
+
     <section class="bg-white py-20 mt-16" id="hero">
         <div class="container mx-auto px-6 text-center">
             <h1 class="text-5xl font-bold text-gray-800">Hello, I'm Kevin Pramudya</h1>
             <p class="text-gray-600 mt-4 text-xl">A passionate developer who loves to create amazing web experiences.</p>
-            <img alt="A professional portrait of Kevin Pramudya" class="mx-auto mt-6 rounded-lg shadow-lg" height="400" src="" width="600"/>
-        </div>
-    </section>
-    <section class="bg-gray-100 py-20" id="about">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-gray-800 text-center">About Me</h2>
-            <p class="text-gray-600 mt-4 text-center text-xl">I am a web developer with a passion for creating beautiful and functional websites. With a background in computer science and a keen eye for design, I strive to deliver the best user experiences.</p>
-        </div>
-    </section>
-    <section class="bg-white py-20" id="projects">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-gray-800 text-center">Projects</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                <div class="bg-gray-100 p-6 rounded-lg shadow-lg">
-                    <img alt="Screenshot of Project 1" class="rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/TlYyi3ll435RLhofbeTYxh8HpwRaogRQKNApHGv6BK9JCu3TA.jpg" width="400"/>
-                    <h3 class="text-xl font-bold text-gray-800 mt-4">Project 1</h3>
-                    <p class="text-gray-600 mt-2">Description of Project 1.</p>
-                </div>
-                <div class="bg-gray-100 p-6 rounded-lg shadow-lg">
-                    <img alt="Screenshot of Project 2" class="rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/UeL28WbernmD30NQnFfRXejfzeZ1RFrSoVo5yNpIcEd3hg79E.jpg" width="400"/>
-                    <h3 class="text-xl font-bold text-gray-800 mt-4">Project 2</h3>
-                    <p class="text-gray-600 mt-2">Description of Project 2.</p>
-                </div>
-                <div class="bg-gray-100 p-6 rounded-lg shadow-lg">
-                    <img alt="Screenshot of Project 3" class="rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/eXbNRs3p74TrTSTe0SMhTZslzVozxqyUvaRb502PPa6CCu3TA.jpg" width="400"/>
-                    <h3 class="text-xl font-bold text-gray-800 mt-4">Project 3</h3>
-                    <p class="text-gray-600 mt-2">Description of Project 3.</p>
-                </div>
-                <div class="bg-gray-100 p-6 rounded-lg shadow-lg">
-                    <img alt="Screenshot of Project 4" class="rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/GUPImZXG95JtFBZQLHW9ys0aPCmFGxTwSSf2qz7waL1AB37JA.jpg" width="400"/>
-                    <h3 class="text-xl font-bold text-gray-800 mt-4">Project 4</h3>
-                    <p class="text-gray-600 mt-2">Description of Project 4.</p>
-                </div>
-                <div class="bg-gray-100 p-6 rounded-lg shadow-lg">
-                    <img alt="Screenshot of Project 5" class="rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/i8vgAuMKeq0wCS0fMllAkpsu8Vurwqzeo3v0Kep0yadSI4eeE.jpg" width="400"/>
-                    <h3 class="text-xl font-bold text-gray-800 mt-4">Project 5</h3>
-                    <p class="text-gray-600 mt-2">Description of Project 5.</p>
-                </div>
-                <div class="bg-gray-100 p-6 rounded-lg shadow-lg">
-                    <img alt="Screenshot of Project 6" class="rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/uHs5aezXNUy8Ei4bIL6fxO47tpiT2K8eGnuhMfjOBZarI4eeE.jpg" width="400"/>
-                    <h3 class="text-xl font-bold text-gray-800 mt-4">Project 6</h3>
-                    <p class="text-gray-600 mt-2">Description of Project 6.</p>
+            <div class="mt-6 flex justify-center">
+                <div class="w-64 h-64 bg-gray-200 rounded-full flex items-center justify-center text-gray-400">
+                    <i class="fas fa-user text-6xl"></i>
                 </div>
             </div>
         </div>
     </section>
+
+    <section class="bg-gray-100 py-20" id="about">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-gray-800 text-center">About Me</h2>
+            <p class="text-gray-600 mt-4 text-center text-xl max-w-3xl mx-auto">I am a web developer with a passion for creating beautiful and functional websites. With a background in computer science and a keen eye for design, I strive to deliver the best user experiences.</p>
+        </div>
+    </section>
+
+    <section class="bg-white py-20" id="projects">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-gray-800 text-center">Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+                <!-- Project Cards -->
+                <div class="bg-gray-50 p-4 rounded-lg shadow hover:shadow-xl transition-shadow border">
+                    <div class="h-48 bg-blue-100 rounded flex items-center justify-center text-blue-500 mb-4">Project Preview</div>
+                    <h3 class="text-xl font-bold text-gray-800">E-Commerce Platform</h3>
+                    <p class="text-gray-600 mt-2">A full-stack solution using React and Node.js.</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg shadow hover:shadow-xl transition-shadow border">
+                    <div class="h-48 bg-green-100 rounded flex items-center justify-center text-green-500 mb-4">Project Preview</div>
+                    <h3 class="text-xl font-bold text-gray-800">Portfolio Site</h3>
+                    <p class="text-gray-600 mt-2">Modern responsive design with Tailwind CSS.</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg shadow hover:shadow-xl transition-shadow border">
+                    <div class="h-48 bg-purple-100 rounded flex items-center justify-center text-purple-500 mb-4">Project Preview</div>
+                    <h3 class="text-xl font-bold text-gray-800">Analytics Dashboard</h3>
+                    <p class="text-gray-600 mt-2">Visualizing big data with D3.js and Python.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="bg-gray-100 py-20" id="skills">
         <div class="container mx-auto px-6">
             <h2 class="text-4xl font-bold text-gray-800 text-center">Skills</h2>
             <div class="flex flex-wrap justify-center mt-6">
-                <div class="bg-white p-6 m-4 rounded-lg shadow-lg w-40 text-center">
+                <div class="bg-white p-6 m-4 rounded-lg shadow-md w-40 text-center border-b-4 border-orange-500">
                     <i class="fab fa-html5 text-4xl text-orange-600"></i>
-                    <h3 class="text-xl font-bold text-gray-800 mt-4">HTML5</h3>
+                    <h3 class="text-lg font-bold text-gray-800 mt-4">HTML5</h3>
                 </div>
-                <div class="bg-white p-6 m-4 rounded-lg shadow-lg w-40 text-center">
+                <div class="bg-white p-6 m-4 rounded-lg shadow-md w-40 text-center border-b-4 border-blue-500">
                     <i class="fab fa-css3-alt text-4xl text-blue-600"></i>
-                    <h3 class="text-xl font-bold text-gray-800 mt-4">CSS3</h3>
+                    <h3 class="text-lg font-bold text-gray-800 mt-4">CSS3</h3>
                 </div>
-                <div class="bg-white p-6 m-4 rounded-lg shadow-lg w-40 text-center">
+                <div class="bg-white p-6 m-4 rounded-lg shadow-md w-40 text-center border-b-4 border-yellow-400">
                     <i class="fab fa-js text-4xl text-yellow-600"></i>
-                    <h3 class="text-xl font-bold text-gray-800 mt-4">JavaScript</h3>
+                    <h3 class="text-lg font-bold text-gray-800 mt-4">JavaScript</h3>
                 </div>
-                <div class="bg-white p-6 m-4 rounded-lg shadow-lg w-40 text-center">
+                <div class="bg-white p-6 m-4 rounded-lg shadow-md w-40 text-center border-b-4 border-blue-300">
                     <i class="fab fa-react text-4xl text-blue-500"></i>
-                    <h3 class="text-xl font-bold text-gray-800 mt-4">React</h3>
-                </div>
-                <div class="bg-white p-6 m-4 rounded-lg shadow-lg w-40 text-center">
-                    <i class="fab fa-node text-4xl text-green-600"></i>
-                    <h3 class="text-xl font-bold text-gray-800 mt-4">Node.js</h3>
-                </div>
-                <div class="bg-white p-6 m-4 rounded-lg shadow-lg w-40 text-center">
-                    <i class="fab fa-python text-4xl text-blue-400"></i>
-                    <h3 class="text-xl font-bold text-gray-800 mt-4">Python</h3>
+                    <h3 class="text-lg font-bold text-gray-800 mt-4">React</h3>
                 </div>
             </div>
         </div>
     </section>
+
     <section class="bg-white py-20" id="contact">
         <div class="container mx-auto px-6">
             <h2 class="text-4xl font-bold text-gray-800 text-center">Contact Me</h2>
-            <form class="mt-6 max-w-lg mx-auto">
+            <form id="contactForm" class="mt-6 max-w-lg mx-auto">
                 <div class="mb-4">
                     <label class="block text-gray-700" for="name">Name</label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" id="name" type="text"/>
+                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" id="name" type="text" required/>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700" for="email">Email</label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" id="email" type="email"/>
+                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" id="email" type="email" required/>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700" for="message">Message</label>
-                    <textarea class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" id="message"></textarea>
+                    <textarea class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" id="message" rows="4"></textarea>
                 </div>
-                <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" type="submit">Send Message</button>
+                <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" type="submit">Send Message</button>
             </form>
         </div>
     </section>
-    <footer class="bg-gray-800 py-6">
+
+    <footer class="bg-gray-800 py-10">
         <div class="container mx-auto px-6 text-center text-white">
             <p>© 2023 Kevin Pramudya. All rights reserved.</p>
-            <div class="mt-4">
-                <a class="text-white hover:text-gray-400 mx-2" href="https://github.com">
-                    <i class="fab fa-github"></i>
+            <div class="mt-6 flex justify-center space-x-6">
+                <a class="text-white hover:text-blue-400 transition-colors" href="#">
+                    <i class="fab fa-github text-2xl"></i>
                 </a>
-                <a class="text-white hover:text-gray-400 mx-2" href="https://linkedin.com">
-                    <i class="fab fa-linkedin"></i>
+                <a class="text-white hover:text-blue-400 transition-colors" href="#">
+                    <i class="fab fa-linkedin text-2xl"></i>
                 </a>
-                <a class="text-white hover:text-gray-400 mx-2" href="https://twitter.com">
-                    <i class="fab fa-twitter"></i>
+                <a class="text-white hover:text-blue-400 transition-colors" href="#">
+                    <i class="fab fa-twitter text-2xl"></i>
                 </a>
             </div>
         </div>
     </footer>
+
+    <script>
+        // Form Tracking for GTM & TikTok
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            // Push to DataLayer for GTM
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'form_submit',
+                'form_id': 'contact_form'
+            });
+
+            // Trigger TikTok Track (if initialized)
+            if (typeof ttq !== 'undefined') {
+                ttq.track('Contact');
+            }
+            
+            console.log('Tracking Event Sent!');
+        });
+    </script>
 </body>
 </html>
