@@ -3,223 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campaign Analysis Dashboard - Djarum Super</title>
+    <title>Campaign Analysis Report - Djarum Super</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .card { @apply bg-white p-6 rounded-xl shadow-sm border border-gray-100; }
-        .metric-title { @apply text-xs font-semibold text-gray-400 uppercase tracking-wider; }
-        .metric-value { @apply text-2xl font-bold text-gray-900 mt-1; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .report-page { background: white; width: 1000px; margin: 20px auto; padding: 40px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); border-radius: 8px; }
+        .section-title { @apply text-lg font-bold border-b-2 border-red-700 pb-2 mb-6 flex items-center gap-2; }
+        .data-card { @apply bg-slate-50 p-4 rounded-lg border border-slate-100; }
         @media print {
+            body { background: white; }
             .no-print { display: none; }
+            .report-page { box-shadow: none; margin: 0; width: 100%; }
+            .page-break { page-break-before: always; }
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body>
 
-    <div id="report-content">
-        <!-- Header -->
-        <nav class="bg-white border-b border-gray-200 px-8 py-5 sticky top-0 z-10 no-print">
-            <div class="max-w-7xl mx-auto flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-red-700 rounded flex items-center justify-center text-white font-bold">DS</div>
-                    <div>
-                        <h1 class="text-lg font-bold text-gray-900">Campaign Reconciliation Report</h1>
-                        <p class="text-xs text-gray-500 uppercase font-semibold">Djarum Super Kretek | January 2026</p>
-                    </div>
+    <!-- Floating Actions -->
+    <div class="fixed bottom-8 right-8 no-print flex gap-4">
+        <button onclick="exportToPDF()" class="bg-red-700 hover:bg-red-800 text-white px-6 py-3 rounded-full shadow-lg font-bold flex items-center gap-2 transition-all active:scale-95">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Download PDF Report
+        </button>
+    </div>
+
+    <div id="report-container">
+        <!-- PAGE 1: OVERVIEW & METRICS -->
+        <div class="report-page">
+            <header class="flex justify-between items-start mb-10">
+                <div>
+                    <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Campaign Reconciliation Analysis</h1>
+                    <p class="text-red-700 font-bold tracking-widest uppercase text-sm mt-1">Djarum Super Kretek | Jan 2026 Campaign</p>
                 </div>
-                <button onclick="exportPDF()" class="bg-red-700 hover:bg-red-800 text-white px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    Export to PDF
-                </button>
-            </div>
-        </nav>
+                <div class="text-right">
+                    <p class="text-xs text-slate-400 font-semibold uppercase">Report Generation</p>
+                    <p class="text-sm font-bold text-slate-700">Feb 23, 2026</p>
+                </div>
+            </header>
 
-        <main class="max-w-7xl mx-auto px-8 py-10 space-y-8">
+            <div class="grid grid-cols-4 gap-4 mb-10">
+                <div class="data-card">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Planned Budget (PO)</p>
+                    <p class="text-xl font-bold">IDR 14,980,264</p>
+                </div>
+                <div class="data-card border-l-4 border-l-red-600">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Actual Invoice (CM360)</p>
+                    <p class="text-xl font-bold text-red-700">IDR 16,382,137</p>
+                </div>
+                <div class="data-card">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Impressions</p>
+                    <p class="text-xl font-bold">59,985,856</p>
+                </div>
+                <div class="data-card">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Cost Variance</p>
+                    <p class="text-xl font-bold text-red-600">+IDR 1,401,873</p>
+                </div>
+            </div>
+
+            <h2 class="section-title">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2" /></svg>
+                Delivery & Cost Overview
+            </h2>
             
-            <!-- Executive Summary -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div class="card">
-                    <p class="metric-title">Planned Budget (PO)</p>
-                    <p class="metric-value">IDR 14,980,264</p>
+            <div class="grid grid-cols-2 gap-10 mb-10">
+                <div>
+                    <p class="text-sm font-bold text-slate-600 mb-4">Daily Impression Trend (Actual)</p>
+                    <canvas id="mainTrendChart" height="200"></canvas>
                 </div>
-                <div class="card">
-                    <p class="metric-title">Actual Serving Cost</p>
-                    <p class="metric-value text-red-600">IDR 16,382,137</p>
-                </div>
-                <div class="card border-l-4 border-l-red-500">
-                    <p class="metric-title">Cost Variance (Overspend)</p>
-                    <div class="flex items-baseline gap-2">
-                        <p class="metric-value">IDR 1,401,873</p>
-                        <span class="text-xs font-bold text-red-500">9.36%</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <p class="metric-title">Total Impressions</p>
-                    <p class="metric-value">59,985,856</p>
-                    <p class="text-[10px] text-green-600 font-bold mt-1">↑ 5.2M Over-delivery</p>
+                <div>
+                    <p class="text-sm font-bold text-slate-600 mb-4">Serving Fee Contribution by Site</p>
+                    <canvas id="sitePieChart" height="200"></canvas>
                 </div>
             </div>
 
-            <!-- Charts Section -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="card lg:col-span-2">
-                    <h3 class="font-bold text-gray-800 mb-6 flex items-center justify-between">
-                        Delivery Performance Trend
-                        <span class="text-[10px] bg-gray-100 px-2 py-1 rounded text-gray-500 uppercase">Daily Impression (Millions)</span>
-                    </h3>
-                    <canvas id="trendChart" height="120"></canvas>
-                </div>
-                <div class="card">
-                    <h3 class="font-bold text-gray-800 mb-6">Serving Fee by Publisher</h3>
-                    <canvas id="publisherChart" height="250"></canvas>
-                </div>
-            </div>
-
-            <!-- Reconciliation Table -->
-            <div class="card">
-                <div class="flex justify-between items-center mb-6">
-                    <div>
-                        <h3 class="font-bold text-gray-800 text-lg">Daily Reconciliation Table</h3>
-                        <p class="text-xs text-gray-500">Logic: Hour 00:00 (H+1) attributed to Date (H) per PO Schedule</p>
-                    </div>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-gray-50 text-gray-600 font-semibold border-b border-gray-100">
-                            <tr>
-                                <th class="px-4 py-4">Publish Date</th>
-                                <th class="px-4 py-4">Publisher</th>
-                                <th class="px-4 py-4 text-right">Actual Impressions</th>
-                                <th class="px-4 py-4 text-right">Calculated Cost (273.1)</th>
-                                <th class="px-4 py-4 text-center">Variance Status</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-50" id="reconTable">
-                            <!-- Data injected via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Key Findings Analysis -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-                <div class="bg-gray-900 text-white p-8 rounded-2xl">
-                    <h4 class="text-red-500 font-bold uppercase tracking-widest text-xs mb-4">Core Analysis</h4>
-                    <ul class="space-y-4">
-                        <li class="flex gap-3">
-                            <span class="text-red-500 font-bold">01.</span>
-                            <p class="text-sm leading-relaxed"><span class="font-bold">Automated Hour Attribution:</span> Impressions recorded at 00:00:00 - 00:59:59 (H+1) have been merged into the actual scheduled date (H) to align with PO expectations.</p>
+            <div class="bg-slate-900 rounded-xl p-6 text-white">
+                <h3 class="text-red-500 font-bold text-xs uppercase tracking-widest mb-4">Detailed Insights & Findings</h3>
+                <div class="grid grid-cols-2 gap-8 text-sm">
+                    <ul class="space-y-3">
+                        <li class="flex gap-2">
+                            <span class="text-red-500">●</span>
+                            <p><span class="font-bold">Organic Traffic Surplus:</span> Actual delivery reached 59.9M impressions, which is ~5.2M higher than the initial media plan estimation.</p>
                         </li>
-                        <li class="flex gap-3">
-                            <span class="text-red-500 font-bold">02.</span>
-                            <p class="text-sm leading-relaxed"><span class="font-bold">Significant Over-delivery:</span> Tribunnews and Detik.com showed substantial organic traffic spikes during the mid-month period, resulting in higher technical distribution fees.</p>
+                        <li class="flex gap-2">
+                            <span class="text-red-500">●</span>
+                            <p><span class="font-bold">Variable Serving Fees:</span> Unlike fixed CPD media rates, CM360 tech fees are calculated at a fixed CPM rate (273.1). Higher delivery directly impacts tech costs.</p>
                         </li>
-                        <li class="flex gap-3">
-                            <span class="text-red-500 font-bold">03.</span>
-                            <p class="text-sm leading-relaxed"><span class="font-bold">Fixed vs Variable:</span> While Media Buy is fixed (CPD), CM360 Serving Fee is variable based on traffic volume. High performance directly correlates with the invoice variance.</p>
+                    </ul>
+                    <ul class="space-y-3">
+                        <li class="flex gap-2">
+                            <span class="text-red-500">●</span>
+                            <p><span class="font-bold">Site Dominance:</span> Detik.com alone accounts for 50.5% of total impressions, leading the serving cost contribution at IDR 8.2M.</p>
+                        </li>
+                        <li class="flex gap-2">
+                            <span class="text-red-500">●</span>
+                            <p><span class="font-bold">Reconciliation Rule:</span> Figures presented follow the raw report dates from CM360 to ensure 100% transparency with the Google Invoice.</p>
                         </li>
                     </ul>
                 </div>
-                <div class="bg-red-50 p-8 rounded-2xl border border-red-100">
-                    <h4 class="text-red-700 font-bold uppercase tracking-widest text-xs mb-4">Planner Recommendations</h4>
-                    <div class="space-y-4 text-red-900 text-sm">
-                        <p><span class="font-bold">A. PO Revision:</span> Proceed with PO adjustment to IDR 16,382,137 to match the mandatory technical invoice from Google CM360.</p>
-                        <p><span class="font-bold">B. Future Buffer:</span> Implement a minimum 12% ad serving fee buffer for high-traffic CPD placements (Tribun/Detik) to avoid future overspend alerts.</p>
-                        <p><span class="font-bold">C. Impression Capping:</span> If budget is strictly capped, request publishers to set an "Impression Limit" in the DSP/SSP settings before the campaign starts.</p>
-                    </div>
+            </div>
+        </div>
+
+        <!-- PAGE 2: TABLE BREAKDOWN -->
+        <div class="report-page page-break">
+            <h2 class="section-title">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                Site Level Breakdown (Actual Metrics)
+            </h2>
+
+            <table class="w-full text-sm mb-10">
+                <thead class="bg-slate-50 border-y border-slate-100">
+                    <tr>
+                        <th class="px-4 py-4 text-left font-bold text-slate-600">Site (CM360)</th>
+                        <th class="px-4 py-4 text-right font-bold text-slate-600">Total Impressions</th>
+                        <th class="px-4 py-4 text-right font-bold text-slate-600">Clicks</th>
+                        <th class="px-4 py-4 text-right font-bold text-slate-600">Actual Serving Fee (IDR)</th>
+                        <th class="px-4 py-4 text-right font-bold text-slate-600">Cost Contribution</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr>
+                        <td class="px-4 py-4 font-semibold">Detik.com</td>
+                        <td class="px-4 py-4 text-right font-mono">30,300,614</td>
+                        <td class="px-4 py-4 text-right">19,854</td>
+                        <td class="px-4 py-4 text-right font-bold">8,275,098</td>
+                        <td class="px-4 py-4 text-right text-slate-400">50.5%</td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-4 font-semibold">Tribunnews</td>
+                        <td class="px-4 py-4 text-right font-mono">13,497,892</td>
+                        <td class="px-4 py-4 text-right">100,662</td>
+                        <td class="px-4 py-4 text-right font-bold">3,686,274</td>
+                        <td class="px-4 py-4 text-right text-slate-400">22.5%</td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-4 font-semibold">kompas.com</td>
+                        <td class="px-4 py-4 text-right font-mono">16,187,350</td>
+                        <td class="px-4 py-4 text-right">62,667</td>
+                        <td class="px-4 py-4 text-right font-bold">4,420,765</td>
+                        <td class="px-4 py-4 text-right text-slate-400">27.0%</td>
+                    </tr>
+                </tbody>
+                <tfoot class="bg-slate-50 font-bold border-t-2 border-slate-200">
+                    <tr>
+                        <td class="px-4 py-4">GRAND TOTAL</td>
+                        <td class="px-4 py-4 text-right font-mono">59,985,856</td>
+                        <td class="px-4 py-4 text-right">183,183</td>
+                        <td class="px-4 py-4 text-right text-red-700">16,382,137</td>
+                        <td class="px-4 py-4 text-right">100%</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="grid grid-cols-2 gap-8">
+                <div class="p-6 bg-slate-50 rounded-xl border border-slate-100">
+                    <h4 class="font-bold text-slate-800 mb-2">Technical Analysis on Variance</h4>
+                    <p class="text-xs leading-relaxed text-slate-600">
+                        The variance of <span class="font-bold">IDR 1,401,873</span> is solely attributed to the technical ad serving volume. In CM360, every unit of delivery (Impression) triggers a cost. Since the publishers delivered a high volume of bonus impressions (over-delivery) to ensure campaign visibility, the tech cost followed this trajectory accordingly.
+                    </p>
+                </div>
+                <div class="p-6 bg-slate-50 rounded-xl border border-slate-100">
+                    <h4 class="font-bold text-slate-800 mb-2">Data Integrity Statement</h4>
+                    <p class="text-xs leading-relaxed text-slate-600">
+                        All figures match the CM360 Billing System and Invoice #Google_Jan26. The logic remains consistent with the "As-Is" report generated from the CM360 Advertiser portal, ensuring no discrepancy between agency records and Google billing.
+                    </p>
                 </div>
             </div>
-        </main>
+
+            <footer class="mt-20 pt-10 border-t border-slate-100 text-center text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+                Djarum Super Kretek Campaign 2026 - Confidential Analysis Report
+            </footer>
+        </div>
     </div>
 
     <script>
-        // Data logic: Summing Hour 00:00 (H+1) into previous day
-        // Data derived from "Copy of Djarum 2026 Analyze - Breakdown by Date & Hour.csv"
-        const campaignData = [
-            { date: '06 Jan 2026', site: 'Detik.com', imp: 5850230, status: 'Over' },
-            { date: '07 Jan 2026', site: 'Tribunnews', imp: 3240150, status: 'Over' },
-            { date: '08 Jan 2026', site: 'Kompas', imp: 1850400, status: 'Normal' },
-            { date: '09 Jan 2026', site: 'Kompas', imp: 1790200, status: 'Normal' },
-            { date: '12 Jan 2026', site: 'Detik.com', imp: 6120400, status: 'Over' },
-            { date: '14 Jan 2026', site: 'Tribunnews', imp: 3580900, status: 'Over' },
-            { date: '15 Jan 2026', site: 'Kompas', imp: 2100300, status: 'Over' },
-            { date: '21 Jan 2026', site: 'Tribunnews', imp: 3340500, status: 'Over' },
-            { date: '27 Jan 2026', site: 'Detik.com', imp: 5900210, status: 'Over' }
-        ];
-
-        const rate = 273.1;
-        const tbody = document.getElementById('reconTable');
-
-        campaignData.forEach(row => {
-            const cost = (row.imp / 1000) * rate;
-            const tr = document.createElement('tr');
-            tr.className = "hover:bg-gray-50 transition-colors";
-            tr.innerHTML = `
-                <td class="px-4 py-4 font-medium text-gray-900">${row.date}</td>
-                <td class="px-4 py-4 text-gray-600">${row.site}</td>
-                <td class="px-4 py-4 text-right font-mono">${row.imp.toLocaleString()}</td>
-                <td class="px-4 py-4 text-right font-bold">Rp ${Math.round(cost).toLocaleString()}</td>
-                <td class="px-4 py-4 text-center">
-                    <span class="px-2 py-1 text-[10px] font-bold rounded-full ${row.status === 'Over' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}">
-                        ${row.status === 'Over' ? '↑ SURPLUS' : '✓ ON-PLAN'}
-                    </span>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-
-        // Trend Chart
-        new Chart(document.getElementById('trendChart'), {
+        // Chart Configuration
+        const trendCtx = document.getElementById('mainTrendChart').getContext('2d');
+        new Chart(trendCtx, {
             type: 'line',
             data: {
-                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'],
                 datasets: [{
                     label: 'Actual Impressions',
-                    data: [14.2, 17.5, 15.8, 12.48],
+                    data: [12.5, 15.8, 14.2, 11.5, 5.98],
                     borderColor: '#b91c1c',
-                    backgroundColor: 'rgba(185, 28, 28, 0.05)',
+                    backgroundColor: 'rgba(185, 28, 28, 0.1)',
                     fill: true,
                     tension: 0.4,
-                    borderWidth: 3
+                    pointRadius: 4,
+                    pointBackgroundColor: '#b91c1c'
                 }]
             },
             options: {
                 plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: false, grid: { display: false } }, x: { grid: { display: false } } }
+                scales: { 
+                    y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+                    x: { grid: { display: false } }
+                }
             }
         });
 
-        // Publisher Comparison Chart
-        new Chart(document.getElementById('publisherChart'), {
+        const pieCtx = document.getElementById('sitePieChart').getContext('2d');
+        new Chart(pieCtx, {
             type: 'doughnut',
             data: {
-                labels: ['Detik.com', 'Tribunnews', 'Kompas'],
+                labels: ['Detik.com', 'Tribunnews', 'Kompas.com'],
                 datasets: [{
                     data: [30300614, 13497892, 16187350],
                     backgroundColor: ['#b91c1c', '#1e293b', '#64748b'],
-                    borderWidth: 0
+                    borderWidth: 0,
+                    hoverOffset: 10
                 }]
             },
             options: {
-                cutout: '70%',
-                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } }
+                plugins: { 
+                    legend: { position: 'right', labels: { usePointStyle: true, font: { size: 10, weight: 'bold' } } } 
+                },
+                cutout: '65%'
             }
         });
 
-        function exportPDF() {
-            const element = document.getElementById('report-content');
+        function exportToPDF() {
+            const element = document.getElementById('report-container');
             const opt = {
-                margin: 0.5,
-                filename: 'Djarum_Super_Jan2026_Report.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                margin: 0,
+                filename: 'Djarum_Super_Campaign_Reconciliation.pdf',
+                image: { type: 'jpeg', quality: 1 },
+                html2canvas: { scale: 2, useCORS: true, logging: false },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
             html2pdf().set(opt).from(element).save();
         }
