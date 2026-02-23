@@ -1,180 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-5WB7FJ4V');</script>
-    <!-- End Google Tag Manager -->
-
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Kevin Pramudya's Portfolio</title>
-    
-    <!-- Scripts & Styles -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Analysis Dashboard - Djarum Super</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
-    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            scroll-behavior: smooth;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .card { @apply bg-white p-6 rounded-xl shadow-sm border border-gray-100; }
+        .metric-title { @apply text-xs font-semibold text-gray-400 uppercase tracking-wider; }
+        .metric-value { @apply text-2xl font-bold text-gray-900 mt-1; }
+        @media print {
+            .no-print { display: none; }
         }
     </style>
-
-    <!-- TikTok Pixel (Placeholder - Replace YOUR_PIXEL_ID) -->
-    <script>
-    !function (w, d, t) {
-      w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e};ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=i,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n;var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
-      
-      // ttq.load('YOUR_PIXEL_ID_HERE'); 
-      // ttq.page();
-    }(window, document, 'ttq');
-    </script>
 </head>
-<body class="bg-gray-100 text-gray-800">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5WB7FJ4V"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+<body class="bg-gray-50 min-h-screen">
 
-    <header class="bg-white shadow-md fixed w-full z-10 top-0">
-        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <div class="text-2xl font-bold text-gray-800">Kevin Pramudya</div>
-            <nav class="space-x-4">
-                <a class="text-gray-800 hover:text-gray-600" href="#about">About</a>
-                <a class="text-gray-800 hover:text-gray-600" href="#projects">Projects</a>
-                <a class="text-gray-800 hover:text-gray-600" href="#skills">Skills</a>
-                <a class="text-gray-800 hover:text-gray-600" href="#contact">Contact</a>
-            </nav>
-        </div>
-    </header>
+    <div id="report-content">
+        <!-- Header -->
+        <nav class="bg-white border-b border-gray-200 px-8 py-5 sticky top-0 z-10 no-print">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-red-700 rounded flex items-center justify-center text-white font-bold">DS</div>
+                    <div>
+                        <h1 class="text-lg font-bold text-gray-900">Campaign Reconciliation Report</h1>
+                        <p class="text-xs text-gray-500 uppercase font-semibold">Djarum Super Kretek | January 2026</p>
+                    </div>
+                </div>
+                <button onclick="exportPDF()" class="bg-red-700 hover:bg-red-800 text-white px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Export to PDF
+                </button>
+            </div>
+        </nav>
 
-    <section class="bg-white py-20 mt-16" id="hero">
-        <div class="container mx-auto px-6 text-center">
-            <h1 class="text-5xl font-bold text-gray-800">Hello, I'm Kevin Pramudya</h1>
-            <p class="text-gray-600 mt-4 text-xl">A passionate developer who loves to create amazing web experiences.</p>
-            <div class="mt-6 flex justify-center">
-                <div class="w-64 h-64 bg-gray-200 rounded-full flex items-center justify-center text-gray-400">
-                    <i class="fas fa-user text-6xl"></i>
+        <main class="max-w-7xl mx-auto px-8 py-10 space-y-8">
+            
+            <!-- Executive Summary -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="card">
+                    <p class="metric-title">Planned Budget (PO)</p>
+                    <p class="metric-value">IDR 14,980,264</p>
+                </div>
+                <div class="card">
+                    <p class="metric-title">Actual Serving Cost</p>
+                    <p class="metric-value text-red-600">IDR 16,382,137</p>
+                </div>
+                <div class="card border-l-4 border-l-red-500">
+                    <p class="metric-title">Cost Variance (Overspend)</p>
+                    <div class="flex items-baseline gap-2">
+                        <p class="metric-value">IDR 1,401,873</p>
+                        <span class="text-xs font-bold text-red-500">9.36%</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <p class="metric-title">Total Impressions</p>
+                    <p class="metric-value">59,985,856</p>
+                    <p class="text-[10px] text-green-600 font-bold mt-1">↑ 5.2M Over-delivery</p>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <section class="bg-gray-100 py-20" id="about">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-gray-800 text-center">About Me</h2>
-            <p class="text-gray-600 mt-4 text-center text-xl max-w-3xl mx-auto">I am a web developer with a passion for creating beautiful and functional websites. With a background in computer science and a keen eye for design, I strive to deliver the best user experiences.</p>
-        </div>
-    </section>
-
-    <section class="bg-white py-20" id="projects">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-gray-800 text-center">Projects</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-                <!-- Project Cards -->
-                <div class="bg-gray-50 p-4 rounded-lg shadow hover:shadow-xl transition-shadow border">
-                    <div class="h-48 bg-blue-100 rounded flex items-center justify-center text-blue-500 mb-4">Project Preview</div>
-                    <h3 class="text-xl font-bold text-gray-800">E-Commerce Platform</h3>
-                    <p class="text-gray-600 mt-2">A full-stack solution using React and Node.js.</p>
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="card lg:col-span-2">
+                    <h3 class="font-bold text-gray-800 mb-6 flex items-center justify-between">
+                        Delivery Performance Trend
+                        <span class="text-[10px] bg-gray-100 px-2 py-1 rounded text-gray-500 uppercase">Daily Impression (Millions)</span>
+                    </h3>
+                    <canvas id="trendChart" height="120"></canvas>
                 </div>
-                <div class="bg-gray-50 p-4 rounded-lg shadow hover:shadow-xl transition-shadow border">
-                    <div class="h-48 bg-green-100 rounded flex items-center justify-center text-green-500 mb-4">Project Preview</div>
-                    <h3 class="text-xl font-bold text-gray-800">Portfolio Site</h3>
-                    <p class="text-gray-600 mt-2">Modern responsive design with Tailwind CSS.</p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded-lg shadow hover:shadow-xl transition-shadow border">
-                    <div class="h-48 bg-purple-100 rounded flex items-center justify-center text-purple-500 mb-4">Project Preview</div>
-                    <h3 class="text-xl font-bold text-gray-800">Analytics Dashboard</h3>
-                    <p class="text-gray-600 mt-2">Visualizing big data with D3.js and Python.</p>
+                <div class="card">
+                    <h3 class="font-bold text-gray-800 mb-6">Serving Fee by Publisher</h3>
+                    <canvas id="publisherChart" height="250"></canvas>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <section class="bg-gray-100 py-20" id="skills">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-gray-800 text-center">Skills</h2>
-            <div class="flex flex-wrap justify-center mt-6">
-                <div class="bg-white p-6 m-4 rounded-lg shadow-md w-40 text-center border-b-4 border-orange-500">
-                    <i class="fab fa-html5 text-4xl text-orange-600"></i>
-                    <h3 class="text-lg font-bold text-gray-800 mt-4">HTML5</h3>
+            <!-- Reconciliation Table -->
+            <div class="card">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-lg">Daily Reconciliation Table</h3>
+                        <p class="text-xs text-gray-500">Logic: Hour 00:00 (H+1) attributed to Date (H) per PO Schedule</p>
+                    </div>
                 </div>
-                <div class="bg-white p-6 m-4 rounded-lg shadow-md w-40 text-center border-b-4 border-blue-500">
-                    <i class="fab fa-css3-alt text-4xl text-blue-600"></i>
-                    <h3 class="text-lg font-bold text-gray-800 mt-4">CSS3</h3>
-                </div>
-                <div class="bg-white p-6 m-4 rounded-lg shadow-md w-40 text-center border-b-4 border-yellow-400">
-                    <i class="fab fa-js text-4xl text-yellow-600"></i>
-                    <h3 class="text-lg font-bold text-gray-800 mt-4">JavaScript</h3>
-                </div>
-                <div class="bg-white p-6 m-4 rounded-lg shadow-md w-40 text-center border-b-4 border-blue-300">
-                    <i class="fab fa-react text-4xl text-blue-500"></i>
-                    <h3 class="text-lg font-bold text-gray-800 mt-4">React</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-gray-50 text-gray-600 font-semibold border-b border-gray-100">
+                            <tr>
+                                <th class="px-4 py-4">Publish Date</th>
+                                <th class="px-4 py-4">Publisher</th>
+                                <th class="px-4 py-4 text-right">Actual Impressions</th>
+                                <th class="px-4 py-4 text-right">Calculated Cost (273.1)</th>
+                                <th class="px-4 py-4 text-center">Variance Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50" id="reconTable">
+                            <!-- Data injected via JS -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <section class="bg-white py-20" id="contact">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-gray-800 text-center">Contact Me</h2>
-            <form id="contactForm" class="mt-6 max-w-lg mx-auto">
-                <div class="mb-4">
-                    <label class="block text-gray-700" for="name">Name</label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" id="name" type="text" required/>
+            <!-- Key Findings Analysis -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                <div class="bg-gray-900 text-white p-8 rounded-2xl">
+                    <h4 class="text-red-500 font-bold uppercase tracking-widest text-xs mb-4">Core Analysis</h4>
+                    <ul class="space-y-4">
+                        <li class="flex gap-3">
+                            <span class="text-red-500 font-bold">01.</span>
+                            <p class="text-sm leading-relaxed"><span class="font-bold">Automated Hour Attribution:</span> Impressions recorded at 00:00:00 - 00:59:59 (H+1) have been merged into the actual scheduled date (H) to align with PO expectations.</p>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="text-red-500 font-bold">02.</span>
+                            <p class="text-sm leading-relaxed"><span class="font-bold">Significant Over-delivery:</span> Tribunnews and Detik.com showed substantial organic traffic spikes during the mid-month period, resulting in higher technical distribution fees.</p>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="text-red-500 font-bold">03.</span>
+                            <p class="text-sm leading-relaxed"><span class="font-bold">Fixed vs Variable:</span> While Media Buy is fixed (CPD), CM360 Serving Fee is variable based on traffic volume. High performance directly correlates with the invoice variance.</p>
+                        </li>
+                    </ul>
                 </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700" for="email">Email</label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" id="email" type="email" required/>
+                <div class="bg-red-50 p-8 rounded-2xl border border-red-100">
+                    <h4 class="text-red-700 font-bold uppercase tracking-widest text-xs mb-4">Planner Recommendations</h4>
+                    <div class="space-y-4 text-red-900 text-sm">
+                        <p><span class="font-bold">A. PO Revision:</span> Proceed with PO adjustment to IDR 16,382,137 to match the mandatory technical invoice from Google CM360.</p>
+                        <p><span class="font-bold">B. Future Buffer:</span> Implement a minimum 12% ad serving fee buffer for high-traffic CPD placements (Tribun/Detik) to avoid future overspend alerts.</p>
+                        <p><span class="font-bold">C. Impression Capping:</span> If budget is strictly capped, request publishers to set an "Impression Limit" in the DSP/SSP settings before the campaign starts.</p>
+                    </div>
                 </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700" for="message">Message</label>
-                    <textarea class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" id="message" rows="4"></textarea>
-                </div>
-                <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" type="submit">Send Message</button>
-            </form>
-        </div>
-    </section>
-
-    <footer class="bg-gray-800 py-10">
-        <div class="container mx-auto px-6 text-center text-white">
-            <p>© 2023 Kevin Pramudya. All rights reserved.</p>
-            <div class="mt-6 flex justify-center space-x-6">
-                <a class="text-white hover:text-blue-400 transition-colors" href="#">
-                    <i class="fab fa-github text-2xl"></i>
-                </a>
-                <a class="text-white hover:text-blue-400 transition-colors" href="#">
-                    <i class="fab fa-linkedin text-2xl"></i>
-                </a>
-                <a class="text-white hover:text-blue-400 transition-colors" href="#">
-                    <i class="fab fa-twitter text-2xl"></i>
-                </a>
             </div>
-        </div>
-    </footer>
+        </main>
+    </div>
 
     <script>
-        // Form Tracking for GTM & TikTok
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            // Push to DataLayer for GTM
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({
-                'event': 'form_submit',
-                'form_id': 'contact_form'
-            });
+        // Data logic: Summing Hour 00:00 (H+1) into previous day
+        // Data derived from "Copy of Djarum 2026 Analyze - Breakdown by Date & Hour.csv"
+        const campaignData = [
+            { date: '06 Jan 2026', site: 'Detik.com', imp: 5850230, status: 'Over' },
+            { date: '07 Jan 2026', site: 'Tribunnews', imp: 3240150, status: 'Over' },
+            { date: '08 Jan 2026', site: 'Kompas', imp: 1850400, status: 'Normal' },
+            { date: '09 Jan 2026', site: 'Kompas', imp: 1790200, status: 'Normal' },
+            { date: '12 Jan 2026', site: 'Detik.com', imp: 6120400, status: 'Over' },
+            { date: '14 Jan 2026', site: 'Tribunnews', imp: 3580900, status: 'Over' },
+            { date: '15 Jan 2026', site: 'Kompas', imp: 2100300, status: 'Over' },
+            { date: '21 Jan 2026', site: 'Tribunnews', imp: 3340500, status: 'Over' },
+            { date: '27 Jan 2026', site: 'Detik.com', imp: 5900210, status: 'Over' }
+        ];
 
-            // Trigger TikTok Track (if initialized)
-            if (typeof ttq !== 'undefined') {
-                ttq.track('Contact');
-            }
-            
-            console.log('Tracking Event Sent!');
+        const rate = 273.1;
+        const tbody = document.getElementById('reconTable');
+
+        campaignData.forEach(row => {
+            const cost = (row.imp / 1000) * rate;
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-gray-50 transition-colors";
+            tr.innerHTML = `
+                <td class="px-4 py-4 font-medium text-gray-900">${row.date}</td>
+                <td class="px-4 py-4 text-gray-600">${row.site}</td>
+                <td class="px-4 py-4 text-right font-mono">${row.imp.toLocaleString()}</td>
+                <td class="px-4 py-4 text-right font-bold">Rp ${Math.round(cost).toLocaleString()}</td>
+                <td class="px-4 py-4 text-center">
+                    <span class="px-2 py-1 text-[10px] font-bold rounded-full ${row.status === 'Over' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}">
+                        ${row.status === 'Over' ? '↑ SURPLUS' : '✓ ON-PLAN'}
+                    </span>
+                </td>
+            `;
+            tbody.appendChild(tr);
         });
+
+        // Trend Chart
+        new Chart(document.getElementById('trendChart'), {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{
+                    label: 'Actual Impressions',
+                    data: [14.2, 17.5, 15.8, 12.48],
+                    borderColor: '#b91c1c',
+                    backgroundColor: 'rgba(185, 28, 28, 0.05)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: false, grid: { display: false } }, x: { grid: { display: false } } }
+            }
+        });
+
+        // Publisher Comparison Chart
+        new Chart(document.getElementById('publisherChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Detik.com', 'Tribunnews', 'Kompas'],
+                datasets: [{
+                    data: [30300614, 13497892, 16187350],
+                    backgroundColor: ['#b91c1c', '#1e293b', '#64748b'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                cutout: '70%',
+                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } }
+            }
+        });
+
+        function exportPDF() {
+            const element = document.getElementById('report-content');
+            const opt = {
+                margin: 0.5,
+                filename: 'Djarum_Super_Jan2026_Report.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
     </script>
 </body>
 </html>
