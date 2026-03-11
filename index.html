@@ -1,352 +1,238 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campaign Analysis Report - Djarum Super</title>
+    <title>Guideline AppScript CM360</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #1e293b; }
-        .report-page { 
-            background: white; 
-            width: 1000px; 
-            margin: 20px auto; 
-            padding: 50px; 
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); 
-            border-radius: 12px;
-            position: relative;
-            overflow: hidden;
-        }
-        .section-title { @apply text-xl font-extrabold border-b-4 border-red-700 pb-3 mb-8 flex items-center gap-3 text-slate-800; }
-        .data-card { @apply bg-white p-5 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md; }
-        .label-planned { @apply text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1 block; }
-        
-        /* Fix for Chart Containers */
-        .chart-container {
-            position: relative;
-            height: 300px; /* Fixed height to prevent looping/stretching */
-            width: 100%;
-        }
-
-        @media print {
-            body { background: white; }
-            .no-print { display: none; }
-            .report-page { box-shadow: none; margin: 0; width: 100%; padding: 30px; }
-            .page-break { page-break-before: always; }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Actions -->
-    <div class="fixed top-6 right-6 no-print flex gap-3 z-50">
-        <button onclick="exportToPDF()" class="bg-slate-900 hover:bg-black text-white px-6 py-3 rounded-xl shadow-xl font-bold flex items-center gap-2 transition-transform active:scale-95">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002-2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-            </svg>
-            Export to PDF
-        </button>
-    </div>
-
-    <div id="report-container">
-        <!-- PAGE 1: EXECUTIVE SUMMARY -->
-        <div class="report-page">
-            <div class="absolute top-0 left-0 w-full h-2 bg-red-700"></div>
-            
-            <header class="flex justify-between items-end mb-12">
-                <div>
-                    <div class="bg-red-700 text-white text-[10px] font-black px-3 py-1 rounded-md inline-block mb-3 tracking-tighter uppercase">Campaign Performance</div>
-                    <h1 class="text-4xl font-black text-slate-900 leading-tight">Reconciliation Analysis<br><span class="text-red-700">Djarum Super Jan 2026</span></h1>
-                </div>
-                <div class="text-right border-l-2 border-slate-200 pl-6">
-                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Analysis Period</p>
-                    <p class="text-lg font-extrabold text-slate-800">January 1 - 31, 2026</p>
-                </div>
-            </header>
-
-            <!-- Enhanced Highlights -->
-            <div class="grid grid-cols-3 gap-6 mb-10">
-                <div class="data-card border-t-4 border-blue-500">
-                    <span class="label-planned">Impressions Comparison</span>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-3xl font-black text-slate-900">59.9M</span>
-                        <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">Actual</span>
-                    </div>
-                    <div class="mt-4 flex justify-between items-center text-sm">
-                        <span class="text-slate-400 font-medium">Planned: 54.8M</span>
-                        <span class="text-blue-700 font-black">+9.3%</span>
-                    </div>
-                    <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                        <div class="bg-blue-500 h-full" style="width: 100%"></div>
-                    </div>
-                </div>
-
-                <div class="data-card border-t-4 border-red-600">
-                    <span class="label-planned">Tracking Cost (IDR)</span>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-3xl font-black text-red-700">16.3M</span>
-                        <span class="text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded">Actual</span>
-                    </div>
-                    <div class="mt-4 flex justify-between items-center text-sm">
-                        <span class="text-slate-400 font-medium">Planned: 14.9M</span>
-                        <span class="text-red-700 font-black">+Rp 1.4M</span>
-                    </div>
-                    <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                        <div class="bg-red-600 h-full" style="width: 100%"></div>
-                    </div>
-                </div>
-
-                <div class="data-card border-t-4 border-slate-800 bg-slate-900 text-white">
-                    <span class="label-planned text-slate-400">Total Variance</span>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-3xl font-black">9.36%</span>
-                        <span class="text-xs font-bold text-slate-300">Over Budget</span>
-                    </div>
-                    <p class="mt-4 text-[10px] text-slate-400 font-bold leading-tight">Kebutuhan revisi budget tracking dikarenakan organic over-delivery dari publisher.</p>
-                </div>
-            </div>
-
-            <h2 class="section-title">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" /></svg>
-                Delivery Dynamics & Traffic Spikes
-            </h2>
-            
-            <!-- Graph Fix: Wrapped in a controlled container -->
-            <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 mb-10">
-                <div class="flex justify-between items-center mb-8">
-                    <div>
-                        <p class="text-sm font-black text-slate-800">Daily Impression Trend (Jan 2026)</p>
-                        <p class="text-[10px] text-slate-500 font-bold">Actual daily traffic significantly exceeding plan baseline on peak hours</p>
-                    </div>
-                    <div class="flex gap-6">
-                        <div class="flex items-center gap-2">
-                            <div class="w-3 h-3 rounded-full bg-red-700"></div>
-                            <span class="text-[10px] font-black text-slate-600 uppercase">Actual</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <div class="w-3 h-3 rounded-full border-2 border-slate-300"></div>
-                            <span class="text-[10px] font-black text-slate-600 uppercase">Planned</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="chart-container">
-                    <canvas id="mainTrendChart"></canvas>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-8">
-                <div class="bg-slate-900 p-8 rounded-2xl text-white">
-                    <h3 class="text-red-500 font-black text-xs uppercase tracking-[0.2em] mb-6">Why there is a Selisih?</h3>
-                    <ul class="space-y-5">
-                        <li class="flex gap-4">
-                            <div class="bg-red-700 h-6 w-6 rounded-full flex-shrink-0 flex items-center justify-center text-[10px] font-bold">1</div>
-                            <p class="text-sm leading-relaxed"><span class="font-bold text-red-400">High Organic Inventory:</span> Publisher mendeliver +5.1 Juta impresi lebih banyak dari PO awal secara gratis di media cost, namun tetap terhitung di CM360 serving cost.</p>
-                        </li>
-                        <li class="flex gap-4">
-                            <div class="bg-red-700 h-6 w-6 rounded-full flex-shrink-0 flex items-center justify-center text-[10px] font-bold">2</div>
-                            <p class="text-sm leading-relaxed"><span class="font-bold text-red-400">Fixed CPM Tracking:</span> CM360 mengenakan biaya per impresi. Setiap 1.000 impresi "bonus" tetap memakan budget tracking sebesar $0.017 atau Rp 273.</p>
-                        </li>
-                    </ul>
-                </div>
-                <div class="bg-white p-8 rounded-2xl border border-slate-200 flex flex-col justify-center">
-                    <div class="text-center">
-                        <p class="text-[11px] font-black text-slate-400 uppercase mb-2 tracking-widest">Recommended Action</p>
-                        <p class="text-xl font-black text-slate-800 mb-4">Revision PO Required</p>
-                        <div class="p-4 bg-red-50 rounded-xl">
-                            <p class="text-red-700 text-2xl font-black">IDR 1,401,873</p>
-                            <p class="text-[10px] font-bold text-red-600 mt-1 uppercase italic">Total Additional Tracking Budget</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- PAGE 2: BREAKDOWN BY SITE -->
-        <div class="report-page page-break">
-            <h2 class="section-title">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
-                Detailed Site Reconciliation
-            </h2>
-
-            <div class="mb-10 overflow-hidden rounded-2xl border border-slate-200">
-                <table class="w-full text-sm">
-                    <thead class="bg-slate-900 text-white">
-                        <tr>
-                            <th class="px-6 py-5 text-left font-bold uppercase text-[10px] tracking-widest">Publisher Site</th>
-                            <th class="px-6 py-5 text-right font-bold uppercase text-[10px] tracking-widest">Planned Imp.</th>
-                            <th class="px-6 py-5 text-right font-bold uppercase text-[10px] tracking-widest">Actual Delivered</th>
-                            <th class="px-6 py-5 text-right font-bold uppercase text-[10px] tracking-widest text-red-400">Variance</th>
-                            <th class="px-6 py-5 text-right font-bold uppercase text-[10px] tracking-widest">Est. Tracking Cost</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        <tr class="hover:bg-slate-50">
-                            <td class="px-6 py-5 font-extrabold text-slate-800">Detik.com</td>
-                            <td class="px-6 py-5 text-right text-slate-400 font-medium">27,500,000</td>
-                            <td class="px-6 py-5 text-right font-black text-slate-900">30,300,614</td>
-                            <td class="px-6 py-5 text-right"><span class="bg-red-50 text-red-700 px-3 py-1 rounded-full font-black text-xs">+10.1%</span></td>
-                            <td class="px-6 py-5 text-right font-bold">Rp 8,275,098</td>
-                        </tr>
-                        <tr class="hover:bg-slate-50">
-                            <td class="px-6 py-5 font-extrabold text-slate-800">Tribunnews</td>
-                            <td class="px-6 py-5 text-right text-slate-400 font-medium">12,500,000</td>
-                            <td class="px-6 py-5 text-right font-black text-slate-900">13,497,892</td>
-                            <td class="px-6 py-5 text-right"><span class="bg-red-50 text-red-700 px-3 py-1 rounded-full font-black text-xs">+7.9%</span></td>
-                            <td class="px-6 py-5 text-right font-bold">Rp 3,686,274</td>
-                        </tr>
-                        <tr class="hover:bg-slate-50">
-                            <td class="px-6 py-5 font-extrabold text-slate-800">Kompas.com</td>
-                            <td class="px-6 py-5 text-right text-slate-400 font-medium">14,852,670</td>
-                            <td class="px-6 py-5 text-right font-black text-slate-900">16,187,350</td>
-                            <td class="px-6 py-5 text-right"><span class="bg-red-50 text-red-700 px-3 py-1 rounded-full font-black text-xs">+8.9%</span></td>
-                            <td class="px-6 py-5 text-right font-bold">Rp 4,420,765</td>
-                        </tr>
-                    </tbody>
-                    <tfoot class="bg-slate-100 font-black">
-                        <tr>
-                            <td class="px-6 py-6 italic text-slate-500">TOTAL CONSOLIDATED</td>
-                            <td class="px-6 py-6 text-right">54,852,670</td>
-                            <td class="px-6 py-6 text-right text-blue-700">59,985,856</td>
-                            <td class="px-6 py-6 text-right text-red-700">+9.36%</td>
-                            <td class="px-6 py-6 text-right text-slate-900">Rp 16,382,137</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-
-            <div class="grid grid-cols-2 gap-8 items-start">
-                <div class="data-card border-none bg-slate-50 p-8 h-full">
-                    <h4 class="font-black text-slate-800 mb-8 flex items-center gap-2 text-sm uppercase tracking-widest">
-                        Cost Contribution by Site
-                    </h4>
-                    <div class="chart-container" style="height: 220px;">
-                        <canvas id="sitePieChart"></canvas>
-                    </div>
-                </div>
-                <div class="space-y-6">
-                    <div class="p-8 bg-white border-2 border-dashed border-slate-200 rounded-2xl">
-                        <h4 class="font-black text-slate-800 mb-4 text-xs uppercase tracking-widest">Planner Note</h4>
-                        <p class="text-sm text-slate-500 italic leading-relaxed">
-                            "The over-delivery occurred due to high interest in the Special Edition Branding Kretek creative. Recommend applying at least a 10% buffer for future CPD campaigns to avoid budget revisions mid-cycle."
-                        </p>
-                    </div>
-                    <div class="flex items-center gap-4 p-6 bg-red-700 rounded-2xl text-white">
-                        <div class="bg-white/20 p-3 rounded-xl">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        </div>
-                        <div>
-                            <p class="text-[10px] font-bold uppercase opacity-80 tracking-widest">Action Required</p>
-                            <p class="text-sm font-black">Please process PO Revision for IDR 1,401,873</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <footer class="mt-24 pt-8 border-t border-slate-100 flex justify-between items-center text-[9px] text-slate-400 font-black uppercase tracking-[0.3em]">
-                <span>Djarum Super Kretek - Analysis</span>
-                <span>CM360 Technical Report v2.1</span>
-            </footer>
-        </div>
-    </div>
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
-        // Chart Configuration - Daily Trend
-        const trendCtx = document.getElementById('mainTrendChart').getContext('2d');
-        new Chart(trendCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan 01', 'Jan 05', 'Jan 06', 'Jan 07', 'Jan 12', 'Jan 14', 'Jan 20', 'Jan 21', 'Jan 27', 'Jan 31'],
-                datasets: [
-                    {
-                        label: 'Actual Traffic',
-                        data: [0.8, 1.5, 6.2, 3.8, 6.8, 4.2, 5.1, 3.9, 7.2, 2.5], 
-                        borderColor: '#b91c1c',
-                        backgroundColor: 'rgba(185, 28, 28, 0.05)',
-                        fill: true,
-                        borderWidth: 4,
-                        pointBackgroundColor: '#b91c1c',
-                        pointBorderColor: '#fff',
-                        pointBorderWidth: 2,
-                        pointRadius: 5,
-                        pointHoverRadius: 7,
-                        tension: 0.4
-                    },
-                    {
-                        label: 'Plan Baseline',
-                        data: [1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8],
-                        borderColor: '#cbd5e1',
-                        borderDash: [8, 5],
-                        fill: false,
-                        borderWidth: 2,
-                        pointRadius: 0
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false, // Important: let container handle height
-                plugins: { legend: { display: false } },
-                scales: { 
-                    y: { 
-                        beginAtZero: true, 
-                        grid: { color: '#f1f5f9', drawBorder: false },
-                        ticks: { font: { size: 10, weight: '700' }, color: '#94a3b8' },
-                        title: { display: true, text: 'Impressions (M)', font: { size: 9, weight: '800' } }
-                    },
-                    x: { 
-                        grid: { display: false },
-                        ticks: { font: { size: 10, weight: '700' }, color: '#94a3b8' }
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        google: {
+                            green: '#0F9D58',
+                            blue: '#4285F4',
+                            yellow: '#F4B400',
+                            red: '#DB4437'
+                        }
                     }
                 }
             }
-        });
-
-        // Site Distribution Chart
-        const pieCtx = document.getElementById('sitePieChart').getContext('2d');
-        new Chart(pieCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Detik.com', 'Tribunnews', 'Kompas.com'],
-                datasets: [{
-                    data: [30300614, 13497892, 16187350],
-                    backgroundColor: ['#b91c1c', '#0f172a', '#64748b'],
-                    hoverOffset: 15,
-                    borderWidth: 4,
-                    borderColor: '#f8fafc'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { 
-                    legend: { 
-                        position: 'right', 
-                        labels: { 
-                            usePointStyle: true, 
-                            padding: 20,
-                            font: { size: 11, weight: '700', family: 'Inter' },
-                            color: '#475569'
-                        } 
-                    } 
-                },
-                cutout: '65%'
-            }
-        });
-
-        function exportToPDF() {
-            const element = document.getElementById('report-container');
-            const opt = {
-                margin: 0,
-                filename: 'Djarum_Super_Jan2026_Recap.pdf',
-                image: { type: 'jpeg', quality: 1 },
-                html2canvas: { scale: 2, useCORS: true, letterRendering: true },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            html2pdf().set(opt).from(element).save();
         }
     </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .step-number {
+            @apply flex items-center justify-center w-8 h-8 rounded-full bg-google-blue text-white font-bold text-sm shrink-0;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Navbar -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-robot text-google-blue text-2xl"></i>
+                    <span class="font-bold text-xl tracking-tight">CM360<span class="text-google-blue">Auto</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#quick-access" class="text-slate-600 hover:text-google-blue font-medium">Quick Access</a>
+                    <a href="#tutorial-cpd" class="text-slate-600 hover:text-google-blue font-medium">Panduan CPD</a>
+                    <a href="#tutorial-ott" class="text-slate-600 hover:text-google-blue font-medium">Panduan OTT</a>
+                    <a href="#shortcuts" class="text-slate-600 hover:text-google-blue font-medium">🔥 Shortcuts</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row gap-8">
+        
+        <!-- Main Content -->
+        <main class="flex-1 space-y-12">
+
+            <!-- Hero Section -->
+            <section class="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm text-center">
+                <h1 class="text-3xl font-bold mb-4">Cara Cepat Setup CM360 🚀</h1>
+                <p class="text-slate-600 mb-6 max-w-2xl mx-auto">Gak perlu pusing ngetik taxonomy manual lagi. Tinggal jalankan script, isi ID yang kosong, lalu Export! Ikuti panduan singkat di bawah ini.</p>
+            </section>
+
+            <!-- Quick Access -->
+            <section id="quick-access" class="scroll-mt-24">
+                <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-link text-slate-400"></i> Link Workspace
+                </h2>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <a href="https://docs.google.com/spreadsheets/d/1eSwvL8f2sckfBtC0OZJVCGz9-Laa6Fwf53C42QkaMYw/edit?gid=1071584697#gid=1071584697" target="_blank" class="group bg-white p-6 rounded-xl border border-slate-200 hover:border-google-green hover:shadow-md transition-all flex items-start gap-4">
+                        <div class="bg-green-100 p-3 rounded-lg text-google-green group-hover:bg-google-green group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-file-excel text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">Sheet CPD (Display)</h3>
+                            <p class="text-sm text-slate-500 mt-1">Buka Google Sheet untuk reguler campaign (Kompas, Detik, dll).</p>
+                        </div>
+                    </a>
+                    
+                    <a href="https://docs.google.com/spreadsheets/d/1G75tFLf2iGx8V050tu7eHiKhzr5qQ_5q0k7bu-C7YRY/edit?gid=1619480577#gid=1619480577" target="_blank" class="group bg-white p-6 rounded-xl border border-slate-200 hover:border-purple-500 hover:shadow-md transition-all flex items-start gap-4">
+                        <div class="bg-purple-100 p-3 rounded-lg text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-film text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">Sheet OTT (Tracking)</h3>
+                            <p class="text-sm text-slate-500 mt-1">Buka Google Sheet untuk campaign OTT (Vidio, iQIYI, WeTV, dll).</p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- CPD Tutorial -->
+            <section id="tutorial-cpd" class="scroll-mt-24">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-blue-100 p-2 rounded text-google-blue"><i class="fa-solid fa-desktop"></i></div>
+                    <h2 class="text-2xl font-bold">Tutorial Campaign CPD</h2>
+                </div>
+                
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+                    <div class="p-6 border-b border-slate-100">
+                        <h3 class="font-bold text-lg mb-4 text-google-blue">Tahap 1: Bikin Taxonomy Otomatis</h3>
+                        <div class="space-y-4">
+                            <div class="flex gap-4">
+                                <div class="step-number">1</div>
+                                <div>
+                                    <p class="font-medium">Cari menu custom di atas</p>
+                                    <p class="text-sm text-slate-600">Klik menu <span class="bg-slate-100 px-2 py-1 rounded text-xs font-mono border">🤖 CM360 Tools</span> di sebelah kanan menu Bantuan/Help.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="step-number">2</div>
+                                <div>
+                                    <p class="font-medium">Generate Data</p>
+                                    <p class="text-sm text-slate-600">Pilih <span class="bg-slate-100 px-2 py-1 rounded text-xs font-mono border">⚡ 1. Generate & Sync Taxonomy</span>.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="step-number">3</div>
+                                <div>
+                                    <p class="font-medium">Masukkan PO Number (Jika Diminta)</p>
+                                    <p class="text-sm text-slate-600">Kalau muncul popup, ketik nomor PO-nya. Kalau PO belum turun, kosongin aja lalu klik OK.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PENTING ALERT -->
+                    <div class="bg-yellow-50 border-l-4 border-google-yellow p-6">
+                        <div class="flex gap-3">
+                            <i class="fa-solid fa-triangle-exclamation text-google-yellow text-xl mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-yellow-800">WAJIB DIISI: Kolom Kuning!</h4>
+                                <p class="text-sm text-yellow-700 mt-1">Setelah script selesai, cek kolom <strong class="bg-yellow-200 px-1 rounded">Creative ID</strong> dan <strong class="bg-yellow-200 px-1 rounded">LP ID</strong>. Kalau warnanya <strong>KUNING TERANG</strong>, artinya datanya kosong. Kamu wajib isi ID ini manual sebelum lanjut ke Tahap 2.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-6 border-t border-slate-100 bg-slate-50">
+                        <h3 class="font-bold text-lg mb-4 text-google-blue">Tahap 2: Export ke CM360</h3>
+                        <div class="space-y-4">
+                            <div class="flex gap-4">
+                                <div class="step-number">1</div>
+                                <div>
+                                    <p class="font-medium">Klik menu Export</p>
+                                    <p class="text-sm text-slate-600">Kembali ke menu <span class="bg-slate-100 px-2 py-1 rounded text-xs font-mono border">🤖 CM360 Tools</span> > Pilih <span class="bg-slate-100 px-2 py-1 rounded text-xs font-mono border">📥 2. Generate Format CM360 Import</span>.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="step-number">2</div>
+                                <div>
+                                    <p class="font-medium">Download File Excel</p>
+                                    <p class="text-sm text-slate-600">Tunggu loading selesai, nanti muncul popup berisi link hijau. Klik link tersebut, lalu di file baru klik <strong>File > Download > Microsoft Excel (.xlsx)</strong>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- OTT Tutorial -->
+            <section id="tutorial-ott" class="scroll-mt-24">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-purple-100 p-2 rounded text-purple-600"><i class="fa-solid fa-mobile-screen"></i></div>
+                    <h2 class="text-2xl font-bold">Tutorial Campaign OTT</h2>
+                </div>
+                
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden p-6">
+                    <p class="text-slate-600 mb-6">Secara fungsi sama persis dengan CPD, bedanya menu ini khusus membaca mapping Publisher OTT dan tipe tracking.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                            <h4 class="font-bold mb-3 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-purple-500"></i> Step 1: Generate</h4>
+                            <ul class="text-sm space-y-2 text-slate-600 list-disc list-inside">
+                                <li>Klik menu <span class="font-mono bg-white px-1 border rounded text-xs">🎬 OTT/Tracker Tools</span></li>
+                                <li>Pilih <strong>Generate & Sync Taxonomy OTT</strong></li>
+                                <li>Masukkan PO Number bila diminta</li>
+                                <li><strong>Jangan lupa isi ID di kolom kuning!</strong></li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                            <h4 class="font-bold mb-3 flex items-center gap-2"><i class="fa-solid fa-file-export text-google-green"></i> Step 2: Export</h4>
+                            <ul class="text-sm space-y-2 text-slate-600 list-disc list-inside">
+                                <li>Klik menu <span class="font-mono bg-white px-1 border rounded text-xs">🎬 OTT/Tracker Tools</span></li>
+                                <li>Pilih <strong>Generate Format CM360 Import</strong></li>
+                                <li>Pilih Campaign yang mau diexport (jika ada pilihan)</li>
+                                <li>Buka link dan Download Excel-nya</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Sidebar / Shortcuts -->
+        <aside class="w-full md:w-80 space-y-6">
+            
+            <!-- Cheat Sheet Card -->
+            <div id="shortcuts" class="bg-slate-800 rounded-2xl p-6 text-white shadow-lg sticky top-24 scroll-mt-24">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-fire text-orange-400"></i> Cheat Sheet & Trik Cepat
+                </h3>
+                
+                <div class="space-y-4">
+                    <div class="bg-slate-700/50 p-3 rounded-lg border border-slate-600">
+                        <p class="font-bold text-sm text-orange-300 mb-1">Cara Ganti PO Number yang Salah</p>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Gak perlu hapus semua data. Cukup hapus teks PO di kolom <strong>Campaign Name</strong> (sisakan namanya saja), lalu jalankan menu <em>Generate</em> lagi. Popup PO akan muncul lagi!
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-700/50 p-3 rounded-lg border border-slate-600">
+                        <p class="font-bold text-sm text-green-300 mb-1">Biar Nggak Capek Input ID</p>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Pastikan kamu udah nge-paste ID dari CM360 ke baris sheet yang benar sebelum klik Export. Kalau di-export pas ID masih kosong, hasil Excel-nya bakal ada tulisan <code>[KOSONG_ISI_DULU]</code>.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-700/50 p-3 rounded-lg border border-slate-600">
+                        <p class="font-bold text-sm text-red-300 mb-1">Error "Publisher Belum Terdaftar"?</p>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Itu karena nama pub di sheet beda/typo dengan di sistem (misal: "Detik" ditulis "Dtik"). Benerin namanya di sheet, atau lapor ke PIC buat daftarin nama pub baru ke dalam Code (Master Mapping).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12 py-8 text-center text-slate-500 text-sm">
+        <p>CM360 Automation Tools &copy; User Guideline & Documentation.</p>
+    </footer>
+
 </body>
 </html>
