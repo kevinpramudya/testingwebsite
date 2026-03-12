@@ -1,238 +1,239 @@
-<!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
-<head>
+<html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guideline AppScript CM360</title>
+    <title>Djarum Campaign Workflow Guide | CM360</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        google: {
-                            green: '#0F9D58',
-                            blue: '#4285F4',
-                            yellow: '#F4B400',
-                            red: '#DB4437'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .step-number {
-            @apply flex items-center justify-center w-8 h-8 rounded-full bg-google-blue text-white font-bold text-sm shrink-0;
-        }
+        html { scroll-behavior: smooth; }
+        .code-block { background-color: #1e1e1e; color: #d4d4d4; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800">
+<body class="bg-slate-50 text-slate-800 flex flex-col md:flex-row min-h-screen">
 
-    <!-- Navbar -->
-    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-robot text-google-blue text-2xl"></i>
-                    <span class="font-bold text-xl tracking-tight">CM360<span class="text-google-blue">Auto</span></span>
-                </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#quick-access" class="text-slate-600 hover:text-google-blue font-medium">Quick Access</a>
-                    <a href="#tutorial-cpd" class="text-slate-600 hover:text-google-blue font-medium">Panduan CPD</a>
-                    <a href="#tutorial-ott" class="text-slate-600 hover:text-google-blue font-medium">Panduan OTT</a>
-                    <a href="#shortcuts" class="text-slate-600 hover:text-google-blue font-medium">🔥 Shortcuts</a>
-                </div>
-            </div>
+    <!-- Sidebar Navigation -->
+    <nav class="w-full md:w-64 bg-slate-900 text-white flex-shrink-0 md:sticky md:top-0 md:h-screen overflow-y-auto">
+        <div class="p-6">
+            <h1 class="text-2xl font-bold tracking-tight text-blue-400"><i class="fas fa-book-open mr-2"></i>Djarum Guide</h1>
+            <p class="text-sm text-slate-400 mt-2">CM360 Setup &amp; Workflow</p>
+            <p class="text-xs text-slate-500 mt-1">Maintained by Kevin Pramudya</p>
         </div>
+        <ul class="flex flex-col space-y-1 px-4 pb-6">
+            <li><a href="#intro" class="block px-4 py-2 rounded hover:bg-slate-800 transition">Welcome</a></li>
+            <li><a href="#step-1" class="block px-4 py-2 rounded hover:bg-slate-800 transition">1. Briefs &amp; PO</a></li>
+            <li><a href="#step-2" class="block px-4 py-2 rounded hover:bg-slate-800 transition">2. Creative Check</a></li>
+            <li><a href="#step-3" class="block px-4 py-2 rounded hover:bg-slate-800 transition">3. Taxonomy Setup</a></li>
+            <li><a href="#step-4" class="block px-4 py-2 rounded hover:bg-slate-800 transition">4. CM360 Setup</a></li>
+            <li><a href="#step-5" class="block px-4 py-2 rounded hover:bg-slate-800 transition">5. Publisher Previews</a></li>
+            <li><a href="#step-6" class="block px-4 py-2 rounded hover:bg-slate-800 transition">6. Reporting</a></li>
+        </ul>
     </nav>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row gap-8">
+    <!-- Main Content -->
+    <main class="flex-1 p-6 md:p-12 max-w-5xl">
         
-        <!-- Main Content -->
-        <main class="flex-1 space-y-12">
+        <!-- Intro -->
+        <section id="intro" class="mb-12">
+            <h2 class="text-4xl font-extrabold mb-4">CM360 Campaign Workflow</h2>
+            <p class="text-lg text-slate-600 mb-6">
+                Welcome! If I am on leave, you can use this guide to manage the Djarum campaigns. It covers everything from receiving the brief from planners to generating tags and pulling reports.
+            </p>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r">
+                <h3 class="font-bold text-blue-800">Campaign Types Overview</h3>
+                <ul class="list-disc ml-5 mt-2 text-blue-900">
+                    <li><strong>CPD (Cost Per Day):</strong> Mostly Full-Serve. Involves standard Display/HTML5 creatives.</li>
+                    <li><strong>OTT (Over-The-Top):</strong> Mostly Tracking Only. We only generate 1x1 tracking tags.</li>
+                    <li><strong>Direct Vendor:</strong> Tracking only or click-tracker only.</li>
+                </ul>
+            </div>
+        </section>
 
-            <!-- Hero Section -->
-            <section class="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm text-center">
-                <h1 class="text-3xl font-bold mb-4">Cara Cepat Setup CM360 🚀</h1>
-                <p class="text-slate-600 mb-6 max-w-2xl mx-auto">Gak perlu pusing ngetik taxonomy manual lagi. Tinggal jalankan script, isi ID yang kosong, lalu Export! Ikuti panduan singkat di bawah ini.</p>
-            </section>
-
-            <!-- Quick Access -->
-            <section id="quick-access" class="scroll-mt-24">
-                <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-link text-slate-400"></i> Link Workspace
-                </h2>
-                <div class="grid md:grid-cols-2 gap-4">
-                    <a href="https://docs.google.com/spreadsheets/d/1eSwvL8f2sckfBtC0OZJVCGz9-Laa6Fwf53C42QkaMYw/edit?gid=1071584697#gid=1071584697" target="_blank" class="group bg-white p-6 rounded-xl border border-slate-200 hover:border-google-green hover:shadow-md transition-all flex items-start gap-4">
-                        <div class="bg-green-100 p-3 rounded-lg text-google-green group-hover:bg-google-green group-hover:text-white transition-colors">
-                            <i class="fa-solid fa-file-excel text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg">Sheet CPD (Display)</h3>
-                            <p class="text-sm text-slate-500 mt-1">Buka Google Sheet untuk reguler campaign (Kompas, Detik, dll).</p>
-                        </div>
-                    </a>
-                    
-                    <a href="https://docs.google.com/spreadsheets/d/1G75tFLf2iGx8V050tu7eHiKhzr5qQ_5q0k7bu-C7YRY/edit?gid=1619480577#gid=1619480577" target="_blank" class="group bg-white p-6 rounded-xl border border-slate-200 hover:border-purple-500 hover:shadow-md transition-all flex items-start gap-4">
-                        <div class="bg-purple-100 p-3 rounded-lg text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors">
-                            <i class="fa-solid fa-film text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg">Sheet OTT (Tracking)</h3>
-                            <p class="text-sm text-slate-500 mt-1">Buka Google Sheet untuk campaign OTT (Vidio, iQIYI, WeTV, dll).</p>
-                        </div>
-                    </a>
-                </div>
-            </section>
-
-            <!-- CPD Tutorial -->
-            <section id="tutorial-cpd" class="scroll-mt-24">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="bg-blue-100 p-2 rounded text-google-blue"><i class="fa-solid fa-desktop"></i></div>
-                    <h2 class="text-2xl font-bold">Tutorial Campaign CPD</h2>
-                </div>
-                
-                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
-                    <div class="p-6 border-b border-slate-100">
-                        <h3 class="font-bold text-lg mb-4 text-google-blue">Tahap 1: Bikin Taxonomy Otomatis</h3>
-                        <div class="space-y-4">
-                            <div class="flex gap-4">
-                                <div class="step-number">1</div>
-                                <div>
-                                    <p class="font-medium">Cari menu custom di atas</p>
-                                    <p class="text-sm text-slate-600">Klik menu <span class="bg-slate-100 px-2 py-1 rounded text-xs font-mono border">🤖 CM360 Tools</span> di sebelah kanan menu Bantuan/Help.</p>
-                                </div>
-                            </div>
-                            <div class="flex gap-4">
-                                <div class="step-number">2</div>
-                                <div>
-                                    <p class="font-medium">Generate Data</p>
-                                    <p class="text-sm text-slate-600">Pilih <span class="bg-slate-100 px-2 py-1 rounded text-xs font-mono border">⚡ 1. Generate & Sync Taxonomy</span>.</p>
-                                </div>
-                            </div>
-                            <div class="flex gap-4">
-                                <div class="step-number">3</div>
-                                <div>
-                                    <p class="font-medium">Masukkan PO Number (Jika Diminta)</p>
-                                    <p class="text-sm text-slate-600">Kalau muncul popup, ketik nomor PO-nya. Kalau PO belum turun, kosongin aja lalu klik OK.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- PENTING ALERT -->
-                    <div class="bg-yellow-50 border-l-4 border-google-yellow p-6">
-                        <div class="flex gap-3">
-                            <i class="fa-solid fa-triangle-exclamation text-google-yellow text-xl mt-1"></i>
-                            <div>
-                                <h4 class="font-bold text-yellow-800">WAJIB DIISI: Kolom Kuning!</h4>
-                                <p class="text-sm text-yellow-700 mt-1">Setelah script selesai, cek kolom <strong class="bg-yellow-200 px-1 rounded">Creative ID</strong> dan <strong class="bg-yellow-200 px-1 rounded">LP ID</strong>. Kalau warnanya <strong>KUNING TERANG</strong>, artinya datanya kosong. Kamu wajib isi ID ini manual sebelum lanjut ke Tahap 2.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="p-6 border-t border-slate-100 bg-slate-50">
-                        <h3 class="font-bold text-lg mb-4 text-google-blue">Tahap 2: Export ke CM360</h3>
-                        <div class="space-y-4">
-                            <div class="flex gap-4">
-                                <div class="step-number">1</div>
-                                <div>
-                                    <p class="font-medium">Klik menu Export</p>
-                                    <p class="text-sm text-slate-600">Kembali ke menu <span class="bg-slate-100 px-2 py-1 rounded text-xs font-mono border">🤖 CM360 Tools</span> > Pilih <span class="bg-slate-100 px-2 py-1 rounded text-xs font-mono border">📥 2. Generate Format CM360 Import</span>.</p>
-                                </div>
-                            </div>
-                            <div class="flex gap-4">
-                                <div class="step-number">2</div>
-                                <div>
-                                    <p class="font-medium">Download File Excel</p>
-                                    <p class="text-sm text-slate-600">Tunggu loading selesai, nanti muncul popup berisi link hijau. Klik link tersebut, lalu di file baru klik <strong>File > Download > Microsoft Excel (.xlsx)</strong>.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- OTT Tutorial -->
-            <section id="tutorial-ott" class="scroll-mt-24">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="bg-purple-100 p-2 rounded text-purple-600"><i class="fa-solid fa-mobile-screen"></i></div>
-                    <h2 class="text-2xl font-bold">Tutorial Campaign OTT</h2>
-                </div>
-                
-                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden p-6">
-                    <p class="text-slate-600 mb-6">Secara fungsi sama persis dengan CPD, bedanya menu ini khusus membaca mapping Publisher OTT dan tipe tracking.</p>
-                    
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
-                            <h4 class="font-bold mb-3 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-purple-500"></i> Step 1: Generate</h4>
-                            <ul class="text-sm space-y-2 text-slate-600 list-disc list-inside">
-                                <li>Klik menu <span class="font-mono bg-white px-1 border rounded text-xs">🎬 OTT/Tracker Tools</span></li>
-                                <li>Pilih <strong>Generate & Sync Taxonomy OTT</strong></li>
-                                <li>Masukkan PO Number bila diminta</li>
-                                <li><strong>Jangan lupa isi ID di kolom kuning!</strong></li>
-                            </ul>
-                        </div>
-                        <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
-                            <h4 class="font-bold mb-3 flex items-center gap-2"><i class="fa-solid fa-file-export text-google-green"></i> Step 2: Export</h4>
-                            <ul class="text-sm space-y-2 text-slate-600 list-disc list-inside">
-                                <li>Klik menu <span class="font-mono bg-white px-1 border rounded text-xs">🎬 OTT/Tracker Tools</span></li>
-                                <li>Pilih <strong>Generate Format CM360 Import</strong></li>
-                                <li>Pilih Campaign yang mau diexport (jika ada pilihan)</li>
-                                <li>Buka link dan Download Excel-nya</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-        </main>
-
-        <!-- Sidebar / Shortcuts -->
-        <aside class="w-full md:w-80 space-y-6">
-            
-            <!-- Cheat Sheet Card -->
-            <div id="shortcuts" class="bg-slate-800 rounded-2xl p-6 text-white shadow-lg sticky top-24 scroll-mt-24">
-                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-fire text-orange-400"></i> Cheat Sheet & Trik Cepat
-                </h3>
-                
-                <div class="space-y-4">
-                    <div class="bg-slate-700/50 p-3 rounded-lg border border-slate-600">
-                        <p class="font-bold text-sm text-orange-300 mb-1">Cara Ganti PO Number yang Salah</p>
-                        <p class="text-xs text-slate-300 leading-relaxed">
-                            Gak perlu hapus semua data. Cukup hapus teks PO di kolom <strong>Campaign Name</strong> (sisakan namanya saja), lalu jalankan menu <em>Generate</em> lagi. Popup PO akan muncul lagi!
-                        </p>
-                    </div>
-
-                    <div class="bg-slate-700/50 p-3 rounded-lg border border-slate-600">
-                        <p class="font-bold text-sm text-green-300 mb-1">Biar Nggak Capek Input ID</p>
-                        <p class="text-xs text-slate-300 leading-relaxed">
-                            Pastikan kamu udah nge-paste ID dari CM360 ke baris sheet yang benar sebelum klik Export. Kalau di-export pas ID masih kosong, hasil Excel-nya bakal ada tulisan <code>[KOSONG_ISI_DULU]</code>.
-                        </p>
-                    </div>
-
-                    <div class="bg-slate-700/50 p-3 rounded-lg border border-slate-600">
-                        <p class="font-bold text-sm text-red-300 mb-1">Error "Publisher Belum Terdaftar"?</p>
-                        <p class="text-xs text-slate-300 leading-relaxed">
-                            Itu karena nama pub di sheet beda/typo dengan di sistem (misal: "Detik" ditulis "Dtik"). Benerin namanya di sheet, atau lapor ke PIC buat daftarin nama pub baru ke dalam Code (Master Mapping).
-                        </p>
-                    </div>
+        <!-- Step 1 -->
+        <section id="step-1" class="mb-12 scroll-mt-12">
+            <h2 class="text-2xl font-bold border-b pb-2 mb-4"><span class="text-blue-500">Step 1:</span> Receive Brief &amp; Get PO Number</h2>
+            <p class="mb-4">You will receive briefs from planners. Here are the live tracker sheets:</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <a href="https://docs.google.com/spreadsheets/d/16hKiU1hrZHnfsUfJYVody8MQoOatf7AwuCDWg9Ddwhc/edit?gid=107155785#gid=107155785" target="_blank" class="block p-4 bg-white border rounded shadow-sm hover:shadow-md transition">
+                    <h4 class="font-bold text-lg"><i class="fas fa-file-excel text-green-600 mr-2"></i>CPD Briefs</h4>
+                    <p class="text-sm text-slate-500 mt-1">View the latest CPD requirements.</p>
+                </a>
+                <a href="https://docs.google.com/spreadsheets/d/1_ftwUgOpmrOjzlRvL2xYBFh7-npNCK8-/edit?gid=910089789#gid=910089789" target="_blank" class="block p-4 bg-white border rounded shadow-sm hover:shadow-md transition">
+                    <h4 class="font-bold text-lg"><i class="fas fa-file-excel text-green-600 mr-2"></i>OTT Briefs</h4>
+                    <p class="text-sm text-slate-500 mt-1">View the latest OTT requirements.</p>
+                </a>
+            </div>
+            <div class="bg-yellow-50 border border-yellow-200 p-4 rounded flex items-start">
+                <i class="fas fa-exclamation-triangle text-yellow-500 mt-1 mr-3"></i>
+                <div>
+                    <strong class="text-yellow-800">Crucial Step:</strong> Always ask the planner for the <strong>PO Number</strong>. The PO number is required for the campaign naming convention regardless of the campaign type.
                 </div>
             </div>
+        </section>
 
-        </aside>
+        <!-- Step 2 -->
+        <section id="step-2" class="mb-12 scroll-mt-12">
+            <h2 class="text-2xl font-bold border-b pb-2 mb-4"><span class="text-blue-500">Step 2:</span> Creative Check <span class="text-sm font-normal text-slate-500">(CPD Only)</span></h2>
+            <p class="mb-4">Since OTT is mostly tracking only, this step usually applies to CPD full-serve campaigns. We must ensure HTML5 creatives meet CM360 criteria.</p>
+            
+            <ol class="list-decimal ml-6 space-y-3 mb-6">
+                <li>Download the Creative ZIP file from the brief.</li>
+                <li>Go to the <a href="https://www.previewads.com/html5-ad-tester" target="_blank" class="text-blue-600 underline hover:text-blue-800">HTML5 Ad Tester</a>.</li>
+                <li>Upload the ZIP file and check three things:
+                    <ul class="list-disc ml-5 mt-1 text-slate-600">
+                        <li>Does the ad render/appear correctly?</li>
+                        <li>Is the size correct according to the brief?</li>
+                        <li><strong>Is it clickable?</strong></li>
+                    </ul>
+                </li>
+            </ol>
 
-    </div>
+            <div class="bg-white border rounded shadow-sm p-4">
+                <h4 class="font-bold text-red-600 mb-2"><i class="fas fa-tools mr-2"></i>Troubleshooting: Ad is not clickable</h4>
+                <p class="text-sm mb-3">If the ad appears but cannot be clicked, confirm with the planner. You may need to inject the manual <code>clickTag</code> into the creative's <code>index.html</code> file. Here is the exact code to use:</p>
+                
+                <div class="relative">
+                    <button onclick="copyCode()" class="absolute top-2 right-2 bg-slate-700 hover:bg-slate-600 text-white text-xs px-2 py-1 rounded">Copy Code</button>
+                    <pre class="code-block p-4 rounded text-sm overflow-x-auto"><code id="clickTagCode">
+&lt;script type="text/javascript"&gt;
+var clickTag = "%%CLICK_URL_UNESC%%";
+&lt;/script&gt;
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 mt-12 py-8 text-center text-slate-500 text-sm">
-        <p>CM360 Automation Tools &copy; User Guideline & Documentation.</p>
-    </footer>
+&lt;div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:320px; height:480px"&gt;
+    &lt;canvas id="canvas" width="320" height="480" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"&gt;&lt;/canvas&gt;
+    &lt;div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:320px; height:480px; position: absolute; left: 0px; top: 0px; display: block;"&gt;
+    &lt;/div&gt;
+    &lt;div id="ad-button" style="width:320px; height:480px; opacity:0; position:absolute; top:0; left:0; z-index:999;"&gt;&lt;/div&gt;
+&lt;/div&gt;
 
-</body>
-</html>
+&lt;script&gt;
+document.getElementById('ad-button').addEventListener('click', function() {
+    if (typeof clickTag !== 'undefined' &amp;&amp; clickTag) {
+        window.open(clickTag, '_blank');
+    }
+});
+&lt;/script&gt;</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 3 -->
+        <section id="step-3" class="mb-12 scroll-mt-12">
+            <h2 class="text-2xl font-bold border-b pb-2 mb-4"><span class="text-blue-500">Step 3:</span> Taxonomy Setup (Automation)</h2>
+            <p class="mb-4">To make importing into CM360 fast, use my custom AppScripts in the Taxonomy sheets.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <a href="https://docs.google.com/spreadsheets/d/1eSwvL8f2sckfBtC0OZJVCGz9-Laa6Fwf53C42QkaMYw/edit?gid=1006933519#gid=1006933519" target="_blank" class="block p-4 bg-white border rounded shadow-sm hover:shadow-md transition">
+                    <h4 class="font-bold text-lg text-blue-700"><i class="fas fa-robot mr-2"></i>Taxonomy CPD</h4>
+                    <p class="text-sm text-slate-500 mt-1">Open CPD Generator Sheet</p>
+                </a>
+                <a href="https://docs.google.com/spreadsheets/d/1G75tFLf2iGx8V050tu7eHiKhzr5qQ_5q0k7bu-C7YRY/edit?gid=884980042#gid=884980042" target="_blank" class="block p-4 bg-white border rounded shadow-sm hover:shadow-md transition">
+                    <h4 class="font-bold text-lg text-blue-700"><i class="fas fa-robot mr-2"></i>Taxonomy OTT</h4>
+                    <p class="text-sm text-slate-500 mt-1">Open OTT Generator Sheet</p>
+                </a>
+            </div>
+
+            <h3 class="font-bold text-lg mt-6 mb-2">How to use the automation:</h3>
+            <ol class="list-decimal ml-6 space-y-2 text-slate-700">
+                <li>Paste your brief data into the respective sheet.</li>
+                <li>In the Google Sheets top menu, look for <strong>"🤖 CM360 Tools"</strong> (for CPD) or <strong>"🎬 OTT/Tracker Tools"</strong> (for OTT).</li>
+                <li>Click <strong>"1. Generate &amp; Sync Taxonomy"</strong>. The script will automatically format names and ask you for the PO Number if it's missing.</li>
+                <li><strong>IMPORTANT:</strong> Fill in any missing <em>Creative IDs</em> or <em>Landing Page (LP) IDs</em> in the yellow highlighted columns.</li>
+                <li>Click <strong>"2. Generate Format CM360 Import"</strong>. This will create a separate export file.</li>
+                <li>Download that export file as Excel (.xlsx) and upload it directly into CM360!</li>
+            </ol>
+        </section>
+
+        <!-- Step 4 -->
+        <section id="step-4" class="mb-12 scroll-mt-12">
+            <h2 class="text-2xl font-bold border-b pb-2 mb-4"><span class="text-blue-500">Step 4:</span> Manual CM360 Setup (If needed)</h2>
+            <p class="mb-6">If you need to set up a sudden, urgent campaign manually in CM360 without the import sheet, follow these steps:</p>
+
+            <div class="space-y-6">
+                <!-- CPD Manual -->
+                <div class="bg-white border p-6 rounded shadow-sm">
+                    <h3 class="font-bold text-xl text-blue-900 mb-3"><i class="fas fa-desktop mr-2"></i>CPD (Full Serve) Setup</h3>
+                    <ul class="list-none space-y-3">
+                        <li><span class="inline-block bg-slate-200 text-xs font-bold px-2 py-1 rounded mr-2">1</span> <strong>Campaign:</strong> Create New -&gt; Name it -&gt; Advertiser: <code>Djarum_ID</code> -&gt; Set Schedule (Start/End date).</li>
+                        <li><span class="inline-block bg-slate-200 text-xs font-bold px-2 py-1 rounded mr-2">2</span> <strong>Landing Page:</strong> Click Landing Pages -&gt; Add Name and URL (use Batch if there are many: Column 1 = Name, Column 2 = URL) -&gt; Create.</li>
+                        <li><span class="inline-block bg-slate-200 text-xs font-bold px-2 py-1 rounded mr-2">3</span> <strong>Creative:</strong> Click New -&gt; Batch Upload the HTML5/Image creatives.</li>
+                        <li><span class="inline-block bg-slate-200 text-xs font-bold px-2 py-1 rounded mr-2">4</span> <strong>Placement:</strong> Click the green "New" button -&gt; Select Site (e.g., Kompas) -&gt; Enter Placement Name -&gt; Set Dimensions -&gt; Save.</li>
+                        <li><span class="inline-block bg-slate-200 text-xs font-bold px-2 py-1 rounded mr-2">5</span> <strong>Ad:</strong> Create New -&gt; Select <strong>Standard</strong> -&gt; Match name to Placement -&gt; Status: Active.</li>
+                        <li><span class="inline-block bg-slate-200 text-xs font-bold px-2 py-1 rounded mr-2">6</span> <strong>Assignment:</strong> In the Ad menu, scroll to Creative Assignment -&gt; Edit -&gt; Assign the creative you uploaded. Scroll right to the Landing Page column (pencil icon) -&gt; Assign the specific LP.</li>
+                        <li><span class="inline-block bg-slate-200 text-xs font-bold px-2 py-1 rounded mr-2">7</span> <strong>Placement Assignment:</strong> Scroll to Placement Assignment -&gt; Edit -&gt; Select your Placement -&gt; Done -&gt; Save.</li>
+                        <li><span class="inline-block bg-slate-200 text-xs font-bold px-2 py-1 rounded mr-2">8</span> <strong>Tags:</strong> Click Tags menu -&gt; Download Tags -&gt; Send to the planner.</li>
+                    </ul>
+                </div>
+
+                <!-- OTT Manual -->
+                <div class="bg-white border p-6 rounded shadow-sm">
+                    <h3 class="font-bold text-xl text-purple-900 mb-3"><i class="fas fa-mobile-alt mr-2"></i>OTT (Tracking Only) Setup</h3>
+                    <p class="mb-3">The steps are identical to CPD, with <strong>three major exceptions</strong>:</p>
+                    <ul class="list-disc ml-5 space-y-2 text-slate-700">
+                        <li><strong>Creative:</strong> Do not batch upload. Click New -&gt; Select <strong>Tracking</strong>.</li>
+                        <li><strong>Ad:</strong> Still select <strong>Standard</strong>.</li>
+                        <li><strong>Dimensions:</strong> Set all dimensions to <strong>1x1</strong>.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 5 -->
+        <section id="step-5" class="mb-12 scroll-mt-12">
+            <h2 class="text-2xl font-bold border-b pb-2 mb-4"><span class="text-blue-500">Step 5:</span> Publisher Previews &amp; QA</h2>
+            <p class="mb-4">Once you send the tags, the publisher will send back a Preview Link to check if the ad is firing properly.</p>
+            
+            <div class="bg-slate-100 p-4 rounded mb-4 font-mono text-xs break-all text-slate-600">
+                Example Link: https://pubads.g.doubleclick.net/gampad/preview_cookie?...
+            </div>
+
+            <h3 class="font-bold text-lg mb-2">How to QA the Preview:</h3>
+            <ol class="list-decimal ml-6 space-y-2 text-slate-700">
+                <li>Open the preview link in Chrome.</li>
+                <li>Right-click anywhere and select <strong>Inspect</strong> (or press <code>F12</code>).</li>
+                <li>Go to the <strong>Network</strong> tab.</li>
+                <li>Paste the <strong>Placement ID</strong> (from CM360) into the Network filter bar.</li>
+                <li><strong>Toggle Device Toolbar <i class="fas fa-mobile-alt mx-1"></i>:</strong> Click the device icon next to "Elements" in DevTools. If it's a mobile placement, select a mobile dimension. If desktop, turn it off.</li>
+                <li>Refresh the page.
+                    <ul class="list-disc ml-5 mt-1 text-slate-600">
+                        <li>If the network request shows up, the ad is visible, clicks through to the correct landing page -&gt; <strong>It's firing successfully!</strong></li>
+                        <li>If it doesn't show up -&gt; Try refreshing again. If still nothing, it is <strong>not firing</strong> (report back to publisher).</li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
+
+        <!-- Step 6 -->
+        <section id="step-6" class="mb-12 scroll-mt-12">
+            <h2 class="text-2xl font-bold border-b pb-2 mb-4"><span class="text-blue-500">Step 6:</span> Reporting</h2>
+            <p class="mb-4">After campaigns are live, you'll need to pull reports (either manually or via Scheduled Reports).</p>
+            
+            <ul class="list-disc ml-6 space-y-2 mb-6">
+                <li>Go to <strong>Reporting and Attribution</strong> in CM360.</li>
+                <li>Look at my previously saved reports (User: <code>kevin.pramudya@wppmedia.com</code>).</li>
+                <li>You can duplicate them, adjust the Date Range, and download. The dimensions and metrics are already pre-configured!</li>
+            </ul>
+
+            <a href="https://insidemedia-my.sharepoint.com/:x:/r/personal/kevin_pramudya_wppmedia_com/Documents/2026/DJARUM/Djarum%202026%20-%20Total%20Cost%20CM360%20.xlsx?d=wfb06e5fc484147e484d165ea01e2adfa&amp;csf=1&amp;web=1&amp;e=bmjxgp" target="_blank" class="inline-flex items-center px-6 py-3 bg-green-600 text-white font-bold rounded hover:bg-green-700 transition shadow">
+                <i class="fas fa-file-excel mr-2"></i> Open Djarum 2026 - Total Cost CM360 Report
+            </a>
+        </section>
+        
+        <footer class="text-center text-slate-500 text-sm mt-12 py-6 border-t">
+            Built for Djarum CM360 Workflow Automation • Ready for Vercel Deployment
+        </footer>
+
+    </main>
+
+    <script>
+        function copyCode() {
+            const code = document.getElementById("clickTagCode").innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                alert("clickTag code copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy code: ", err);
+            });
+        }
+    </script>
+
+</body></html>
