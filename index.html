@@ -267,22 +267,31 @@
                                 <div class="relative pl-8">
                                     <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">1</div>
                                     <h4 class="font-bold text-slate-800">Run Taxonomy Sync</h4>
-                                    <p class="text-slate-600 text-sm mt-1">Select <strong>🤖 CM360 Tools &gt; 1. Generate &amp; Sync Taxonomy (Active Sheet)</strong>. The script will automatically read the publisher names and convert them into the standard format.</p>
+                                    <p class="text-slate-600 text-sm mt-1">Select <strong>🤖 CM360 Tools &gt; 1. Generate &amp; Sync Taxonomy (Active Sheet)</strong>. The script will automatically read the publisher names, identify the PO Number (it will prompt you if missing), and generate standard taxonomy.</p>
                                 </div>
                                 <div class="relative pl-8">
                                     <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">2</div>
-                                    <h4 class="font-bold text-slate-800">Auto PO Detect &amp; Prompt</h4>
-                                    <p class="text-slate-600 text-sm mt-1">If the system doesn't detect a PO number in the existing Campaign name, a pop-up will appear asking for the PO Number. Type or paste the PO number.</p>
+                                    <h4 class="font-bold text-slate-800">Initial Setup in CM360</h4>
+                                    <p class="text-slate-600 text-sm mt-1 mb-2">Before continuing, you need to create the base assets in CM360:</p>
+                                    <ul class="list-disc list-inside text-sm text-slate-600 space-y-1 bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                        <li><strong>Campaign:</strong> Create a new campaign. Set Advertiser to <strong>Djarum_ID</strong>. For EU political ads, select <i>"No, this campaign doesn't have EU political ads"</i>. Set the exact start and end dates.</li>
+                                        <li><strong>Landing Pages:</strong> Click Landing Page &gt; Batch. Copy data from the "LP Name" and "LP URL" columns in your sheet, paste it here, and save.</li>
+                                        <li><strong>Creatives:</strong> Click New &gt; Creative &gt; Batch Upload. Upload all your validated HTML5 ZIP files.</li>
+                                    </ul>
                                 </div>
                                 <div class="relative pl-8">
                                     <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">3</div>
-                                    <h4 class="font-bold text-slate-800">Fill in the Yellow Columns (Mandatory)</h4>
-                                    <p class="text-slate-600 text-sm mt-1 mb-2">Once the taxonomy is generated, the empty <strong>Creative ID</strong> and <strong>LP ID</strong> columns will be automatically highlighted in bright yellow <span class="inline-block w-3 h-3 bg-[#FFF2CC] border border-amber-300 rounded-sm ml-1 align-middle"></span>. You must map/create your Creatives &amp; LPs in the CM360 UI first, copy their IDs, and paste them here.</p>
+                                    <h4 class="font-bold text-slate-800">Fill the Yellow Columns</h4>
+                                    <p class="text-slate-600 text-sm mt-1">Back in your sheet, the <strong>Creative ID</strong> and <strong>LP ID</strong> columns are highlighted in yellow <span class="inline-block w-3 h-3 bg-[#FFF2CC] border border-amber-300 rounded-sm align-middle"></span>. You must fetch these IDs from CM360:</p>
+                                    <ul class="list-disc list-inside text-sm text-slate-600 mt-2 space-y-1">
+                                        <li><strong>Creative ID:</strong> Copy the ID generated next to your uploaded assets (e.g., 320x480 creative ID).</li>
+                                        <li><strong>LP ID:</strong> Go to Campaign <i>Properties</i>, scroll down to the Landing Pages section, and copy the text that contains the ID (e.g., <code>Detik_FC_Apps 42576935</code>). Extract the numbers and paste them into the sheet.</li>
+                                    </ul>
                                 </div>
                                 <div class="relative pl-8">
                                     <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">4</div>
-                                    <h4 class="font-bold text-slate-800">Generate &amp; Import to CM360</h4>
-                                    <p class="text-slate-600 text-sm mt-1">Once IDs are populated, click <strong>🤖 CM360 Tools &gt; 2. Generate Format CM360 Import</strong>. Download the generated spreadsheet as Microsoft Excel (.xlsx). Finally, go to your Campaign in the CM360 UI, click the <strong>Import</strong> button at the top right, upload the file, and click Save.</p>
+                                    <h4 class="font-bold text-slate-800">Generate Export &amp; Import</h4>
+                                    <p class="text-slate-600 text-sm mt-1">Once IDs are populated, click <strong>🤖 CM360 Tools &gt; 2. Generate Format CM360 Import</strong>. Download the generated spreadsheet as Microsoft Excel (.xlsx). Finally, go to your Campaign in CM360, click the <strong>Import</strong> button at the top right, upload the file, and click Save to automatically build all your ads, placements, and assignments!</p>
                                 </div>
                             </div>
                         </div>
@@ -313,13 +322,18 @@
                                 </div>
                                 <div class="relative pl-8">
                                     <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">2</div>
-                                    <h4 class="font-bold text-slate-800">Month Aggregation &amp; PO Prompt</h4>
-                                    <p class="text-slate-600 text-sm mt-1">The script reads the months included in the raw Campaign column and automatically aggregates them (e.g., JAN_FEB). If the PO is missing, a pop-up prompt will request it.</p>
+                                    <h4 class="font-bold text-slate-800">Setup Trackers in CM360</h4>
+                                    <p class="text-slate-600 text-sm mt-1">Create your Campaign and Batch Upload Landing pages just like CPD. However, for Creatives, you must manually create <strong>New &gt; Creative &gt; Tracking</strong> for each required placement instead of uploading HTML5 banners.</p>
                                 </div>
                                 <div class="relative pl-8">
                                     <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">3</div>
-                                    <h4 class="font-bold text-slate-800">Generate Specific 1x1 Tracker Export</h4>
-                                    <p class="text-slate-600 text-sm mt-1">Once the missing IDs (yellow columns) are filled, run <strong>🎬 OTT/Tracker Tools &gt; 2. Generate Format CM360 Import</strong>. Download it as Excel and upload it via the Import button in CM360. <i>Unlike CPD, this script automatically sets the Ad &amp; Creative Type to "Tracking" and dimensions to "1x1".</i></p>
+                                    <h4 class="font-bold text-slate-800">Fill the Yellow Columns</h4>
+                                    <p class="text-slate-600 text-sm mt-1">Copy the specific Tracking Creative IDs and the LP IDs from CM360, and paste them into the required yellow columns in your taxonomy sheet.</p>
+                                </div>
+                                <div class="relative pl-8">
+                                    <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">4</div>
+                                    <h4 class="font-bold text-slate-800">Generate Export &amp; Import</h4>
+                                    <p class="text-slate-600 text-sm mt-1">Run <strong>🎬 OTT/Tracker Tools &gt; 2. Generate Format CM360 Import</strong>. Download as Excel and upload it via the Import button in CM360. <i>Unlike CPD, this script automatically maps the Ad &amp; Creative Type as "Tracking" and dimensions as "1x1".</i></p>
                                 </div>
                             </div>
                             
@@ -478,7 +492,7 @@
                             <span class="w-6 h-6 rounded-md bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs">1</span>
                             <h4 class="font-bold text-slate-800">Open &amp; Inspect</h4>
                         </div>
-                        <p class="text-sm text-slate-600">Open the link in Google Chrome. Right-click and select <strong>Inspect</strong> (or press F12). Navigate to the <strong>Network</strong> tab.</p>
+                        <p class="text-sm text-slate-600">Open the link in Google Chrome. Right-click anywhere and select <strong>Inspect</strong> (or press F12). Navigate to the <strong>Network</strong> tab.</p>
                     </div>
                     
                     <div class="bg-white p-5 rounded-xl border shadow-sm">
@@ -492,9 +506,9 @@
                     <div class="bg-white p-5 rounded-xl border shadow-sm">
                         <div class="flex items-center gap-3 mb-3">
                             <span class="w-6 h-6 rounded-md bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs">3</span>
-                            <h4 class="font-bold text-slate-800">Filter Network</h4>
+                            <h4 class="font-bold text-slate-800">Filter Network Traffic</h4>
                         </div>
-                        <p class="text-sm text-slate-600">Copy the <strong>Placement ID</strong> from CM360. Paste it into the "Filter" box inside the Network tab. Refresh the page.</p>
+                        <p class="text-sm text-slate-600">Locate the filter search box in the Network tab. You can either type <code>ad.double</code> to isolate general CM360 requests, or paste the exact <strong>Placement ID</strong>. Refresh the page to start capturing.</p>
                     </div>
 
                     <div class="bg-white p-5 rounded-xl border shadow-sm">
@@ -502,7 +516,7 @@
                             <span class="w-6 h-6 rounded-md bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs">4</span>
                             <h4 class="font-bold text-slate-800">Verify Status</h4>
                         </div>
-                        <p class="text-sm text-slate-600">Ensure the ad is clickable. Check the Network tab to see if the Placement ID request fired and returned a Status of <strong>200 (OK)</strong>.</p>
+                        <p class="text-sm text-slate-600">Ensure the ad is visible and clickable. Check the Network tab to confirm that the ad request fired properly and returned a Status of <strong>200 (OK)</strong>.</p>
                     </div>
                 </div>
 
@@ -529,7 +543,7 @@
                     </div>
                     <h3 class="text-2xl font-bold text-slate-800 mb-2">CM360 Reporting Console</h3>
                     <p class="text-slate-600 max-w-lg mx-auto mb-6">
-                        You don't need to build reports from scratch. We have pre-saved templates available in the Reporting dashboard.
+                        You don't need to build reports from scratch. We have pre-saved templates available directly in the Reporting dashboard.
                     </p>
                     
                     <div class="bg-slate-50 border border-slate-200 p-5 rounded-xl text-left max-w-2xl mx-auto mb-8">
