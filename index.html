@@ -117,7 +117,7 @@
                 <div class="mb-8">
                     <span class="inline-block py-1 px-3 rounded-full bg-djarum-100 text-djarum-700 text-xs font-bold tracking-wider mb-3">PHASE 1</span>
                     <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Receiving the Brief &amp; PO</h2>
-                    <p class="mt-3 text-slate-600 text-lg">The first step of every campaign is receiving the initial brief from the Planner.</p>
+                    <p class="mt-3 text-slate-600 text-lg">The first step of every campaign is receiving the original media plan / brief from the Planner.</p>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -128,7 +128,7 @@
                         <h3 class="text-lg font-bold text-slate-800">CPD (Full Serve)</h3>
                         <p class="text-sm text-slate-600 mt-2 mb-4">Standard display/banner campaigns where we host and upload the HTML5 creatives directly to CM360.</p>
                         <a href="https://docs.google.com/spreadsheets/d/16hKiU1hrZHnfsUfJYVody8MQoOatf7AwuCDWg9Ddwhc/edit?gid=107155785#gid=107155785" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold text-djarum-600 hover:text-djarum-800">
-                            Open CPD Tracker <i class="ph ph-arrow-up-right"></i>
+                            Open Original CPD Brief <i class="ph ph-arrow-up-right"></i>
                         </a>
                     </div>
 
@@ -139,7 +139,7 @@
                         <h3 class="text-lg font-bold text-slate-800">OTT / Direct Vendor</h3>
                         <p class="text-sm text-slate-600 mt-2 mb-4">Tracking-only campaigns (1x1 trackers). The vendor hosts the creative, we only provide the tracking pixel.</p>
                         <a href="https://docs.google.com/spreadsheets/d/1_ftwUgOpmrOjzlRvL2xYBFh7-npNCK8-/edit?gid=910089789#gid=910089789" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold text-purple-600 hover:text-purple-800">
-                            Open OTT Tracker <i class="ph ph-arrow-up-right"></i>
+                            Open Original OTT Brief <i class="ph ph-arrow-up-right"></i>
                         </a>
                     </div>
                 </div>
@@ -248,14 +248,19 @@
                     
                     <!-- CPD AppScript Tutorial -->
                     <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-                        <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
-                            <div class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center shadow-md">
-                                <i class="ph-fill ph-desktop text-2xl"></i>
+                        <div class="bg-blue-50 border-b border-blue-100 p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+                                    <i class="ph-fill ph-desktop text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-blue-900 leading-tight">AppScript Tutorial: CPD (Full Serve)</h3>
+                                    <p class="text-sm text-blue-700">Use the <strong class="bg-blue-200 px-1.5 py-0.5 rounded">🤖 CM360 Tools</strong> menu in the Spreadsheet top bar.</p>
+                                </div>
                             </div>
-                            <div>
-                                <h3 class="font-bold text-lg text-blue-900">AppScript Tutorial: CPD (Full Serve)</h3>
-                                <p class="text-sm text-blue-700">Use the <strong class="bg-blue-200 px-1.5 py-0.5 rounded">🤖 CM360 Tools</strong> menu in the Spreadsheet top bar.</p>
-                            </div>
+                            <a href="https://docs.google.com/spreadsheets/d/1eSwvL8f2sckfBtC0OZJVCGz9-Laa6Fwf53C42QkaMYw/edit?gid=1007685084#gid=1007685084" target="_blank" class="inline-flex items-center gap-2 bg-white border border-blue-200 text-blue-700 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-blue-50 transition shadow-sm whitespace-nowrap">
+                                Open CPD Taxonomy Sheet <i class="ph ph-arrow-up-right"></i>
+                            </a>
                         </div>
                         <div class="p-6">
                             <div class="relative border-l-2 border-slate-200 ml-4 space-y-6 pb-2">
@@ -272,12 +277,12 @@
                                 <div class="relative pl-8">
                                     <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">3</div>
                                     <h4 class="font-bold text-slate-800">Fill in the Yellow Columns (Mandatory)</h4>
-                                    <p class="text-slate-600 text-sm mt-1 mb-2">Once the taxonomy is generated, the empty <strong>Creative ID</strong> and <strong>LP ID</strong> columns will be automatically highlighted in bright yellow <span class="inline-block w-3 h-3 bg-[#FFF2CC] border border-amber-300 rounded-sm ml-1 align-middle"></span>. You must create the Ad/Creative in the CM360 UI and fill them in here.</p>
+                                    <p class="text-slate-600 text-sm mt-1 mb-2">Once the taxonomy is generated, the empty <strong>Creative ID</strong> and <strong>LP ID</strong> columns will be automatically highlighted in bright yellow <span class="inline-block w-3 h-3 bg-[#FFF2CC] border border-amber-300 rounded-sm ml-1 align-middle"></span>. You must map/create your Creatives &amp; LPs in the CM360 UI first, copy their IDs, and paste them here.</p>
                                 </div>
                                 <div class="relative pl-8">
                                     <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">4</div>
-                                    <h4 class="font-bold text-slate-800">Export CM360 Import File</h4>
-                                    <p class="text-slate-600 text-sm mt-1">Once the IDs are fully populated, click <strong>🤖 CM360 Tools &gt; 2. Generate Format CM360 Import</strong>. Select a Campaign, and the system will create a separate Excel file (already mapped with CM360 Site IDs) ready to be uploaded to CM360.</p>
+                                    <h4 class="font-bold text-slate-800">Generate &amp; Import to CM360</h4>
+                                    <p class="text-slate-600 text-sm mt-1">Once IDs are populated, click <strong>🤖 CM360 Tools &gt; 2. Generate Format CM360 Import</strong>. Download the generated spreadsheet as Microsoft Excel (.xlsx). Finally, go to your Campaign in the CM360 UI, click the <strong>Import</strong> button at the top right, upload the file, and click Save.</p>
                                 </div>
                             </div>
                         </div>
@@ -285,31 +290,36 @@
 
                     <!-- OTT AppScript Tutorial -->
                     <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-                        <div class="bg-purple-50 border-b border-purple-100 p-5 flex items-center gap-3">
-                            <div class="w-10 h-10 bg-purple-600 text-white rounded-xl flex items-center justify-center shadow-md">
-                                <i class="ph-fill ph-device-mobile-camera text-2xl"></i>
+                        <div class="bg-purple-50 border-b border-purple-100 p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-purple-600 text-white rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+                                    <i class="ph-fill ph-device-mobile-camera text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-purple-900 leading-tight">AppScript Tutorial: OTT (Tracker Only)</h3>
+                                    <p class="text-sm text-purple-700">Use the <strong class="bg-purple-200 px-1.5 py-0.5 rounded">🎬 OTT/Tracker Tools</strong> menu in the Spreadsheet top bar.</p>
+                                </div>
                             </div>
-                            <div>
-                                <h3 class="font-bold text-lg text-purple-900">AppScript Tutorial: OTT (Tracker Only)</h3>
-                                <p class="text-sm text-purple-700">Use the <strong class="bg-purple-200 px-1.5 py-0.5 rounded">🎬 OTT/Tracker Tools</strong> menu in the Spreadsheet top bar.</p>
-                            </div>
+                            <a href="https://docs.google.com/spreadsheets/d/1G75tFLf2iGx8V050tu7eHiKhzr5qQ_5q0k7bu-C7YRY/edit?gid=41561794#gid=41561794" target="_blank" class="inline-flex items-center gap-2 bg-white border border-purple-200 text-purple-700 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-purple-50 transition shadow-sm whitespace-nowrap">
+                                Open OTT Taxonomy Sheet <i class="ph ph-arrow-up-right"></i>
+                            </a>
                         </div>
                         <div class="p-6">
                             <div class="relative border-l-2 border-slate-200 ml-4 space-y-6 pb-2">
                                 <div class="relative pl-8">
                                     <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">1</div>
                                     <h4 class="font-bold text-slate-800">Run Taxonomy OTT</h4>
-                                    <p class="text-slate-600 text-sm mt-1">Select <strong>🎬 OTT/Tracker Tools &gt; 1. Generate &amp; Sync Taxonomy OTT</strong>. This script specifically extracts platforms (like WeTV, Vidio) and campaign context (SeaGames, Mobile) to create <i>Smart Contextual Landing Page Logic</i>.</p>
+                                    <p class="text-slate-600 text-sm mt-1">Select <strong>🎬 OTT/Tracker Tools &gt; 1. Generate &amp; Sync Taxonomy OTT</strong>. This script specifically extracts platforms (like WeTV, Vidio) and campaign context (SeaGames, Mobile) to construct a <i>Smart Contextual Landing Page Logic</i>.</p>
                                 </div>
                                 <div class="relative pl-8">
                                     <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">2</div>
                                     <h4 class="font-bold text-slate-800">Month Aggregation &amp; PO Prompt</h4>
-                                    <p class="text-slate-600 text-sm mt-1">The script reads the months included in the Campaign name and automatically aggregates them (e.g., JAN_FEB). If the PO is missing, a pop-up prompt will appear to fill it in.</p>
+                                    <p class="text-slate-600 text-sm mt-1">The script reads the months included in the raw Campaign column and automatically aggregates them (e.g., JAN_FEB). If the PO is missing, a pop-up prompt will request it.</p>
                                 </div>
                                 <div class="relative pl-8">
                                     <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">3</div>
                                     <h4 class="font-bold text-slate-800">Generate Specific 1x1 Tracker Export</h4>
-                                    <p class="text-slate-600 text-sm mt-1">Once the IDs are filled in the yellow columns, run <strong>🎬 OTT/Tracker Tools &gt; 2. Generate Format CM360 Import</strong>. Unlike CPD, this script automatically sets the <i>Creative Type</i> to "Tracking" and the dimensions to "1x1".</p>
+                                    <p class="text-slate-600 text-sm mt-1">Once the missing IDs (yellow columns) are filled, run <strong>🎬 OTT/Tracker Tools &gt; 2. Generate Format CM360 Import</strong>. Download it as Excel and upload it via the Import button in CM360. <i>Unlike CPD, this script automatically sets the Ad &amp; Creative Type to "Tracking" and dimensions to "1x1".</i></p>
                                 </div>
                             </div>
                             
@@ -318,7 +328,7 @@
                                 <div>
                                     <h5 class="text-sm font-bold text-slate-800">Behind the Scenes of This Script:</h5>
                                     <p class="text-xs text-slate-600 mt-1">
-                                        Your scripts store mapping data in the <code>SITE_MAP</code> &amp; <code>SITE_MAP_OTT</code> variables. If you encounter a new Publisher or Vendor and get a "Mapping Failed" error, make sure to add it first to <code>var SITE_MAP</code> under the <i>Extensions &gt; Apps Script</i> menu.
+                                        The scripts store mapping data in the <code>SITE_MAP</code> &amp; <code>SITE_MAP_OTT</code> variables. If you encounter a new Publisher or Vendor and get a "Mapping Failed" alert, you must add the new publisher and their CM360 Site ID into <code>var SITE_MAP</code> via the <i>Extensions &gt; Apps Script</i> menu first.
                                     </p>
                                 </div>
                             </div>
@@ -386,48 +396,63 @@
                 <div class="mb-8">
                     <span class="inline-block py-1 px-3 rounded-full bg-purple-100 text-purple-700 text-xs font-bold tracking-wider mb-3">PHASE 5</span>
                     <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Manual Setup: OTT (Tracking)</h2>
-                    <p class="mt-3 text-slate-600 text-lg">Setup is similar to CPD, but heavily relies on 1x1 tracking pixels instead of physical assets.</p>
+                    <p class="mt-3 text-slate-600 text-lg">Setup relies exclusively on 1x1 tracking pixels instead of physical assets. Follow this step-by-step UI guide.</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                     <div class="bg-white p-6 rounded-2xl border border-red-200 shadow-sm border-t-4 border-t-red-500">
                         <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2"><i class="ph-fill ph-x-circle text-red-500"></i> What We DON'T Do</h3>
-                        <p class="text-sm text-slate-600 mt-3">Because OTT campaigns are tracking-only, we do <strong>not</strong> use Batch Upload for HTML5 files. The vendor handles the video/banner asset on their end.</p>
+                        <p class="text-sm text-slate-600 mt-3">Because OTT campaigns are tracking-only, we do <strong>not</strong> use Batch Upload for HTML5/Video files. The vendor hosts the physical video/banner asset on their end.</p>
                     </div>
 
                     <div class="bg-white p-6 rounded-2xl border border-green-200 shadow-sm border-t-4 border-t-green-500">
                         <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2"><i class="ph-fill ph-check-circle text-green-500"></i> What We DO</h3>
-                        <p class="text-sm text-slate-600 mt-3">We generate tracking pixels that the publisher implements to track impressions and clicks mapped to our CM360 dashboard.</p>
+                        <p class="text-sm text-slate-600 mt-3">We generate impression and click tracking pixels in CM360 that the publisher will implement to track performance mapped to our dashboard.</p>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl border shadow-sm mt-6 overflow-hidden">
-                    <div class="bg-slate-50 border-b p-4">
-                        <h3 class="font-bold text-slate-800">OTT Specific Configuration</h3>
+                <div class="relative border-l-2 border-slate-200 ml-4 space-y-8 pb-4">
+                    
+                    <div class="relative pl-8">
+                        <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">1</div>
+                        <h3 class="font-bold text-lg text-slate-800">Campaign Creation</h3>
+                        <p class="text-slate-600 mt-1 text-sm">Click Create Campaign. Enter the OTT Campaign Name. Select Advertiser: <strong>Djarum_ID</strong>. Set the Schedule Start and End Dates.</p>
                     </div>
-                    <div class="p-0 divide-y">
-                        <div class="p-4 flex gap-4">
-                            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0"><i class="ph ph-paint-brush text-purple-600 text-xl"></i></div>
-                            <div>
-                                <h4 class="font-bold text-slate-800">Creative Type</h4>
-                                <p class="text-sm text-slate-600 mt-1">Instead of Batch Upload, click New and specifically select <strong>Tracking</strong> as the Creative Type.</p>
-                            </div>
-                        </div>
-                        <div class="p-4 flex gap-4">
-                            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0"><i class="ph ph-bounding-box text-purple-600 text-xl"></i></div>
-                            <div>
-                                <h4 class="font-bold text-slate-800">Ad &amp; Placement Size</h4>
-                                <p class="text-sm text-slate-600 mt-1">When creating the Ad and Placement, the dimension must ALWAYS be set to <strong>1x1</strong>.</p>
-                            </div>
-                        </div>
-                        <div class="p-4 flex gap-4">
-                            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0"><i class="ph ph-link text-purple-600 text-xl"></i></div>
-                            <div>
-                                <h4 class="font-bold text-slate-800">Assignments</h4>
-                                <p class="text-sm text-slate-600 mt-1">Assign the Tracking creative to the Standard 1x1 Ad. Map the Landing page. Assign to Placement. Download tags.</p>
-                            </div>
+
+                    <div class="relative pl-8">
+                        <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">2</div>
+                        <h3 class="font-bold text-lg text-slate-800">Landing Pages</h3>
+                        <p class="text-slate-600 mt-1 text-sm">Set up your Landing Pages. You can use the Batch entry if you have multiple contextual landing pages mapped out.</p>
+                    </div>
+
+                    <div class="relative pl-8">
+                        <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">3</div>
+                        <h3 class="font-bold text-lg text-slate-800">Create Tracking Creative</h3>
+                        <p class="text-slate-600 mt-1 text-sm">Do NOT use Batch Upload. Instead, click <strong>New &gt; Creative &gt; Tracking</strong>. Name it identically to the placement name.</p>
+                    </div>
+
+                    <div class="relative pl-8">
+                        <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">4</div>
+                        <h3 class="font-bold text-lg text-slate-800">Setup 1x1 Placement</h3>
+                        <p class="text-slate-600 mt-1 text-sm">Click <strong>New &gt; Placement</strong>. Select the Publisher (e.g., Vidio.com). Enter Placement Name. <strong>Crucial:</strong> Set the dimensions strictly to <strong>1x1</strong>.</p>
+                    </div>
+
+                    <div class="relative pl-8">
+                        <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">5</div>
+                        <h3 class="font-bold text-lg text-slate-800">Ad &amp; Assignments</h3>
+                        <div class="bg-slate-50 border p-4 rounded-xl mt-3 space-y-2 text-sm text-slate-700">
+                            <p><strong>1. Ad Creation:</strong> Go to Ad &gt; New &gt; Standard. Set it to Active.</p>
+                            <p><strong>2. Creative Assignment:</strong> Under "Edit Creative Assignments", select the <strong>Tracking Creative</strong> you created. Map the specific Landing Page for this placement.</p>
+                            <p><strong>3. Placement Assignment:</strong> Assign this Standard Ad to the 1x1 Placement you just made and Save.</p>
                         </div>
                     </div>
+
+                    <div class="relative pl-8">
+                        <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">6</div>
+                        <h3 class="font-bold text-lg text-slate-800">Generate Tags</h3>
+                        <p class="text-slate-600 mt-1 text-sm">Click the <strong>Tags</strong> button at the top right, download the Excel tags. You will provide these tracking pixels to the OTT vendor.</p>
+                    </div>
+
                 </div>
             </section>
 
@@ -503,13 +528,28 @@
                         <i class="ph ph-chart-line-up text-blue-600 text-4xl"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-slate-800 mb-2">CM360 Reporting Console</h3>
-                    <p class="text-slate-600 max-w-lg mx-auto mb-8">
-                        Navigate to <strong>Reporting and Attribution</strong> in CM360. You don't need to build reports from scratch. Search for pre-saved templates under <code>kevin.pramudya@wppmedia.com</code>, adjust the date range, and click Run!
+                    <p class="text-slate-600 max-w-lg mx-auto mb-6">
+                        You don't need to build reports from scratch. We have pre-saved templates available in the Reporting dashboard.
                     </p>
                     
-                    <a href="https://insidemedia-my.sharepoint.com/:x:/r/personal/kevin_pramudya_wppmedia_com/Documents/2026/DJARUM/Djarum%202026%20-%20Total%20Cost%20CM360%20.xlsx?d=wfb06e5fc484147e484d165ea01e2adfa&amp;csf=1&amp;web=1&amp;e=bmjxgp" target="_blank" class="inline-flex items-center gap-2 bg-djarum-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-djarum-700 transition shadow-lg shadow-blue-500/30">
-                        <i class="ph-fill ph-file-xls"></i> Open Total Cost Tracker
-                    </a>
+                    <div class="bg-slate-50 border border-slate-200 p-5 rounded-xl text-left max-w-2xl mx-auto mb-8">
+                        <h4 class="font-bold text-slate-800 mb-2 flex items-center gap-2"><i class="ph-fill ph-magnifying-glass text-blue-500"></i> How to find the templates:</h4>
+                        <ol class="list-decimal list-inside text-sm text-slate-600 space-y-2 ml-1">
+                            <li>Open the Reporting interface using the button below.</li>
+                            <li>In the search/filter bar at the top, select <strong>"Created by"</strong>.</li>
+                            <li>Type or select <code>kevin.pramudya@wppmedia.com</code>.</li>
+                            <li>Choose the relevant standard template, edit the Date Range and Campaign, then click <strong>Run</strong>!</li>
+                        </ol>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <a href="https://campaignmanager.google.com/reporting/?defaultDs=9911796%3A469802#/reports/instantList/9911796%3A469802" target="_blank" class="inline-flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-xl font-semibold hover:bg-slate-800 transition shadow-lg">
+                            Launch CM360 Reporting <i class="ph ph-arrow-up-right"></i>
+                        </a>
+                        <a href="https://insidemedia-my.sharepoint.com/:x:/r/personal/kevin_pramudya_wppmedia_com/Documents/2026/DJARUM/Djarum%202026%20-%20Total%20Cost%20CM360%20.xlsx?d=wfb06e5fc484147e484d165ea01e2adfa&amp;csf=1&amp;web=1&amp;e=bmjxgp" target="_blank" class="inline-flex items-center gap-2 bg-djarum-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-djarum-700 transition shadow-lg shadow-blue-500/30">
+                            <i class="ph-fill ph-file-xls"></i> Open Total Cost Tracker
+                        </a>
+                    </div>
                 </div>
             </section>
 
