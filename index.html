@@ -78,6 +78,13 @@
         </div>
 
         <nav class="flex-1 overflow-y-auto py-4">
+            
+            <!-- NEW TAB: PIC PLANNER -->
+            <p class="px-6 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Contacts</p>
+            <ul class="space-y-1 mb-4">
+                <li><button onclick="switchTab('pic-planner')" class="nav-item w-full flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors text-left"><i class="ph ph-address-book text-lg"></i> PIC Planner Djarum</button></li>
+            </ul>
+
             <p class="px-6 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Campaign Phases</p>
             <ul class="space-y-1">
                 <li><button onclick="switchTab('brief')" class="nav-item active w-full flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors text-left"><i class="ph ph-envelope-open text-lg"></i> 1. Brief &amp; PO</button></li>
@@ -112,6 +119,48 @@
     <main class="flex-1 h-full overflow-y-auto bg-[#f8fafc] pt-16 md:pt-0">
         <div class="max-w-4xl mx-auto p-6 md:p-12 pb-24">
             
+            <!-- SECTION: PIC PLANNER -->
+            <section id="pic-planner" class="section-content">
+                <div class="mb-8">
+                    <span class="inline-block py-1 px-3 rounded-full bg-djarum-100 text-djarum-700 text-xs font-bold tracking-wider mb-3">CONTACTS</span>
+                    <h2 class="text-3xl font-bold text-slate-900 tracking-tight">PIC Planner Djarum</h2>
+                    <p class="mt-3 text-slate-600 text-lg">Contact list of planners for Djarum Super &amp; LA campaigns.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center mb-4">
+                            <i class="ph-fill ph-user-circle text-red-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800">For Djarum Super</h3>
+                        <p class="text-sm text-slate-600 mt-2 mb-4">natasha.soraya@wppmedia.com</p>
+                        <a href="mailto:natasha.soraya@wppmedia.com" class="inline-flex items-center gap-2 text-sm font-semibold text-djarum-600 hover:text-djarum-800">
+                            Send Email <i class="ph ph-envelope-simple"></i>
+                        </a>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="ph-fill ph-user-circle text-slate-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800">For LA</h3>
+                        <p class="text-sm text-slate-600 mt-2 mb-4">hilda.fauziyah@wppmedia.com</p>
+                        <a href="mailto:hilda.fauziyah@wppmedia.com" class="inline-flex items-center gap-2 text-sm font-semibold text-djarum-600 hover:text-djarum-800">
+                            Send Email <i class="ph ph-envelope-simple"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- NOTES: PO & UTM -->
+                <div class="bg-amber-50 border-l-4 border-amber-500 p-5 rounded-r-xl flex gap-4">
+                    <i class="ph-fill ph-warning-circle text-amber-500 text-2xl flex-shrink-0"></i>
+                    <div>
+                        <h4 class="font-bold text-amber-800">Important Notes</h4>
+                        <p class="text-sm text-amber-700 mt-1">Untuk <strong>PO Number</strong> dan <strong>UTM Link</strong>, silakan request atau minta langsung ke planner yang bersangkutan.</p>
+                    </div>
+                </div>
+            </section>
+
             <!-- SECTION 1: BRIEF -->
             <section id="brief" class="section-content active">
                 <div class="mb-8">
@@ -148,7 +197,7 @@
                     <i class="ph-fill ph-warning-circle text-amber-500 text-2xl flex-shrink-0"></i>
                     <div>
                         <h4 class="font-bold text-amber-800">Mandatory Rule: Purchase Order (PO) Number</h4>
-                        <p class="text-sm text-amber-700 mt-1">Always ask the planner for the <strong>PO Number</strong>! You must copy and include the PO Number in your taxonomy regardless of the campaign type (CPD or OTT). Do not proceed without it.</p>
+                        <p class="text-sm text-amber-700 mt-1">Always ask the planner for the <strong>PO Number</strong>! You must copy and include the PO Number in your taxonomy regardless of the campaign type (CPD or OTT). Do not proceed without it. Also for UTM link need to update by planner ask for the planner</p>
                     </div>
                 </div>
             </section>
@@ -554,6 +603,11 @@
                             <li>Type or select <code>kevin.pramudya@wppmedia.com</code>.</li>
                             <li>Choose the relevant standard template, edit the Date Range and Campaign, then click <strong>Run</strong>!</li>
                         </ol>
+                    </div>
+
+                    <!-- NEW IMAGE SCREENSHOT PREVIEW -->
+                    <div class="mb-8 rounded-xl overflow-hidden border border-slate-200 shadow-sm max-w-2xl mx-auto">
+                        <img src="https://drive.google.com/uc?export=view&amp;id=1ZjkspWTtSS1qWxBx-Dxw9XJkl5rbOufK" alt="Reporting Template Search Preview" class="w-full h-auto object-cover">
                     </div>
 
                     <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
