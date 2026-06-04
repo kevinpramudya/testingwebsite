@@ -1,688 +1,808 @@
 <html lang="en"><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Djarum CM360 Operations Guide</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
-    <!-- Phosphor Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: {
-                        djarum: { 50: '#f0f4ff', 100: '#e0e9ff', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 900: '#1e3a8a' }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        .section-content { display: none; animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-        .section-content.active { display: block; }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Djarum CM360 Operations Guide</title>
 
-        /* Custom Scrollbar for Code Blocks */
-        pre::-webkit-scrollbar { height: 8px; }
-        pre::-webkit-scrollbar-track { background: #1e293b; border-radius: 4px; }
-        pre::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
-        pre::-webkit-scrollbar-thumb:hover { background: #64748b; }
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-        .nav-item.active {
-            background-color: #e0e9ff;
-            color: #1d4ed8;
-            font-weight: 600;
-            border-right: 4px solid #2563eb;
-        }
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'], mono: ['JetBrains Mono','monospace'] } } }
+  }
+</script>
 
-        .code-theme { background-color: #0f172a; color: #e2e8f0; }
-        .keyword { color: #c678dd; }
-        .string { color: #98c379; }
-        .function { color: #61afef; }
-        .comment { color: #7f848e; font-style: italic; }
-    </style>
+<style>
+  /* ============ THEME TOKENS ============ */
+  :root{
+    --bg:#eef2f9; --bg-2:#f7f9fd;
+    --surface:#ffffff; --surface-2:#f1f5fb; --surface-3:#e9eef7;
+    --border:#e2e8f2; --border-strong:#d3dbe8;
+    --text:#0f172a; --muted:#475569; --faint:#94a3b8;
+    --primary:#2563eb; --primary-fg:#ffffff;
+    --soft:#e0e9ff; --soft-fg:#1d4ed8;
+    --shadow:0 1px 2px rgba(15,23,42,.05),0 4px 16px -8px rgba(15,23,42,.12);
+    --shadow-lg:0 20px 45px -20px rgba(2,8,23,.28);
+    --code-bg:#0d1424;
+  }
+  .dark{
+    --bg:#060a14; --bg-2:#0a1120;
+    --surface:#0f1729; --surface-2:#15203a; --surface-3:#1b2742;
+    --border:#1e293f; --border-strong:#2b3a57;
+    --text:#e9eef7; --muted:#9fb0c8; --faint:#62748f;
+    --primary:#3b82f6; --primary-fg:#ffffff;
+    --soft:#15233f; --soft-fg:#9cc0ff;
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 30px -15px rgba(0,0,0,.7);
+    --shadow-lg:0 25px 50px -20px rgba(0,0,0,.8);
+    --code-bg:#070c18;
+  }
+
+  *{-webkit-tap-highlight-color:transparent;}
+  body{
+    font-family:'Inter',sans-serif; color:var(--text);
+    background:
+      radial-gradient(1200px 600px at 110% -10%, color-mix(in srgb,var(--primary) 14%,transparent), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, color-mix(in srgb,var(--primary) 10%,transparent), transparent 55%),
+      var(--bg);
+    transition:background-color .3s ease,color .3s ease;
+  }
+
+  /* ============ COMPONENTS ============ */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:1rem;box-shadow:var(--shadow);transition:.2s;}
+  .card-hover:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--primary) 35%,var(--border));}
+  .soft{background:var(--surface-2);}
+  .soft-2{background:var(--surface-3);}
+  .bd{border-color:var(--border);}
+  .t{color:var(--text);} .t-muted{color:var(--muted);} .t-faint{color:var(--faint);}
+
+  .badge{display:inline-flex;align-items:center;gap:.35rem;font-size:.7rem;font-weight:700;letter-spacing:.04em;padding:.28rem .65rem;border-radius:999px;text-transform:uppercase;}
+  .badge-primary{background:var(--soft);color:var(--soft-fg);}
+  .badge-soft{background:var(--surface-2);color:var(--muted);border:1px solid var(--border);text-transform:none;letter-spacing:0;font-weight:600;}
+
+  .sec-title{font-size:clamp(1.7rem,3vw,2.2rem);font-weight:800;letter-spacing:-.02em;line-height:1.1;}
+  .sec-sub{color:var(--muted);font-size:1.05rem;margin-top:.7rem;line-height:1.6;}
+
+  /* Callouts (adaptif light/dark via alpha) */
+  .callout{border-radius:.9rem;padding:1.1rem 1.2rem;display:flex;gap:.9rem;border:1px solid;}
+  .c-amber{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.4);}
+  .c-amber .ico,.c-amber h4{color:#d97706;} .dark .c-amber .ico,.dark .c-amber h4{color:#fbbf24;}
+  .c-amber p{color:#92600c;} .dark .c-amber p{color:#fcd9a3;}
+  .c-red{background:rgba(239,68,68,.11);border-color:rgba(239,68,68,.4);}
+  .c-red .ico,.c-red h4{color:#dc2626;} .dark .c-red .ico,.dark .c-red h4{color:#f87171;}
+  .c-red p{color:#991b1b;} .dark .c-red p{color:#fca5a5;}
+  .c-blue{background:rgba(37,99,235,.10);border-color:rgba(37,99,235,.35);}
+  .c-blue .ico,.c-blue h4{color:#2563eb;} .dark .c-blue .ico,.dark .c-blue h4{color:#60a5fa;}
+  .c-blue p{color:#1e40af;} .dark .c-blue p{color:#bfdbfe;}
+
+  /* Navigation */
+  .nav-item{position:relative;width:100%;display:flex;align-items:center;gap:.75rem;padding:.7rem 1.5rem;font-size:.875rem;font-weight:500;color:var(--muted);text-align:left;transition:.18s;border-radius:0;}
+  .nav-item:hover{background:var(--surface-2);color:var(--text);}
+  .nav-item.active{background:var(--soft);color:var(--soft-fg);font-weight:600;}
+  .nav-item.active::before{content:"";position:absolute;right:0;top:8px;bottom:8px;width:3px;border-radius:3px;background:var(--primary);}
+  .nav-check{margin-left:auto;color:#16a34a;font-size:1rem;opacity:0;transition:.2s;}
+  .nav-item.done .nav-check{opacity:1;}
+
+  /* Timeline */
+  .tl{position:relative;border-left:2px solid var(--border);margin-left:1rem;}
+  .tl-dot{position:absolute;left:-.9rem;top:2px;width:1.75rem;height:1.75rem;border-radius:999px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;color:#fff;box-shadow:0 0 0 4px var(--surface);}
+
+  /* Code */
+  .code-wrap{background:var(--code-bg);border:1px solid var(--border);border-radius:.9rem;overflow:hidden;}
+  .code-bar{display:flex;align-items:center;justify-content:space-between;padding:.5rem .9rem;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06);}
+  .code-dots{display:flex;gap:.35rem;}
+  .code-dots span{width:.6rem;height:.6rem;border-radius:999px;}
+  pre{margin:0;font-family:'JetBrains Mono',monospace;font-size:.8rem;line-height:1.7;color:#e2e8f0;padding:1rem 1.1rem;overflow-x:auto;}
+  pre::-webkit-scrollbar{height:8px;} pre::-webkit-scrollbar-track{background:transparent;}
+  pre::-webkit-scrollbar-thumb{background:#3a4a66;border-radius:4px;}
+  .keyword{color:#c792ea;} .string{color:#9ece6a;} .function{color:#7aa2f7;} .comment{color:#5c6b85;font-style:italic;}
+  code.inline{font-family:'JetBrains Mono',monospace;font-size:.82em;background:var(--surface-3);color:var(--soft-fg);padding:.1rem .4rem;border-radius:.35rem;}
+
+  .copy-btn{padding:.3rem .55rem;border-radius:.45rem;color:#94a3b8;background:rgba(255,255,255,.06);font-size:.85rem;transition:.15s;display:inline-flex;align-items:center;gap:.3rem;}
+  .copy-btn:hover{color:#fff;background:rgba(255,255,255,.14);}
+
+  /* Sections + animation */
+  .section-content{display:none;}
+  .section-content.active{display:block;animation:fade .45s cubic-bezier(.4,0,.2,1);}
+  @keyframes fade{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+
+  /* Footer nav */
+  .sec-footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+  .foot-link{display:flex;align-items:center;gap:.6rem;padding:.7rem 1rem;border-radius:.8rem;border:1px solid var(--border);background:var(--surface);color:var(--text);font-weight:600;font-size:.85rem;transition:.18s;max-width:48%;}
+  .foot-link:hover{border-color:var(--primary);color:var(--primary);}
+  .foot-link small{color:var(--faint);font-weight:500;display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;}
+  .btn-done{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.1rem;border-radius:.8rem;font-weight:600;font-size:.85rem;border:1px solid var(--border);background:var(--surface);color:var(--muted);transition:.18s;}
+  .btn-done:hover{border-color:#16a34a;color:#16a34a;}
+  .btn-done.is-done{background:#16a34a;border-color:#16a34a;color:#fff;}
+
+  /* Command palette */
+  .cmd-overlay{position:fixed;inset:0;z-index:80;background:rgba(2,6,23,.55);backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;padding-top:12vh;}
+  .cmd-overlay.open{display:flex;animation:fade .2s ease;}
+  .cmd-box{width:min(620px,92vw);background:var(--surface);border:1px solid var(--border);border-radius:1rem;box-shadow:var(--shadow-lg);overflow:hidden;}
+  .cmd-input{width:100%;background:transparent;border:none;outline:none;color:var(--text);font-size:1rem;padding:1.1rem 1rem;}
+  .cmd-res{max-height:50vh;overflow-y:auto;padding:.4rem;}
+  .cmd-item{display:flex;align-items:center;gap:.8rem;padding:.7rem .8rem;border-radius:.6rem;cursor:pointer;color:var(--muted);}
+  .cmd-item.sel,.cmd-item:hover{background:var(--soft);color:var(--soft-fg);}
+
+  .kbd{font-family:'JetBrains Mono',monospace;font-size:.7rem;background:var(--surface-3);border:1px solid var(--border);color:var(--muted);padding:.1rem .4rem;border-radius:.35rem;}
+
+  ::-webkit-scrollbar{width:10px;} ::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:5px;}
+  a,button{outline:none;} a:focus-visible,button:focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:.4rem;}
+</style>
 </head>
-<body class="flex h-screen overflow-hidden text-slate-800">
 
-    <!-- Mobile Header -->
-    <div class="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b z-50 flex items-center px-4 justify-between shadow-sm">
-        <h1 class="font-bold text-lg text-djarum-900 flex items-center gap-2">
-            <i class="ph-fill ph-target text-djarum-600 text-2xl"></i> CM360 Ops
-        </h1>
-        <button id="mobileMenuBtn" class="p-2 bg-slate-100 rounded-lg text-slate-600 focus:outline-none">
-            <i class="ph ph-list text-2xl"></i>
+<body class="flex h-screen overflow-hidden">
+
+  <!-- Reading progress bar -->
+  <div id="readbar" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--primary),#22d3ee);z-index:90;transition:width .1s;"></div>
+
+  <!-- Mobile Header -->
+  <div class="md:hidden fixed top-0 left-0 right-0 h-16 z-50 flex items-center px-4 justify-between card" style="border-radius:0;border-left:0;border-right:0;border-top:0;">
+    <h1 class="font-bold text-lg flex items-center gap-2 t"><i class="ph-fill ph-target" style="color:var(--primary)"></i> CM360 Ops</h1>
+    <div class="flex items-center gap-2">
+      <button onclick="openCmd()" class="p-2 rounded-lg soft t-muted"><i class="ph ph-magnifying-glass text-xl"></i></button>
+      <button id="mobileMenuBtn" class="p-2 rounded-lg soft t-muted"><i class="ph ph-list text-xl"></i></button>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed md:relative top-0 left-0 z-40 h-full w-72 card transform -translate-x-full md:translate-x-0 transition-transform duration-300 pt-16 md:pt-0 flex flex-col" style="border-radius:0;border-top:0;border-bottom:0;border-left:0;">
+    <div class="p-5 hidden md:block bd" style="border-bottom:1px solid var(--border)">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg" style="background:var(--primary);box-shadow:0 8px 20px -6px color-mix(in srgb,var(--primary) 60%,transparent)">
+          <i class="ph-fill ph-target text-white text-2xl"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold t leading-tight">CM360 Ops</h1>
+          <p class="text-[11px] t-faint font-semibold uppercase tracking-wider mt-0.5">Djarum Workflow</p>
+        </div>
+        <button onclick="toggleTheme()" class="ml-auto p-2 rounded-lg soft t-muted hover:t" title="Toggle theme">
+          <i id="themeIcon" class="ph ph-moon text-lg"></i>
         </button>
+      </div>
+
+      <!-- Search trigger -->
+      <button onclick="openCmd()" class="mt-4 w-full flex items-center gap-2 text-sm soft bd rounded-xl px-3 py-2.5 t-faint hover:t-muted transition" style="border:1px solid var(--border)">
+        <i class="ph ph-magnifying-glass"></i> Search guide…
+        <span class="ml-auto kbd">⌘K</span>
+      </button>
+
+      <!-- Progress -->
+      <div class="mt-4">
+        <div class="flex items-center justify-between text-[11px] font-semibold t-faint uppercase tracking-wider mb-1.5">
+          <span>Progress</span><span id="progLabel">0 / 7</span>
+        </div>
+        <div class="h-1.5 rounded-full soft-2 overflow-hidden">
+          <div id="progBar" class="h-full rounded-full transition-all" style="width:0;background:linear-gradient(90deg,var(--primary),#22d3ee)"></div>
+        </div>
+      </div>
     </div>
 
-    <!-- Sidebar Navigation -->
-    <aside id="sidebar" class="fixed md:relative top-0 left-0 z-40 h-full w-72 bg-white border-r shadow-lg md:shadow-none transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out pt-16 md:pt-0 flex flex-col">
-        <div class="p-6 hidden md:block border-b bg-slate-50/50">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-djarum-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
-                    <i class="ph-fill ph-target text-white text-2xl"></i>
-                </div>
-                <div>
-                    <h1 class="text-xl font-bold text-slate-900 leading-tight">CM360 Ops</h1>
-                    <p class="text-xs text-slate-500 font-medium uppercase tracking-wider mt-0.5">Djarum Workflow</p>
-                </div>
-            </div>
+    <nav id="navList" class="flex-1 overflow-y-auto py-4"></nav>
+
+    <div class="p-5 soft bd" style="border-top:1px solid var(--border)">
+      <div class="flex items-center gap-3">
+        <div class="relative">
+          <img src="https://ui-avatars.com/api/?name=Kevin+Pramudya&amp;background=2563eb&amp;color=fff" class="w-9 h-9 rounded-full shadow-sm">
+          <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 rounded-full" style="border-color:var(--surface)"></div>
+        </div>
+        <div>
+          <p class="text-sm font-semibold t">Backup Reference</p>
+          <p class="text-xs t-faint">kevin.pramudya@…</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main id="main" class="flex-1 h-full overflow-y-auto pt-16 md:pt-0">
+    <div class="max-w-4xl mx-auto p-6 md:p-12 pb-24">
+
+      <!-- ================= OVERVIEW ================= -->
+      <section id="overview" class="section-content">
+        <header class="mb-8">
+          <div class="flex items-center gap-2 flex-wrap mb-3">
+            <span class="badge badge-primary"><i class="ph ph-sparkle"></i> Start Here</span>
+          </div>
+          <h2 class="sec-title t">Djarum CM360 Operations Guide</h2>
+          <p class="sec-sub">End-to-end workflow untuk men-set up, mengontrol kualitas, dan melaporkan campaign Djarum Super &amp; LA di Campaign Manager 360. Ikuti 7 fase di bawah secara berurutan.</p>
+        </header>
+
+        <div class="grid sm:grid-cols-3 gap-4 mb-10">
+          <div class="card p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--soft)"><i class="ph-fill ph-stack t" style="color:var(--soft-fg)"></i></div><div><p class="text-xs t-faint font-semibold uppercase">Phases</p><p class="text-lg font-bold t">7 Steps</p></div></div>
+          <div class="card p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(168,85,247,.15)"><i class="ph-fill ph-robot" style="color:#a855f7"></i></div><div><p class="text-xs t-faint font-semibold uppercase">Automation</p><p class="text-lg font-bold t">AppScript</p></div></div>
+          <div class="card p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(16,185,129,.15)"><i class="ph-fill ph-check-circle" style="color:#10b981"></i></div><div><p class="text-xs t-faint font-semibold uppercase">Output</p><p class="text-lg font-bold t">Tags &amp; Report</p></div></div>
         </div>
 
-        <nav class="flex-1 overflow-y-auto py-4">
-            
-            <!-- NEW TAB: PIC PLANNER -->
-            <p class="px-6 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Contacts</p>
-            <ul class="space-y-1 mb-4">
-                <li><button onclick="switchTab('pic-planner')" class="nav-item w-full flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors text-left"><i class="ph ph-address-book text-lg"></i> PIC Planner Djarum</button></li>
-            </ul>
+        <h3 class="font-bold text-lg t mb-4">The Pipeline</h3>
+        <div id="pipeline" class="grid sm:grid-cols-2 gap-4"></div>
 
-            <p class="px-6 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Campaign Phases</p>
-            <ul class="space-y-1">
-                <li><button onclick="switchTab('brief')" class="nav-item active w-full flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors text-left"><i class="ph ph-envelope-open text-lg"></i> 1. Brief &amp; PO</button></li>
-                <li><button onclick="switchTab('qa')" class="nav-item w-full flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors text-left"><i class="ph ph-magic-wand text-lg"></i> 2. Creative QA &amp; Tags</button></li>
-                <li><button onclick="switchTab('taxonomy')" class="nav-item w-full flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors text-left"><i class="ph ph-code text-lg"></i> 3. Taxonomy on Appscript</button></li>
-                
-                <li class="pt-4 pb-2"><p class="px-6 text-xs font-semibold text-slate-400 uppercase tracking-wider">CM360 Setup</p></li>
-                <li><button onclick="switchTab('cpd')" class="nav-item w-full flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors text-left"><i class="ph ph-desktop text-lg"></i> 4. Manual Setup: CPD</button></li>
-                <li><button onclick="switchTab('ott')" class="nav-item w-full flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors text-left"><i class="ph ph-device-mobile text-lg"></i> 5. Manual Setup: OTT</button></li>
-                
-                <li class="pt-4 pb-2"><p class="px-6 text-xs font-semibold text-slate-400 uppercase tracking-wider">Post-Setup</p></li>
-                <li><button onclick="switchTab('preview')" class="nav-item w-full flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors text-left"><i class="ph ph-bug text-lg"></i> 6. Publisher Preview QA</button></li>
-                <li><button onclick="switchTab('reporting')" class="nav-item w-full flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors text-left"><i class="ph ph-chart-bar text-lg"></i> 7. Reporting</button></li>
-            </ul>
-        </nav>
-
-        <div class="p-6 border-t bg-slate-50">
-            <div class="flex items-center gap-3">
-                <div class="relative">
-                    <img src="https://ui-avatars.com/api/?name=Kevin+Pramudya&amp;background=2563eb&amp;color=fff" alt="Avatar" class="w-9 h-9 rounded-full shadow-sm">
-                    <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
-                </div>
-                <div>
-                    <p class="text-sm font-semibold text-slate-700">Backup Reference</p>
-                    <p class="text-xs text-slate-500">kevin.pramudya@...</p>
-                </div>
-            </div>
+        <div class="callout c-blue mt-8">
+          <i class="ph-fill ph-keyboard ico text-2xl"></i>
+          <div>
+            <h4 class="font-bold">Pro tip</h4>
+            <p class="text-sm mt-1">Gunakan <span class="kbd">⌘K</span> / <span class="kbd">Ctrl K</span> untuk cari cepat, panah <span class="kbd">←</span> <span class="kbd">→</span> untuk pindah fase, dan toggle 🌙 untuk dark mode. Progress kamu tersimpan otomatis di browser ini.</p>
+          </div>
         </div>
-    </aside>
+      </section>
 
-    <!-- Main Content -->
-    <main class="flex-1 h-full overflow-y-auto bg-[#f8fafc] pt-16 md:pt-0">
-        <div class="max-w-4xl mx-auto p-6 md:p-12 pb-24">
-            
-            <!-- SECTION: PIC PLANNER -->
-            <section id="pic-planner" class="section-content">
-                <div class="mb-8">
-                    <span class="inline-block py-1 px-3 rounded-full bg-djarum-100 text-djarum-700 text-xs font-bold tracking-wider mb-3">CONTACTS</span>
-                    <h2 class="text-3xl font-bold text-slate-900 tracking-tight">PIC Planner Djarum</h2>
-                    <p class="mt-3 text-slate-600 text-lg">Contact list of planners for Djarum Super &amp; LA campaigns.</p>
-                </div>
+      <!-- ================= PIC PLANNER ================= -->
+      <section id="pic-planner" class="section-content">
+        <header class="mb-8">
+          <div class="flex items-center gap-2 flex-wrap mb-3">
+            <span class="badge badge-primary">Contacts</span>
+            <span class="badge badge-soft"><i class="ph ph-bookmark-simple"></i> Reference</span>
+          </div>
+          <h2 class="sec-title t">PIC Planner Djarum</h2>
+          <p class="sec-sub">Daftar kontak planner untuk campaign Djarum Super &amp; LA.</p>
+        </header>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                        <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center mb-4">
-                            <i class="ph-fill ph-user-circle text-red-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-slate-800">For Djarum Super</h3>
-                        <p class="text-sm text-slate-600 mt-2 mb-4">natasha.soraya@wppmedia.com</p>
-                        <a href="mailto:natasha.soraya@wppmedia.com" class="inline-flex items-center gap-2 text-sm font-semibold text-djarum-600 hover:text-djarum-800">
-                            Send Email <i class="ph ph-envelope-simple"></i>
-                        </a>
-                    </div>
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+          <div class="card card-hover p-6">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(239,68,68,.12)"><i class="ph-fill ph-user-circle text-2xl" style="color:#ef4444"></i></div>
+            <h3 class="text-lg font-bold t">For Djarum Super</h3>
+            <p class="text-sm t-muted mt-2 mb-4 font-mono">natasha.soraya@wppmedia.com</p>
+            <a href="mailto:natasha.soraya@wppmedia.com" class="inline-flex items-center gap-2 text-sm font-semibold" style="color:var(--primary)">Send Email <i class="ph ph-envelope-simple"></i></a>
+          </div>
+          <div class="card card-hover p-6">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 soft-2"><i class="ph-fill ph-user-circle text-2xl t-muted"></i></div>
+            <h3 class="text-lg font-bold t">For LA</h3>
+            <p class="text-sm t-muted mt-2 mb-4 font-mono">hilda.fauziyah@wppmedia.com</p>
+            <a href="mailto:hilda.fauziyah@wppmedia.com" class="inline-flex items-center gap-2 text-sm font-semibold" style="color:var(--primary)">Send Email <i class="ph ph-envelope-simple"></i></a>
+          </div>
+        </div>
 
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                        <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mb-4">
-                            <i class="ph-fill ph-user-circle text-slate-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-slate-800">For LA</h3>
-                        <p class="text-sm text-slate-600 mt-2 mb-4">hilda.fauziyah@wppmedia.com</p>
-                        <a href="mailto:hilda.fauziyah@wppmedia.com" class="inline-flex items-center gap-2 text-sm font-semibold text-djarum-600 hover:text-djarum-800">
-                            Send Email <i class="ph ph-envelope-simple"></i>
-                        </a>
-                    </div>
-                </div>
+        <div class="callout c-amber">
+          <i class="ph-fill ph-warning-circle ico text-2xl"></i>
+          <div>
+            <h4 class="font-bold">Important Notes</h4>
+            <p class="text-sm mt-1">Untuk <strong>PO Number</strong> dan <strong>UTM Link</strong>, silakan request langsung ke planner yang bersangkutan.</p>
+          </div>
+        </div>
+      </section>
 
-                <!-- NOTES: PO & UTM -->
-                <div class="bg-amber-50 border-l-4 border-amber-500 p-5 rounded-r-xl flex gap-4">
-                    <i class="ph-fill ph-warning-circle text-amber-500 text-2xl flex-shrink-0"></i>
-                    <div>
-                        <h4 class="font-bold text-amber-800">Important Notes</h4>
-                        <p class="text-sm text-amber-700 mt-1">Untuk <strong>PO Number</strong> dan <strong>UTM Link</strong>, silakan request atau minta langsung ke planner yang bersangkutan.</p>
-                    </div>
-                </div>
-            </section>
+      <!-- ================= 1. BRIEF ================= -->
+      <section id="brief" class="section-content">
+        <header class="mb-8">
+          <div class="flex items-center gap-2 flex-wrap mb-3">
+            <span class="badge badge-primary">Phase 1</span>
+            <span class="badge badge-soft"><i class="ph ph-clock"></i> ~5 min</span>
+            <span class="badge badge-soft"><i class="ph ph-gauge"></i> Easy</span>
+          </div>
+          <h2 class="sec-title t">Receiving the Brief &amp; PO</h2>
+          <p class="sec-sub">Langkah pertama setiap campaign: menerima media plan / brief asli dari Planner.</p>
+        </header>
 
-            <!-- SECTION 1: BRIEF -->
-            <section id="brief" class="section-content active">
-                <div class="mb-8">
-                    <span class="inline-block py-1 px-3 rounded-full bg-djarum-100 text-djarum-700 text-xs font-bold tracking-wider mb-3">PHASE 1</span>
-                    <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Receiving the Brief &amp; PO</h2>
-                    <p class="mt-3 text-slate-600 text-lg">The first step of every campaign is receiving the original media plan / brief from the Planner.</p>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                        <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4">
-                            <i class="ph ph-image-square text-blue-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-slate-800">CPD (Full Serve)</h3>
-                        <p class="text-sm text-slate-600 mt-2 mb-4">Standard display/banner campaigns where we host and upload the HTML5 creatives directly to CM360.</p>
-                        <a href="https://docs.google.com/spreadsheets/d/16hKiU1hrZHnfsUfJYVody8MQoOatf7AwuCDWg9Ddwhc/edit?gid=107155785#gid=107155785" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold text-djarum-600 hover:text-djarum-800">
-                            Open Original CPD Brief <i class="ph ph-arrow-up-right"></i>
-                        </a>
-                    </div>
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+          <div class="card card-hover p-6">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(37,99,235,.12)"><i class="ph ph-image-square text-2xl" style="color:var(--primary)"></i></div>
+            <h3 class="text-lg font-bold t">CPD (Full Serve)</h3>
+            <p class="text-sm t-muted mt-2 mb-4">Display/banner standar — kita host &amp; upload kreatif HTML5 langsung ke CM360.</p>
+            <a href="https://docs.google.com/spreadsheets/d/16hKiU1hrZHnfsUfJYVody8MQoOatf7AwuCDWg9Ddwhc/edit?gid=107155785#gid=107155785" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold" style="color:var(--primary)">Open Original CPD Brief <i class="ph ph-arrow-up-right"></i></a>
+          </div>
+          <div class="card card-hover p-6">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(168,85,247,.12)"><i class="ph ph-device-mobile-camera text-2xl" style="color:#a855f7"></i></div>
+            <h3 class="text-lg font-bold t">OTT / Direct Vendor</h3>
+            <p class="text-sm t-muted mt-2 mb-4">Tracking-only (1×1 tracker). Vendor host kreatifnya, kita hanya beri tracking pixel.</p>
+            <a href="https://docs.google.com/spreadsheets/d/1_ftwUgOpmrOjzlRvL2xYBFh7-npNCK8-/edit?gid=910089789#gid=910089789" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold" style="color:#a855f7">Open Original OTT Brief <i class="ph ph-arrow-up-right"></i></a>
+          </div>
+        </div>
 
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                        <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center mb-4">
-                            <i class="ph ph-device-mobile-camera text-purple-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-slate-800">OTT / Direct Vendor</h3>
-                        <p class="text-sm text-slate-600 mt-2 mb-4">Tracking-only campaigns (1x1 trackers). The vendor hosts the creative, we only provide the tracking pixel.</p>
-                        <a href="https://docs.google.com/spreadsheets/d/1_ftwUgOpmrOjzlRvL2xYBFh7-npNCK8-/edit?gid=910089789#gid=910089789" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold text-purple-600 hover:text-purple-800">
-                            Open Original OTT Brief <i class="ph ph-arrow-up-right"></i>
-                        </a>
-                    </div>
-                </div>
+        <div class="callout c-amber">
+          <i class="ph-fill ph-warning-circle ico text-2xl"></i>
+          <div>
+            <h4 class="font-bold">Mandatory: Purchase Order (PO) Number</h4>
+            <p class="text-sm mt-1">Selalu minta <strong>PO Number</strong> ke planner! Copy &amp; sertakan PO Number di taxonomy untuk semua tipe campaign (CPD/OTT). Jangan lanjut tanpa itu. <strong>UTM link</strong> juga harus diminta/diupdate oleh planner.</p>
+          </div>
+        </div>
+      </section>
 
-                <div class="bg-amber-50 border-l-4 border-amber-500 p-5 rounded-r-xl flex gap-4">
-                    <i class="ph-fill ph-warning-circle text-amber-500 text-2xl flex-shrink-0"></i>
-                    <div>
-                        <h4 class="font-bold text-amber-800">Mandatory Rule: Purchase Order (PO) Number</h4>
-                        <p class="text-sm text-amber-700 mt-1">Always ask the planner for the <strong>PO Number</strong>! You must copy and include the PO Number in your taxonomy regardless of the campaign type (CPD or OTT). Do not proceed without it. Also for UTM link need to update by planner ask for the planner</p>
-                    </div>
-                </div>
-            </section>
+      <!-- ================= 2. QA & CLICKTAG ================= -->
+      <section id="qa" class="section-content">
+        <header class="mb-8">
+          <div class="flex items-center gap-2 flex-wrap mb-3">
+            <span class="badge badge-primary">Phase 2</span>
+            <span class="badge badge-soft"><i class="ph ph-clock"></i> ~15 min</span>
+            <span class="badge badge-soft"><i class="ph ph-gauge"></i> Advanced</span>
+          </div>
+          <h2 class="sec-title t">Creative QA &amp; ClickTag Setup</h2>
+          <p class="sec-sub">Berlaku untuk CPD (Full Serve). Pastikan banner HTML5 load dengan benar &amp; bisa diklik.</p>
+        </header>
 
-            <!-- SECTION 2: QA & CLICKTAG -->
-            <section id="qa" class="section-content">
-                <div class="mb-8">
-                    <span class="inline-block py-1 px-3 rounded-full bg-djarum-100 text-djarum-700 text-xs font-bold tracking-wider mb-3">PHASE 2</span>
-                    <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Creative QA &amp; ClickTag Setup</h2>
-                    <p class="mt-3 text-slate-600 text-lg">Applies to CPD (Full Serve). Ensure HTML5 banners load correctly and are clickable.</p>
-                </div>
+        <div class="card p-6 mb-8">
+          <div class="flex items-center justify-between flex-wrap gap-3 mb-4">
+            <h3 class="text-xl font-bold t">HTML5 Ad Tester</h3>
+            <a href="https://www.previewads.com/html5-ad-tester" target="_blank" class="px-4 py-2 rounded-lg text-sm font-medium text-white flex items-center gap-2" style="background:var(--text)">Launch Tester <i class="ph ph-rocket-launch"></i></a>
+          </div>
+          <ul class="space-y-3 t-muted text-sm">
+            <li class="flex items-start gap-2"><i class="ph-fill ph-check-circle text-green-500 mt-0.5 text-lg"></i> Extract/Upload ZIP dari creative team.</li>
+            <li class="flex items-start gap-2"><i class="ph-fill ph-check-circle text-green-500 mt-0.5 text-lg"></i> Verifikasi animasi load tanpa layar kosong.</li>
+            <li class="flex items-start gap-2"><i class="ph-fill ph-check-circle text-green-500 mt-0.5 text-lg"></i> Klik banner — apakah membuka tab baru?</li>
+            <li class="flex items-start gap-2"><i class="ph-fill ph-check-circle text-green-500 mt-0.5 text-lg"></i> Dimensi sesuai media plan?</li>
+          </ul>
+        </div>
 
-                <div class="bg-white p-6 rounded-2xl border shadow-sm mb-8">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-bold text-slate-800">HTML5 Ad Tester</h3>
-                        <a href="https://www.previewads.com/html5-ad-tester" target="_blank" class="px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-medium hover:bg-slate-800 transition flex items-center gap-2">
-                            Launch Tester <i class="ph ph-rocket-launch"></i>
-                        </a>
-                    </div>
-                    <ul class="space-y-3 text-slate-600">
-                        <li class="flex items-start gap-2"><i class="ph-fill ph-check-circle text-green-500 mt-0.5 text-lg"></i> Extract/Upload the ZIP provided by the creative team.</li>
-                        <li class="flex items-start gap-2"><i class="ph-fill ph-check-circle text-green-500 mt-0.5 text-lg"></i> Verify animation loads without blank screens.</li>
-                        <li class="flex items-start gap-2"><i class="ph-fill ph-check-circle text-green-500 mt-0.5 text-lg"></i> Click the banner. Does it open a new tab?</li>
-                        <li class="flex items-start gap-2"><i class="ph-fill ph-check-circle text-green-500 mt-0.5 text-lg"></i> Are the dimensions matching the media plan?</li>
-                    </ul>
-                </div>
+        <!-- CM360 macro reference -->
+        <div class="card p-6 mb-8">
+          <h3 class="font-bold t mb-1 flex items-center gap-2"><i class="ph ph-book-open-text" style="color:var(--primary)"></i> CM360 Click Macro Reference</h3>
+          <p class="text-sm t-muted mb-4">CM360 menyuntik click-tracking via macro. Pilih yang tepat sesuai konteks pemakaian.</p>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <div class="soft rounded-xl p-4 bd" style="border:1px solid var(--border)">
+              <code class="inline">%%CLICK_URL_UNESC%%</code>
+              <p class="text-xs t-muted mt-2">Un-escaped — dipakai saat URL <strong>langsung diteruskan</strong> ke <code class="inline">window.open()</code> / variabel clickTag. <span class="font-semibold">Default untuk HTML5.</span></p>
+            </div>
+            <div class="soft rounded-xl p-4 bd" style="border:1px solid var(--border)">
+              <code class="inline">%%CLICK_URL_ESC%%</code>
+              <p class="text-xs t-muted mt-2">Escaped — dipakai saat URL <strong>di-append sebelum landing page</strong> (mis. redirect bertingkat / di-encode lagi).</p>
+            </div>
+          </div>
+        </div>
 
-                <!-- ClickTag Guide -->
-                <div class="bg-slate-900 rounded-2xl shadow-xl overflow-hidden border border-slate-800">
-                    <div class="p-6 border-b border-slate-800 flex items-start gap-4">
-                        <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <i class="ph ph-code text-blue-400 text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-bold text-white">Manual ClickTag Insertion</h3>
-                            <p class="text-sm text-slate-400 mt-1">If the HTML5 creative fails the click test, you must manually insert the CM360 click macro into the banner's <code>.html</code> file. Follow the 3 steps below.</p>
-                        </div>
-                    </div>
+        <!-- ClickTag steps -->
+        <div class="code-wrap" style="border-radius:1rem">
+          <div class="p-6" style="border-bottom:1px solid rgba(255,255,255,.06)">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(59,130,246,.18)"><i class="ph ph-code text-xl" style="color:#7aa2f7"></i></div>
+              <div>
+                <h3 class="text-lg font-bold text-white">Manual ClickTag Insertion</h3>
+                <p class="text-sm text-slate-400 mt-1">Kalau kreatif HTML5 gagal click-test, sisipkan macro CM360 secara manual ke file <code class="inline">.html</code> banner. Ikuti 3 langkah.</p>
+              </div>
+            </div>
+          </div>
 
-                    <div class="p-6 space-y-6">
-                        <!-- Step 1 -->
-                        <div>
-                            <h4 class="text-white font-medium mb-2 flex items-center gap-2"><span class="bg-blue-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">1</span> Add Variable in &lt;head&gt;</h4>
-                            <p class="text-xs text-slate-400 mb-2">This defines the destination URL using CM360's unescaped macro.</p>
-                            <div class="relative group">
-                                <button onclick="copyCode('code1', this)" class="absolute top-2 right-2 p-1.5 bg-slate-700 rounded text-slate-300 hover:text-white hover:bg-slate-600 transition"><i class="ph ph-copy"></i></button>
-                                <pre class="code-theme p-4 rounded-xl text-sm overflow-x-auto" id="code1"><code><span class="keyword">&lt;script</span> <span class="string">type="text/javascript"</span><span class="keyword">&gt;</span>
+          <div class="p-6 space-y-6">
+            <!-- step1 -->
+            <div>
+              <h4 class="text-white font-medium mb-2 flex items-center gap-2"><span style="background:var(--primary)" class="text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">1</span> Add variable in &lt;head&gt;</h4>
+              <p class="text-xs text-slate-400 mb-2">Definisikan destination URL pakai macro un-escaped CM360.</p>
+              <div class="code-wrap">
+                <div class="code-bar"><div class="code-dots"><span style="background:#ef4444"></span><span style="background:#f59e0b"></span><span style="background:#22c55e"></span></div><button class="copy-btn" onclick="copyCode('code1',this)"><i class="ph ph-copy"></i> html</button></div>
+                <pre id="code1"><code><span class="keyword">&lt;script</span> <span class="string">type="text/javascript"</span><span class="keyword">&gt;</span>
   <span class="keyword">var</span> <span class="function">clickTag</span> = <span class="string">"%%CLICK_URL_UNESC%%"</span>;
 <span class="keyword">&lt;/script&gt;</span></code></pre>
-                            </div>
-                        </div>
-
-                        <!-- Step 2 -->
-                        <div>
-                            <h4 class="text-white font-medium mb-2 flex items-center gap-2"><span class="bg-blue-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">2</span> Create an Invisible Click Layer</h4>
-                            <p class="text-xs text-slate-400 mb-2">Ensure your banner container has an overlay div (like <code>ad-button</code>) covering the whole banner.</p>
-                            <div class="relative group">
-                                <button onclick="copyCode('code2', this)" class="absolute top-2 right-2 p-1.5 bg-slate-700 rounded text-slate-300 hover:text-white hover:bg-slate-600 transition"><i class="ph ph-copy"></i></button>
-                                <pre class="code-theme p-4 rounded-xl text-sm overflow-x-auto" id="code2"><code><span class="comment">&lt;!-- Example of wrapping Adobe Animate Canvas --&gt;</span>
-<span class="keyword">&lt;div</span> <span class="function">id</span>=<span class="string">"animation_container"</span> <span class="function">style</span>=<span class="string">"width:320px; height:480px; position:relative;"</span><span class="keyword">&gt;</span>
+              </div>
+            </div>
+            <!-- step2 -->
+            <div>
+              <h4 class="text-white font-medium mb-2 flex items-center gap-2"><span style="background:var(--primary)" class="text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">2</span> Create an invisible click layer</h4>
+              <p class="text-xs text-slate-400 mb-2">Tambahkan overlay div (<code class="inline">ad-button</code>) yang menutupi seluruh banner.</p>
+              <div class="code-wrap">
+                <div class="code-bar"><div class="code-dots"><span style="background:#ef4444"></span><span style="background:#f59e0b"></span><span style="background:#22c55e"></span></div><button class="copy-btn" onclick="copyCode('code2',this)"><i class="ph ph-copy"></i> html</button></div>
+                <pre id="code2"><code><span class="comment">&lt;!-- Example: wrapping Adobe Animate Canvas --&gt;</span>
+<span class="keyword">&lt;div</span> <span class="function">id</span>=<span class="string">"animation_container"</span> <span class="function">style</span>=<span class="string">"width:320px;height:480px;position:relative;"</span><span class="keyword">&gt;</span>
     <span class="keyword">&lt;canvas</span> <span class="function">id</span>=<span class="string">"canvas"</span><span class="keyword">&gt;&lt;/canvas&gt;</span>
-    
     <span class="comment">&lt;!-- ADD THIS LAYER OVER YOUR CANVAS --&gt;</span>
-    <span class="keyword">&lt;div</span> <span class="function">id</span>=<span class="string">"ad-button"</span> <span class="function">style</span>=<span class="string">"width:100%; height:100%; position:absolute; top:0; left:0; z-index:999; cursor:pointer;"</span><span class="keyword">&gt;&lt;/div&gt;</span>
+    <span class="keyword">&lt;div</span> <span class="function">id</span>=<span class="string">"ad-button"</span> <span class="function">style</span>=<span class="string">"width:100%;height:100%;position:absolute;top:0;left:0;z-index:999;cursor:pointer;"</span><span class="keyword">&gt;&lt;/div&gt;</span>
 <span class="keyword">&lt;/div&gt;</span></code></pre>
-                            </div>
-                        </div>
-
-                        <!-- Step 3 -->
-                        <div>
-                            <h4 class="text-white font-medium mb-2 flex items-center gap-2"><span class="bg-blue-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">3</span> Add the Event Listener</h4>
-                            <p class="text-xs text-slate-400 mb-2">Place this script at the very bottom, right before <code>&lt;/body&gt;</code>, to make the layer trigger the clickTag.</p>
-                            <div class="relative group">
-                                <button onclick="copyCode('code3', this)" class="absolute top-2 right-2 p-1.5 bg-slate-700 rounded text-slate-300 hover:text-white hover:bg-slate-600 transition"><i class="ph ph-copy"></i></button>
-                                <pre class="code-theme p-4 rounded-xl text-sm overflow-x-auto" id="code3"><code><span class="keyword">&lt;script&gt;</span>
+              </div>
+            </div>
+            <!-- step3 -->
+            <div>
+              <h4 class="text-white font-medium mb-2 flex items-center gap-2"><span style="background:var(--primary)" class="text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">3</span> Add the event listener</h4>
+              <p class="text-xs text-slate-400 mb-2">Letakkan tepat sebelum <code class="inline">&lt;/body&gt;</code> agar layer memicu clickTag.</p>
+              <div class="code-wrap">
+                <div class="code-bar"><div class="code-dots"><span style="background:#ef4444"></span><span style="background:#f59e0b"></span><span style="background:#22c55e"></span></div><button class="copy-btn" onclick="copyCode('code3',this)"><i class="ph ph-copy"></i> javascript</button></div>
+                <pre id="code3"><code><span class="keyword">&lt;script&gt;</span>
 <span class="function">document</span>.getElementById(<span class="string">'ad-button'</span>).addEventListener(<span class="string">'click'</span>, <span class="keyword">function</span>() {
     <span class="keyword">if</span> (<span class="keyword">typeof</span> clickTag !== <span class="string">'undefined'</span> &amp;&amp; clickTag) {
         <span class="function">window</span>.open(clickTag, <span class="string">'_blank'</span>);
     }
 });
 <span class="keyword">&lt;/script&gt;</span></code></pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION 3: TAXONOMY ON APPSCRIPT -->
-            <section id="taxonomy" class="section-content">
-                <div class="mb-8">
-                    <span class="inline-block py-1 px-3 rounded-full bg-djarum-100 text-djarum-700 text-xs font-bold tracking-wider mb-3">PHASE 3</span>
-                    <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Taxonomy on Appscript</h2>
-                    <p class="mt-3 text-slate-600 text-lg">A comprehensive tutorial on using Google Sheets AppScript automation to generate naming conventions and CM360 Import formats in just 1-Click.</p>
-                </div>
-
-                <div class="space-y-8">
-                    
-                    <!-- CPD AppScript Tutorial -->
-                    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-                        <div class="bg-blue-50 border-b border-blue-100 p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
-                                    <i class="ph-fill ph-desktop text-2xl"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-bold text-lg text-blue-900 leading-tight">AppScript Tutorial: CPD (Full Serve)</h3>
-                                    <p class="text-sm text-blue-700">Use the <strong class="bg-blue-200 px-1.5 py-0.5 rounded">🤖 CM360 Tools</strong> menu in the Spreadsheet top bar.</p>
-                                </div>
-                            </div>
-                            <a href="https://docs.google.com/spreadsheets/d/1eSwvL8f2sckfBtC0OZJVCGz9-Laa6Fwf53C42QkaMYw/edit?gid=1007685084#gid=1007685084" target="_blank" class="inline-flex items-center gap-2 bg-white border border-blue-200 text-blue-700 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-blue-50 transition shadow-sm whitespace-nowrap">
-                                Open CPD Taxonomy Sheet <i class="ph ph-arrow-up-right"></i>
-                            </a>
-                        </div>
-                        <div class="p-6">
-                            <div class="relative border-l-2 border-slate-200 ml-4 space-y-6 pb-2">
-                                <div class="relative pl-8">
-                                    <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">1</div>
-                                    <h4 class="font-bold text-slate-800">Run Taxonomy Sync</h4>
-                                    <p class="text-slate-600 text-sm mt-1">Select <strong>🤖 CM360 Tools &gt; 1. Generate &amp; Sync Taxonomy (Active Sheet)</strong>. The script will automatically read the publisher names, identify the PO Number (it will prompt you if missing), and generate standard taxonomy.</p>
-                                </div>
-                                <div class="relative pl-8">
-                                    <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">2</div>
-                                    <h4 class="font-bold text-slate-800">Initial Setup in CM360</h4>
-                                    <p class="text-slate-600 text-sm mt-1 mb-2">Before continuing, you need to create the base assets in CM360:</p>
-                                    <ul class="list-disc list-inside text-sm text-slate-600 space-y-1 bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                        <li><strong>Campaign:</strong> Create a new campaign. Set Advertiser to <strong>Djarum_ID</strong>. For EU political ads, select <i>"No, this campaign doesn't have EU political ads"</i>. Set the exact start and end dates.</li>
-                                        <li><strong>Landing Pages:</strong> Click Landing Page &gt; Batch. Copy data from the "LP Name" and "LP URL" columns in your sheet, paste it here, and save.</li>
-                                        <li><strong>Creatives:</strong> Click New &gt; Creative &gt; Batch Upload. Upload all your validated HTML5 ZIP files.</li>
-                                    </ul>
-                                </div>
-                                <div class="relative pl-8">
-                                    <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">3</div>
-                                    <h4 class="font-bold text-slate-800">Fill the Yellow Columns</h4>
-                                    <p class="text-slate-600 text-sm mt-1">Back in your sheet, the <strong>Creative ID</strong> and <strong>LP ID</strong> columns are highlighted in yellow <span class="inline-block w-3 h-3 bg-[#FFF2CC] border border-amber-300 rounded-sm align-middle"></span>. You must fetch these IDs from CM360:</p>
-                                    <ul class="list-disc list-inside text-sm text-slate-600 mt-2 space-y-1">
-                                        <li><strong>Creative ID:</strong> Copy the ID generated next to your uploaded assets (e.g., 320x480 creative ID).</li>
-                                        <li><strong>LP ID:</strong> Go to Campaign <i>Properties</i>, scroll down to the Landing Pages section, and copy the text that contains the ID (e.g., <code>Detik_FC_Apps 42576935</code>). Extract the numbers and paste them into the sheet.</li>
-                                    </ul>
-                                </div>
-                                <div class="relative pl-8">
-                                    <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">4</div>
-                                    <h4 class="font-bold text-slate-800">Generate Export &amp; Import</h4>
-                                    <p class="text-slate-600 text-sm mt-1">Once IDs are populated, click <strong>🤖 CM360 Tools &gt; 2. Generate Format CM360 Import</strong>. Download the generated spreadsheet as Microsoft Excel (.xlsx). Finally, go to your Campaign in CM360, click the <strong>Import</strong> button at the top right, upload the file, and click Save to automatically build all your ads, placements, and assignments!</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- OTT AppScript Tutorial -->
-                    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-                        <div class="bg-purple-50 border-b border-purple-100 p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-purple-600 text-white rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
-                                    <i class="ph-fill ph-device-mobile-camera text-2xl"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-bold text-lg text-purple-900 leading-tight">AppScript Tutorial: OTT (Tracker Only)</h3>
-                                    <p class="text-sm text-purple-700">Use the <strong class="bg-purple-200 px-1.5 py-0.5 rounded">🎬 OTT/Tracker Tools</strong> menu in the Spreadsheet top bar.</p>
-                                </div>
-                            </div>
-                            <a href="https://docs.google.com/spreadsheets/d/1G75tFLf2iGx8V050tu7eHiKhzr5qQ_5q0k7bu-C7YRY/edit?gid=41561794#gid=41561794" target="_blank" class="inline-flex items-center gap-2 bg-white border border-purple-200 text-purple-700 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-purple-50 transition shadow-sm whitespace-nowrap">
-                                Open OTT Taxonomy Sheet <i class="ph ph-arrow-up-right"></i>
-                            </a>
-                        </div>
-                        <div class="p-6">
-                            <div class="relative border-l-2 border-slate-200 ml-4 space-y-6 pb-2">
-                                <div class="relative pl-8">
-                                    <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">1</div>
-                                    <h4 class="font-bold text-slate-800">Run Taxonomy OTT</h4>
-                                    <p class="text-slate-600 text-sm mt-1">Select <strong>🎬 OTT/Tracker Tools &gt; 1. Generate &amp; Sync Taxonomy OTT</strong>. This script specifically extracts platforms (like WeTV, Vidio) and campaign context (SeaGames, Mobile) to construct a <i>Smart Contextual Landing Page Logic</i>.</p>
-                                </div>
-                                <div class="relative pl-8">
-                                    <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">2</div>
-                                    <h4 class="font-bold text-slate-800">Setup Trackers in CM360</h4>
-                                    <p class="text-slate-600 text-sm mt-1">Create your Campaign and Batch Upload Landing pages just like CPD. However, for Creatives, you must manually create <strong>New &gt; Creative &gt; Tracking</strong> for each required placement instead of uploading HTML5 banners.</p>
-                                </div>
-                                <div class="relative pl-8">
-                                    <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">3</div>
-                                    <h4 class="font-bold text-slate-800">Fill the Yellow Columns</h4>
-                                    <p class="text-slate-600 text-sm mt-1">Copy the specific Tracking Creative IDs and the LP IDs from CM360, and paste them into the required yellow columns in your taxonomy sheet.</p>
-                                </div>
-                                <div class="relative pl-8">
-                                    <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">4</div>
-                                    <h4 class="font-bold text-slate-800">Generate Export &amp; Import</h4>
-                                    <p class="text-slate-600 text-sm mt-1">Run <strong>🎬 OTT/Tracker Tools &gt; 2. Generate Format CM360 Import</strong>. Download as Excel and upload it via the Import button in CM360. <i>Unlike CPD, this script automatically maps the Ad &amp; Creative Type as "Tracking" and dimensions as "1x1".</i></p>
-                                </div>
-                            </div>
-                            
-                            <div class="mt-6 bg-slate-50 border border-slate-200 p-4 rounded-xl flex gap-3 items-start">
-                                <i class="ph-fill ph-info text-blue-500 text-xl mt-0.5"></i>
-                                <div>
-                                    <h5 class="text-sm font-bold text-slate-800">Behind the Scenes of This Script:</h5>
-                                    <p class="text-xs text-slate-600 mt-1">
-                                        The scripts store mapping data in the <code>SITE_MAP</code> &amp; <code>SITE_MAP_OTT</code> variables. If you encounter a new Publisher or Vendor and get a "Mapping Failed" alert, you must add the new publisher and their CM360 Site ID into <code>var SITE_MAP</code> via the <i>Extensions &gt; Apps Script</i> menu first.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </section>
-
-            <!-- SECTION 4: CPD MANUAL -->
-            <section id="cpd" class="section-content">
-                <div class="mb-8">
-                    <span class="inline-block py-1 px-3 rounded-full bg-djarum-100 text-djarum-700 text-xs font-bold tracking-wider mb-3">PHASE 4</span>
-                    <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Manual Setup: CPD</h2>
-                    <p class="mt-3 text-slate-600 text-lg">If the API/Import fails, or for sudden ad-hoc briefs, follow this UI flow in CM360.</p>
-                </div>
-
-                <div class="relative border-l-2 border-slate-200 ml-4 space-y-8 pb-4">
-                    
-                    <div class="relative pl-8">
-                        <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">1</div>
-                        <h3 class="font-bold text-lg text-slate-800">Campaign Creation</h3>
-                        <p class="text-slate-600 mt-1 text-sm">Click Create Campaign. Enter Campaign Name. Select Advertiser: <strong>Djarum_ID</strong>. Set the Schedule Start and End Dates.</p>
-                    </div>
-
-                    <div class="relative pl-8">
-                        <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">2</div>
-                        <h3 class="font-bold text-lg text-slate-800">Landing Pages</h3>
-                        <p class="text-slate-600 mt-1 text-sm">Click the Landing Page button. For single URLs, enter Name &amp; URL. For multiple, click <strong>Batch</strong> (requires 2 Excel columns: Name &amp; URL) and paste.</p>
-                    </div>
-
-                    <div class="relative pl-8">
-                        <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">3</div>
-                        <h3 class="font-bold text-lg text-slate-800">Upload Creatives</h3>
-                        <p class="text-slate-600 mt-1 text-sm">Click <strong>New</strong> &gt; Creative &gt; select <strong>Batch Upload</strong>. Upload your QA-passed HTML5 ZIPs.</p>
-                    </div>
-
-                    <div class="relative pl-8">
-                        <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">4</div>
-                        <h3 class="font-bold text-lg text-slate-800">Setup Placement</h3>
-                        <p class="text-slate-600 mt-1 text-sm">Click <strong>New</strong> &gt; Placement. Select Publisher (e.g., Kompas). Enter Placement Name, set exact Dimensions from brief, and Save.</p>
-                    </div>
-
-                    <div class="relative pl-8">
-                        <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">5</div>
-                        <h3 class="font-bold text-lg text-slate-800">Ad &amp; Assignments</h3>
-                        <div class="bg-slate-50 border p-4 rounded-xl mt-3 space-y-2 text-sm text-slate-700">
-                            <p><strong>1. Ad Creation:</strong> Go to Ad &gt; New &gt; Standard. Use same name as Placement. Set to Active.</p>
-                            <p><strong>2. Creative Assignment:</strong> Scroll down to "Edit Creative Assignments". Assign the correct sized creative. Scroll right to attach the Landing Page.</p>
-                            <p><strong>3. Placement Assignment:</strong> Assign the Ad to the Placement you just made. Save.</p>
-                        </div>
-                    </div>
-
-                    <div class="relative pl-8">
-                        <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">6</div>
-                        <h3 class="font-bold text-lg text-slate-800">Generate Tags</h3>
-                        <p class="text-slate-600 mt-1 text-sm">Click the <strong>Tags</strong> button at the top right, download the Excel tags, and email them to the Planner.</p>
-                    </div>
-
-                </div>
-            </section>
-
-            <!-- SECTION 5: OTT MANUAL -->
-            <section id="ott" class="section-content">
-                <div class="mb-8">
-                    <span class="inline-block py-1 px-3 rounded-full bg-purple-100 text-purple-700 text-xs font-bold tracking-wider mb-3">PHASE 5</span>
-                    <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Manual Setup: OTT (Tracking)</h2>
-                    <p class="mt-3 text-slate-600 text-lg">Setup relies exclusively on 1x1 tracking pixels instead of physical assets. Follow this step-by-step UI guide.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div class="bg-white p-6 rounded-2xl border border-red-200 shadow-sm border-t-4 border-t-red-500">
-                        <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2"><i class="ph-fill ph-x-circle text-red-500"></i> What We DON'T Do</h3>
-                        <p class="text-sm text-slate-600 mt-3">Because OTT campaigns are tracking-only, we do <strong>not</strong> use Batch Upload for HTML5/Video files. The vendor hosts the physical video/banner asset on their end.</p>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-2xl border border-green-200 shadow-sm border-t-4 border-t-green-500">
-                        <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2"><i class="ph-fill ph-check-circle text-green-500"></i> What We DO</h3>
-                        <p class="text-sm text-slate-600 mt-3">We generate impression and click tracking pixels in CM360 that the publisher will implement to track performance mapped to our dashboard.</p>
-                    </div>
-                </div>
-
-                <div class="relative border-l-2 border-slate-200 ml-4 space-y-8 pb-4">
-                    
-                    <div class="relative pl-8">
-                        <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">1</div>
-                        <h3 class="font-bold text-lg text-slate-800">Campaign Creation</h3>
-                        <p class="text-slate-600 mt-1 text-sm">Click Create Campaign. Enter the OTT Campaign Name. Select Advertiser: <strong>Djarum_ID</strong>. Set the Schedule Start and End Dates.</p>
-                    </div>
-
-                    <div class="relative pl-8">
-                        <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">2</div>
-                        <h3 class="font-bold text-lg text-slate-800">Landing Pages</h3>
-                        <p class="text-slate-600 mt-1 text-sm">Set up your Landing Pages. You can use the Batch entry if you have multiple contextual landing pages mapped out.</p>
-                    </div>
-
-                    <div class="relative pl-8">
-                        <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">3</div>
-                        <h3 class="font-bold text-lg text-slate-800">Create Tracking Creative</h3>
-                        <p class="text-slate-600 mt-1 text-sm">Do NOT use Batch Upload. Instead, click <strong>New &gt; Creative &gt; Tracking</strong>. Name it identically to the placement name.</p>
-                    </div>
-
-                    <div class="relative pl-8">
-                        <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">4</div>
-                        <h3 class="font-bold text-lg text-slate-800">Setup 1x1 Placement</h3>
-                        <p class="text-slate-600 mt-1 text-sm">Click <strong>New &gt; Placement</strong>. Select the Publisher (e.g., Vidio.com). Enter Placement Name. <strong>Crucial:</strong> Set the dimensions strictly to <strong>1x1</strong>.</p>
-                    </div>
-
-                    <div class="relative pl-8">
-                        <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">5</div>
-                        <h3 class="font-bold text-lg text-slate-800">Ad &amp; Assignments</h3>
-                        <div class="bg-slate-50 border p-4 rounded-xl mt-3 space-y-2 text-sm text-slate-700">
-                            <p><strong>1. Ad Creation:</strong> Go to Ad &gt; New &gt; Standard. Set it to Active.</p>
-                            <p><strong>2. Creative Assignment:</strong> Under "Edit Creative Assignments", select the <strong>Tracking Creative</strong> you created. Map the specific Landing Page for this placement.</p>
-                            <p><strong>3. Placement Assignment:</strong> Assign this Standard Ad to the 1x1 Placement you just made and Save.</p>
-                        </div>
-                    </div>
-
-                    <div class="relative pl-8">
-                        <div class="absolute -left-3.5 top-0.5 w-7 h-7 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow ring-4 ring-white">6</div>
-                        <h3 class="font-bold text-lg text-slate-800">Generate Tags</h3>
-                        <p class="text-slate-600 mt-1 text-sm">Click the <strong>Tags</strong> button at the top right, download the Excel tags. You will provide these tracking pixels to the OTT vendor.</p>
-                    </div>
-
-                </div>
-            </section>
-
-            <!-- SECTION 6: PREVIEW QA -->
-            <section id="preview" class="section-content">
-                <div class="mb-8">
-                    <span class="inline-block py-1 px-3 rounded-full bg-djarum-100 text-djarum-700 text-xs font-bold tracking-wider mb-3">PHASE 6</span>
-                    <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Publisher Preview Verification</h2>
-                    <p class="mt-3 text-slate-600 text-lg">How to verify if trackers are firing correctly when publishers send back preview links.</p>
-                </div>
-
-                <div class="bg-slate-900 p-6 rounded-2xl mb-8 border border-slate-800 shadow-lg">
-                    <h3 class="text-white font-bold mb-3 text-sm tracking-wide uppercase text-slate-400">Example Publisher Link</h3>
-                    <p class="text-sm text-blue-400 break-all font-mono bg-slate-800 p-4 rounded-xl border border-slate-700">
-                        https://pubads.g.doubleclick.net/gampad/preview_cookie?gct=E0btTJ5o5l...&amp;redirect=https://www.vidio.com/watch/...
-                    </p>
-                </div>
-
-                <h3 class="font-bold text-xl text-slate-800 mb-4">Verification Workflow</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-white p-5 rounded-xl border shadow-sm">
-                        <div class="flex items-center gap-3 mb-3">
-                            <span class="w-6 h-6 rounded-md bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs">1</span>
-                            <h4 class="font-bold text-slate-800">Open &amp; Inspect</h4>
-                        </div>
-                        <p class="text-sm text-slate-600">Open the link in Google Chrome. Right-click anywhere and select <strong>Inspect</strong> (or press F12). Navigate to the <strong>Network</strong> tab.</p>
-                    </div>
-                    
-                    <div class="bg-white p-5 rounded-xl border shadow-sm">
-                        <div class="flex items-center gap-3 mb-3">
-                            <span class="w-6 h-6 rounded-md bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs">2</span>
-                            <h4 class="font-bold text-slate-800">Toggle Device View</h4>
-                        </div>
-                        <p class="text-sm text-slate-600">Click the Device Toolbar icon <i class="ph ph-devices text-lg align-middle"></i> (Ctrl+Shift+M). If it's a mobile placement, select an iPhone/Android layout. If desktop, turn it off.</p>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-xl border shadow-sm">
-                        <div class="flex items-center gap-3 mb-3">
-                            <span class="w-6 h-6 rounded-md bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs">3</span>
-                            <h4 class="font-bold text-slate-800">Filter Network Traffic</h4>
-                        </div>
-                        <p class="text-sm text-slate-600">Locate the filter search box in the Network tab. You can either type <code>ad.double</code> to isolate general CM360 requests, or paste the exact <strong>Placement ID</strong>. Refresh the page to start capturing.</p>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-xl border shadow-sm">
-                        <div class="flex items-center gap-3 mb-3">
-                            <span class="w-6 h-6 rounded-md bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs">4</span>
-                            <h4 class="font-bold text-slate-800">Verify Status</h4>
-                        </div>
-                        <p class="text-sm text-slate-600">Ensure the ad is visible and clickable. Check the Network tab to confirm that the ad request fired properly and returned a Status of <strong>200 (OK)</strong>.</p>
-                    </div>
-                </div>
-
-                <div class="bg-red-50 border border-red-200 p-5 rounded-xl flex gap-4 mt-6 text-red-800">
-                    <i class="ph-fill ph-warning-circle text-red-500 text-2xl flex-shrink-0"></i>
-                    <div>
-                        <h4 class="font-bold">Not Firing?</h4>
-                        <p class="text-sm mt-1">If the ID doesn't appear or the ad is blank after refreshing, the tracker is not firing. Immediately inform the planner/publisher to fix the implementation.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION 7: REPORTING -->
-            <section id="reporting" class="section-content">
-                <div class="mb-8">
-                    <span class="inline-block py-1 px-3 rounded-full bg-djarum-100 text-djarum-700 text-xs font-bold tracking-wider mb-3">PHASE 7</span>
-                    <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Reporting &amp; Analytics</h2>
-                    <p class="mt-3 text-slate-600 text-lg">Pulling performance numbers during or after the campaign flight.</p>
-                </div>
-
-                <div class="bg-white border rounded-2xl p-8 text-center shadow-sm">
-                    <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i class="ph ph-chart-line-up text-blue-600 text-4xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-slate-800 mb-2">CM360 Reporting Console</h3>
-                    <p class="text-slate-600 max-w-lg mx-auto mb-6">
-                        You don't need to build reports from scratch. We have pre-saved templates available directly in the Reporting dashboard.
-                    </p>
-                    
-                    <div class="bg-slate-50 border border-slate-200 p-5 rounded-xl text-left max-w-2xl mx-auto mb-8">
-                        <h4 class="font-bold text-slate-800 mb-2 flex items-center gap-2"><i class="ph-fill ph-magnifying-glass text-blue-500"></i> How to find the templates:</h4>
-                        <ol class="list-decimal list-inside text-sm text-slate-600 space-y-2 ml-1">
-                            <li>Open the Reporting interface using the button below.</li>
-                            <li>In the search/filter bar at the top, select <strong>"Created by"</strong>.</li>
-                            <li>Type or select <code>kevin.pramudya@wppmedia.com</code>.</li>
-                            <li>Choose the relevant standard template, edit the Date Range and Campaign, then click <strong>Run</strong>!</li>
-                        </ol>
-                    </div>
-
-                    <!-- FIX IMAGE SCREENSHOT PREVIEW WITH THUMBNAIL BYPASS -->
-                    <div class="mb-8 rounded-xl overflow-hidden border border-slate-200 shadow-sm max-w-2xl mx-auto bg-slate-100">
-                        <img src="https://drive.google.com/thumbnail?id=1ZjkspWTtSS1qWxBx-Dxw9XJkl5rbOufK&amp;sz=w1200" alt="Reporting Template Search Preview" class="w-full h-auto object-cover">
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <a href="https://campaignmanager.google.com/reporting/?defaultDs=9911796%3A469802#/reports/instantList/9911796%3A469802" target="_blank" class="inline-flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-xl font-semibold hover:bg-slate-800 transition shadow-lg">
-                            Launch CM360 Reporting <i class="ph ph-arrow-up-right"></i>
-                        </a>
-                        <a href="https://insidemedia-my.sharepoint.com/:x:/r/personal/kevin_pramudya_wppmedia_com/Documents/2026/DJARUM/Djarum%202026%20-%20Total%20Cost%20CM360%20.xlsx?d=wfb06e5fc484147e484d165ea01e2adfa&amp;csf=1&amp;web=1&amp;e=bmjxgp" target="_blank" class="inline-flex items-center gap-2 bg-djarum-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-djarum-700 transition shadow-lg shadow-blue-500/30">
-                            <i class="ph-fill ph-file-xls"></i> Open Total Cost Tracker
-                        </a>
-                    </div>
-                </div>
-            </section>
-
+              </div>
+            </div>
+          </div>
         </div>
-    </main>
+      </section>
 
-    <script>
-        // Tab Switching Logic
-        function switchTab(tabId) {
-            // Update active states for sections
-            document.querySelectorAll('.section-content').forEach(el => {
-                el.classList.remove('active');
-            });
-            document.getElementById(tabId).classList.add('active');
+      <!-- ================= 3. TAXONOMY ================= -->
+      <section id="taxonomy" class="section-content">
+        <header class="mb-8">
+          <div class="flex items-center gap-2 flex-wrap mb-3">
+            <span class="badge badge-primary">Phase 3</span>
+            <span class="badge badge-soft"><i class="ph ph-clock"></i> ~20 min</span>
+            <span class="badge badge-soft"><i class="ph ph-robot"></i> Automated</span>
+          </div>
+          <h2 class="sec-title t">Taxonomy on AppScript</h2>
+          <p class="sec-sub">Tutorial lengkap memakai otomasi Google Sheets AppScript untuk generate naming convention &amp; format Import CM360 hanya dengan 1-Klik.</p>
+        </header>
 
-            // Update active states for nav buttons
-            document.querySelectorAll('.nav-item').forEach(el => {
-                el.classList.remove('active');
-            });
-            event.currentTarget.classList.add('active');
+        <div class="space-y-8">
+          <!-- CPD -->
+          <div class="card overflow-hidden">
+            <div class="p-5 flex flex-col md:flex-row md:items-center justify-between gap-4" style="background:rgba(37,99,235,.08);border-bottom:1px solid var(--border)">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0" style="background:var(--primary)"><i class="ph-fill ph-desktop text-2xl"></i></div>
+                <div>
+                  <h3 class="font-bold text-lg t leading-tight">AppScript: CPD (Full Serve)</h3>
+                  <p class="text-sm t-muted">Pakai menu <strong style="background:var(--soft);color:var(--soft-fg)" class="px-1.5 py-0.5 rounded">🤖 CM360 Tools</strong> di top bar Spreadsheet.</p>
+                </div>
+              </div>
+              <a href="https://docs.google.com/spreadsheets/d/1eSwvL8f2sckfBtC0OZJVCGz9-Laa6Fwf53C42QkaMYw/edit?gid=1007685084#gid=1007685084" target="_blank" class="inline-flex items-center gap-2 card px-4 py-2 font-semibold text-sm whitespace-nowrap" style="color:var(--primary)">Open CPD Taxonomy Sheet <i class="ph ph-arrow-up-right"></i></a>
+            </div>
+            <div class="p-6">
+              <div class="tl space-y-7 pb-1">
+                <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">1</div><h4 class="font-bold t">Run Taxonomy Sync</h4><p class="t-muted text-sm mt-1">Pilih <strong>🤖 CM360 Tools › 1. Generate &amp; Sync Taxonomy (Active Sheet)</strong>. Script membaca nama publisher, mengidentifikasi PO Number (akan prompt jika kosong), dan generate taxonomy standar.</p></div>
+                <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">2</div><h4 class="font-bold t">Initial Setup di CM360</h4><p class="t-muted text-sm mt-1 mb-2">Buat base assets dulu di CM360:</p>
+                  <ul class="list-disc list-inside text-sm t-muted space-y-1 soft p-3 rounded-lg" style="border:1px solid var(--border)">
+                    <li><strong>Campaign:</strong> buat campaign baru. Advertiser = <strong>Djarum_ID</strong>. Untuk EU political ads pilih <i>"No, this campaign doesn't have EU political ads"</i>. Set start &amp; end date persis.</li>
+                    <li><strong>Landing Pages:</strong> Landing Page › Batch. Copy kolom "LP Name" &amp; "LP URL" dari sheet, paste, save.</li>
+                    <li><strong>Creatives:</strong> New › Creative › Batch Upload. Upload semua ZIP HTML5 yang sudah lolos QA.</li>
+                  </ul>
+                </div>
+                <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">3</div><h4 class="font-bold t">Isi Kolom Kuning</h4><p class="t-muted text-sm mt-1">Kolom <strong>Creative ID</strong> &amp; <strong>LP ID</strong> di-highlight kuning <span class="inline-block w-3 h-3 rounded-sm align-middle" style="background:#FFF2CC;border:1px solid #f0c34a"></span>. Ambil ID dari CM360:</p>
+                  <ul class="list-disc list-inside text-sm t-muted mt-2 space-y-1">
+                    <li><strong>Creative ID:</strong> copy ID di samping asset yang diupload (mis. creative 320×480).</li>
+                    <li><strong>LP ID:</strong> buka Campaign <i>Properties</i> › section Landing Pages, copy teks berisi ID (mis. <code class="inline">Detik_FC_Apps 42576935</code>). Ambil angkanya, paste ke sheet.</li>
+                  </ul>
+                </div>
+                <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">4</div><h4 class="font-bold t">Generate Export &amp; Import</h4><p class="t-muted text-sm mt-1">Setelah ID terisi, klik <strong>🤖 CM360 Tools › 2. Generate Format CM360 Import</strong>. Download sebagai Excel (.xlsx). Lalu di Campaign CM360 klik <strong>Import</strong> (kanan atas), upload file, Save — semua ads, placements, &amp; assignment terbentuk otomatis!</p></div>
+              </div>
+            </div>
+          </div>
 
-            // Close mobile menu if open
-            const sidebar = document.getElementById('sidebar');
-            if(window.innerWidth < 768) {
-                sidebar.classList.add('-translate-x-full');
-            }
-            
-            // Scroll top top
-            document.querySelector('main').scrollTo(0, 0);
-        }
+          <!-- OTT -->
+          <div class="card overflow-hidden">
+            <div class="p-5 flex flex-col md:flex-row md:items-center justify-between gap-4" style="background:rgba(168,85,247,.08);border-bottom:1px solid var(--border)">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0" style="background:#a855f7"><i class="ph-fill ph-device-mobile-camera text-2xl"></i></div>
+                <div>
+                  <h3 class="font-bold text-lg t leading-tight">AppScript: OTT (Tracker Only)</h3>
+                  <p class="text-sm t-muted">Pakai menu <strong style="background:rgba(168,85,247,.2);color:#a855f7" class="px-1.5 py-0.5 rounded">🎬 OTT/Tracker Tools</strong>.</p>
+                </div>
+              </div>
+              <a href="https://docs.google.com/spreadsheets/d/1G75tFLf2iGx8V050tu7eHiKhzr5qQ_5q0k7bu-C7YRY/edit?gid=41561794#gid=41561794" target="_blank" class="inline-flex items-center gap-2 card px-4 py-2 font-semibold text-sm whitespace-nowrap" style="color:#a855f7">Open OTT Taxonomy Sheet <i class="ph ph-arrow-up-right"></i></a>
+            </div>
+            <div class="p-6">
+              <div class="tl space-y-7 pb-1">
+                <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">1</div><h4 class="font-bold t">Run Taxonomy OTT</h4><p class="t-muted text-sm mt-1">Pilih <strong>🎬 OTT/Tracker Tools › 1. Generate &amp; Sync Taxonomy OTT</strong>. Script mengekstrak platform (WeTV, Vidio) &amp; konteks campaign (SeaGames, Mobile) untuk membangun <i>Smart Contextual Landing Page Logic</i>.</p></div>
+                <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">2</div><h4 class="font-bold t">Setup Trackers di CM360</h4><p class="t-muted text-sm mt-1">Buat Campaign &amp; Batch Upload Landing pages seperti CPD. Tapi untuk Creatives, buat manual <strong>New › Creative › Tracking</strong> tiap placement (bukan upload HTML5).</p></div>
+                <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">3</div><h4 class="font-bold t">Isi Kolom Kuning</h4><p class="t-muted text-sm mt-1">Copy Tracking Creative ID &amp; LP ID dari CM360, paste ke kolom kuning di sheet taxonomy.</p></div>
+                <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">4</div><h4 class="font-bold t">Generate Export &amp; Import</h4><p class="t-muted text-sm mt-1">Jalankan <strong>🎬 OTT/Tracker Tools › 2. Generate Format CM360 Import</strong>. Download Excel &amp; import via tombol Import di CM360. <i>Berbeda dgn CPD, script otomatis set Ad &amp; Creative Type = "Tracking" dan dimensi = "1×1".</i></p></div>
+              </div>
+              <div class="mt-6 callout c-blue">
+                <i class="ph-fill ph-info ico text-xl"></i>
+                <div>
+                  <h5 class="text-sm font-bold">Behind the scenes</h5>
+                  <p class="text-xs mt-1">Script menyimpan mapping di variabel <code class="inline">SITE_MAP</code> &amp; <code class="inline">SITE_MAP_OTT</code>. Jika ada Publisher/Vendor baru &amp; muncul alert "Mapping Failed", tambahkan publisher + CM360 Site ID-nya ke <code class="inline">var SITE_MAP</code> via menu <i>Extensions › Apps Script</i>.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        // Mobile Menu Toggle
-        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('-translate-x-full');
-        });
+      <!-- ================= 4. CPD MANUAL ================= -->
+      <section id="cpd" class="section-content">
+        <header class="mb-8">
+          <div class="flex items-center gap-2 flex-wrap mb-3">
+            <span class="badge badge-primary">Phase 4</span>
+            <span class="badge badge-soft"><i class="ph ph-clock"></i> ~15 min</span>
+            <span class="badge badge-soft"><i class="ph ph-cursor-click"></i> Manual UI</span>
+          </div>
+          <h2 class="sec-title t">Manual Setup: CPD</h2>
+          <p class="sec-sub">Jika API/Import gagal atau ada brief ad-hoc mendadak, ikuti alur UI CM360 berikut.</p>
+        </header>
 
-        // Copy Code Functionality
-        function copyCode(elementId, btnElement) {
-            const codeBlock = document.getElementById(elementId);
-            const textToCopy = codeBlock.innerText;
-            
-            // Fallback copy method for iframes
-            const textArea = document.createElement("textarea");
-            textArea.value = textToCopy;
-            document.body.appendChild(textArea);
-            textArea.select();
-            
-            try {
-                document.execCommand('copy');
-                
-                // Visual feedback
-                const originalHTML = btnElement.innerHTML;
-                btnElement.innerHTML = '<i class="ph-fill ph-check text-green-400"></i>';
-                btnElement.classList.add('bg-slate-600');
-                
-                setTimeout(() => {
-                    btnElement.innerHTML = originalHTML;
-                    btnElement.classList.remove('bg-slate-600');
-                }, 2000);
-            } catch (err) {
-                console.error('Copy failed', err);
-            }
-            document.body.removeChild(textArea);
-        }
-    </script>
+        <div class="tl space-y-8 pb-4">
+          <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">1</div><h3 class="font-bold text-lg t">Campaign Creation</h3><p class="t-muted mt-1 text-sm">Create Campaign › isi Campaign Name › Advertiser: <strong>Djarum_ID</strong> › set Schedule Start &amp; End date.</p></div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">2</div><h3 class="font-bold text-lg t">Landing Pages</h3><p class="t-muted mt-1 text-sm">Klik tombol Landing Page. URL tunggal: isi Name &amp; URL. Banyak: klik <strong>Batch</strong> (butuh 2 kolom Excel: Name &amp; URL) lalu paste.</p></div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">3</div><h3 class="font-bold text-lg t">Upload Creatives</h3><p class="t-muted mt-1 text-sm">Klik <strong>New › Creative › Batch Upload</strong>. Upload ZIP HTML5 yang lolos QA.</p></div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">4</div><h3 class="font-bold text-lg t">Setup Placement</h3><p class="t-muted mt-1 text-sm">Klik <strong>New › Placement</strong>. Pilih Publisher (mis. Kompas). Isi Placement Name, set Dimensi sesuai brief, Save.</p></div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">5</div><h3 class="font-bold text-lg t">Ad &amp; Assignments</h3>
+            <div class="soft p-4 rounded-xl mt-3 space-y-2 text-sm t-muted" style="border:1px solid var(--border)">
+              <p><strong class="t">1. Ad Creation:</strong> Ad › New › Standard. Nama sama dgn Placement. Set Active.</p>
+              <p><strong class="t">2. Creative Assignment:</strong> scroll ke "Edit Creative Assignments". Assign creative ukuran yang sesuai. Scroll kanan untuk attach Landing Page.</p>
+              <p><strong class="t">3. Placement Assignment:</strong> assign Ad ke Placement yang baru dibuat. Save.</p>
+            </div>
+          </div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">6</div><h3 class="font-bold text-lg t">Generate Tags</h3><p class="t-muted mt-1 text-sm">Klik tombol <strong>Tags</strong> (kanan atas), download Excel tags, email ke Planner.</p></div>
+        </div>
+      </section>
+
+      <!-- ================= 5. OTT MANUAL ================= -->
+      <section id="ott" class="section-content">
+        <header class="mb-8">
+          <div class="flex items-center gap-2 flex-wrap mb-3">
+            <span class="badge badge-primary" style="background:rgba(168,85,247,.15);color:#a855f7">Phase 5</span>
+            <span class="badge badge-soft"><i class="ph ph-clock"></i> ~12 min</span>
+            <span class="badge badge-soft"><i class="ph ph-cursor-click"></i> Manual UI</span>
+          </div>
+          <h2 class="sec-title t">Manual Setup: OTT (Tracking)</h2>
+          <p class="sec-sub">Setup hanya mengandalkan 1×1 tracking pixel, bukan asset fisik.</p>
+        </header>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+          <div class="card p-6" style="border-top:3px solid #ef4444">
+            <h3 class="text-lg font-bold t flex items-center gap-2"><i class="ph-fill ph-x-circle" style="color:#ef4444"></i> What We DON'T Do</h3>
+            <p class="text-sm t-muted mt-3">Karena tracking-only, kita <strong>tidak</strong> Batch Upload file HTML5/Video. Vendor yang host asset fisiknya.</p>
+          </div>
+          <div class="card p-6" style="border-top:3px solid #16a34a">
+            <h3 class="text-lg font-bold t flex items-center gap-2"><i class="ph-fill ph-check-circle" style="color:#16a34a"></i> What We DO</h3>
+            <p class="text-sm t-muted mt-3">Kita generate impression &amp; click tracking pixel di CM360 untuk diimplementasi publisher agar performa ter-map ke dashboard.</p>
+          </div>
+        </div>
+
+        <div class="tl space-y-8 pb-4">
+          <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">1</div><h3 class="font-bold text-lg t">Campaign Creation</h3><p class="t-muted mt-1 text-sm">Create Campaign › OTT Campaign Name › Advertiser: <strong>Djarum_ID</strong> › set Schedule Start &amp; End date.</p></div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">2</div><h3 class="font-bold text-lg t">Landing Pages</h3><p class="t-muted mt-1 text-sm">Set Landing Pages. Bisa pakai Batch entry jika punya banyak contextual landing page.</p></div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">3</div><h3 class="font-bold text-lg t">Create Tracking Creative</h3><p class="t-muted mt-1 text-sm">JANGAN Batch Upload. Klik <strong>New › Creative › Tracking</strong>. Beri nama identik dgn placement.</p></div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">4</div><h3 class="font-bold text-lg t">Setup 1×1 Placement</h3><p class="t-muted mt-1 text-sm">Klik <strong>New › Placement</strong>. Pilih Publisher (mis. Vidio.com). Isi Placement Name. <strong>Crucial:</strong> set dimensi strictly ke <strong>1×1</strong>.</p></div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">5</div><h3 class="font-bold text-lg t">Ad &amp; Assignments</h3>
+            <div class="soft p-4 rounded-xl mt-3 space-y-2 text-sm t-muted" style="border:1px solid var(--border)">
+              <p><strong class="t">1. Ad Creation:</strong> Ad › New › Standard. Set Active.</p>
+              <p><strong class="t">2. Creative Assignment:</strong> di "Edit Creative Assignments" pilih <strong>Tracking Creative</strong> tadi. Map Landing Page untuk placement ini.</p>
+              <p><strong class="t">3. Placement Assignment:</strong> assign Standard Ad ke 1×1 Placement, Save.</p>
+            </div>
+          </div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">6</div><h3 class="font-bold text-lg t">Generate Tags</h3><p class="t-muted mt-1 text-sm">Klik <strong>Tags</strong> (kanan atas), download Excel tags. Berikan tracking pixel ini ke OTT vendor.</p></div>
+        </div>
+      </section>
+
+      <!-- ================= 6. PREVIEW QA ================= -->
+      <section id="preview" class="section-content">
+        <header class="mb-8">
+          <div class="flex items-center gap-2 flex-wrap mb-3">
+            <span class="badge badge-primary">Phase 6</span>
+            <span class="badge badge-soft"><i class="ph ph-clock"></i> ~8 min</span>
+            <span class="badge badge-soft"><i class="ph ph-bug-beetle"></i> QA</span>
+          </div>
+          <h2 class="sec-title t">Publisher Preview Verification</h2>
+          <p class="sec-sub">Cara verifikasi tracker firing dengan benar saat publisher mengirim preview link.</p>
+        </header>
+
+        <div class="code-wrap p-6 mb-8" style="border-radius:1rem">
+          <h3 class="text-xs tracking-wide uppercase text-slate-400 font-bold mb-3">Example Publisher Link</h3>
+          <p class="text-sm break-all font-mono p-4 rounded-xl" style="background:rgba(255,255,255,.05);color:#7aa2f7;border:1px solid rgba(255,255,255,.08)">https://pubads.g.doubleclick.net/gampad/preview_cookie?gct=E0btTJ5o5l…&amp;redirect=https://www.vidio.com/watch/…</p>
+        </div>
+
+        <h3 class="font-bold text-xl t mb-4">Verification Workflow</h3>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="card p-5"><div class="flex items-center gap-3 mb-3"><span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background:var(--soft);color:var(--soft-fg)">1</span><h4 class="font-bold t">Open &amp; Inspect</h4></div><p class="text-sm t-muted">Buka link di Chrome. Klik kanan › <strong>Inspect</strong> (atau F12). Buka tab <strong>Network</strong>.</p></div>
+          <div class="card p-5"><div class="flex items-center gap-3 mb-3"><span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background:var(--soft);color:var(--soft-fg)">2</span><h4 class="font-bold t">Toggle Device View</h4></div><p class="text-sm t-muted">Klik Device Toolbar <i class="ph ph-devices align-middle"></i> (Ctrl+Shift+M). Mobile placement: pilih iPhone/Android. Desktop: matikan.</p></div>
+          <div class="card p-5"><div class="flex items-center gap-3 mb-3"><span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background:var(--soft);color:var(--soft-fg)">3</span><h4 class="font-bold t">Filter Network Traffic</h4></div><p class="text-sm t-muted">Di filter box Network, ketik <code class="inline">ad.double</code> untuk isolasi request CM360, atau paste <strong>Placement ID</strong>. Refresh untuk mulai capture.</p></div>
+          <div class="card p-5"><div class="flex items-center gap-3 mb-3"><span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background:var(--soft);color:var(--soft-fg)">4</span><h4 class="font-bold t">Verify Status</h4></div><p class="text-sm t-muted">Pastikan ad visible &amp; clickable. Cek Network: request fired dengan Status <strong>200 (OK)</strong>.</p></div>
+        </div>
+
+        <div class="callout c-red mt-6">
+          <i class="ph-fill ph-warning-circle ico text-2xl"></i>
+          <div>
+            <h4 class="font-bold">Not Firing?</h4>
+            <p class="text-sm mt-1">Jika ID tidak muncul atau ad blank setelah refresh, tracker tidak firing. Segera infokan planner/publisher untuk memperbaiki implementasi.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 7. REPORTING ================= -->
+      <section id="reporting" class="section-content">
+        <header class="mb-8">
+          <div class="flex items-center gap-2 flex-wrap mb-3">
+            <span class="badge badge-primary">Phase 7</span>
+            <span class="badge badge-soft"><i class="ph ph-clock"></i> ~5 min</span>
+            <span class="badge badge-soft"><i class="ph ph-gauge"></i> Easy</span>
+          </div>
+          <h2 class="sec-title t">Reporting &amp; Analytics</h2>
+          <p class="sec-sub">Menarik angka performa selama atau setelah campaign berjalan.</p>
+        </header>
+
+        <div class="card p-8 text-center">
+          <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6" style="background:var(--soft)"><i class="ph ph-chart-line-up text-4xl" style="color:var(--soft-fg)"></i></div>
+          <h3 class="text-2xl font-bold t mb-2">CM360 Reporting Console</h3>
+          <p class="t-muted max-w-lg mx-auto mb-6">Tidak perlu bikin report dari nol. Ada template tersimpan langsung di Reporting dashboard.</p>
+
+          <div class="soft rounded-xl p-5 text-left max-w-2xl mx-auto mb-8" style="border:1px solid var(--border)">
+            <h4 class="font-bold t mb-2 flex items-center gap-2"><i class="ph-fill ph-magnifying-glass" style="color:var(--primary)"></i> Cara menemukan template:</h4>
+            <ol class="list-decimal list-inside text-sm t-muted space-y-2 ml-1">
+              <li>Buka interface Reporting via tombol di bawah.</li>
+              <li>Di search/filter bar atas, pilih <strong>"Created by"</strong>.</li>
+              <li>Ketik/pilih <code class="inline">kevin.pramudya@wppmedia.com</code>.</li>
+              <li>Pilih template standar, edit Date Range &amp; Campaign, klik <strong>Run</strong>!</li>
+            </ol>
+          </div>
+
+          <div class="mb-8 rounded-xl overflow-hidden card max-w-2xl mx-auto">
+            <img src="https://drive.google.com/thumbnail?id=1ZjkspWTtSS1qWxBx-Dxw9XJkl5rbOufK&amp;sz=w1200" alt="Reporting Template Search Preview" class="w-full h-auto object-cover">
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="https://campaignmanager.google.com/reporting/?defaultDs=9911796%3A469802#/reports/instantList/9911796%3A469802" target="_blank" class="inline-flex items-center gap-2 text-white px-6 py-3 rounded-xl font-semibold shadow-lg" style="background:var(--text)">Launch CM360 Reporting <i class="ph ph-arrow-up-right"></i></a>
+            <a href="https://insidemedia-my.sharepoint.com/:x:/r/personal/kevin_pramudya_wppmedia_com/Documents/2026/DJARUM/Djarum%202026%20-%20Total%20Cost%20CM360%20.xlsx?d=wfb06e5fc484147e484d165ea01e2adfa&amp;csf=1&amp;web=1&amp;e=bmjxgp" target="_blank" class="inline-flex items-center gap-2 text-white px-6 py-3 rounded-xl font-semibold shadow-lg" style="background:var(--primary)"><i class="ph-fill ph-file-xls"></i> Open Total Cost Tracker</a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Back to top -->
+  <button id="topBtn" onclick="document.getElementById('main').scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 z-40 w-11 h-11 rounded-full text-white shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition" style="background:var(--primary)"><i class="ph-bold ph-arrow-up"></i></button>
+
+  <!-- Command Palette -->
+  <div id="cmdOverlay" class="cmd-overlay" onclick="if(event.target===this)closeCmd()">
+    <div class="cmd-box">
+      <div class="flex items-center px-4 bd" style="border-bottom:1px solid var(--border)">
+        <i class="ph ph-magnifying-glass t-faint text-lg"></i>
+        <input id="cmdInput" class="cmd-input" placeholder="Cari fase, topik, atau kata kunci…" autocomplete="off">
+        <span class="kbd">Esc</span>
+      </div>
+      <div id="cmdRes" class="cmd-res"></div>
+    </div>
+  </div>
+
+<script>
+/* ===================== CONFIG ===================== */
+const GROUPS = [
+  { label:'Start', items:[
+    {id:'overview', n:'Overview', icon:'ph-house', kw:'home start pipeline ringkasan workflow'}
+  ]},
+  { label:'Contacts', items:[
+    {id:'pic-planner', n:'PIC Planner Djarum', icon:'ph-address-book', kw:'contact planner natasha hilda email super la po utm'}
+  ]},
+  { label:'Campaign Phases', items:[
+    {id:'brief', n:'1. Brief & PO', icon:'ph-envelope-open', num:'1', kw:'brief purchase order po media plan cpd ott full serve vendor'},
+    {id:'qa', n:'2. Creative QA & Tags', icon:'ph-magic-wand', num:'2', kw:'clicktag html5 creative qa banner click macro unesc esc tester'},
+    {id:'taxonomy', n:'3. Taxonomy on AppScript', icon:'ph-code', num:'3', kw:'taxonomy appscript naming convention import sync sitemap automation'}
+  ]},
+  { label:'CM360 Setup', items:[
+    {id:'cpd', n:'4. Manual Setup: CPD', icon:'ph-desktop', num:'4', kw:'cpd manual placement ad creative full serve upload tags'},
+    {id:'ott', n:'5. Manual Setup: OTT', icon:'ph-device-mobile', num:'5', kw:'ott tracking 1x1 pixel vendor vidio wetv tracker'}
+  ]},
+  { label:'Post-Setup', items:[
+    {id:'preview', n:'6. Publisher Preview QA', icon:'ph-bug', num:'6', kw:'preview network inspect tracker firing devtools 200 status'},
+    {id:'reporting', n:'7. Reporting', icon:'ph-chart-bar', num:'7', kw:'reporting analytics template cost console kevin'}
+  ]}
+];
+const ORDER  = GROUPS.flatMap(g=>g.items);
+const PHASES = ORDER.filter(o=>o.num);
+const PKEY = 'cm360-progress-v1', TKEY = 'cm360-theme';
+let done = new Set(JSON.parse(localStorage.getItem(PKEY) || '[]'));
+
+/* ===================== THEME ===================== */
+function applyTheme(t){
+  document.documentElement.classList.toggle('dark', t==='dark');
+  const ic = document.getElementById('themeIcon');
+  if(ic) ic.className = 'ph text-lg ' + (t==='dark' ? 'ph-sun' : 'ph-moon');
+  localStorage.setItem(TKEY, t);
+}
+function toggleTheme(){ applyTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark'); }
+applyTheme(localStorage.getItem(TKEY) || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light'));
+
+/* ===================== BUILD SIDEBAR ===================== */
+const navList = document.getElementById('navList');
+GROUPS.forEach(g=>{
+  const p = document.createElement('p');
+  p.className = 'px-6 text-[11px] font-semibold t-faint uppercase tracking-wider mb-2 mt-3';
+  p.textContent = g.label;
+  navList.appendChild(p);
+  const ul = document.createElement('ul'); ul.className='space-y-0.5 mb-2';
+  g.items.forEach(it=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<button class="nav-item" data-id="${it.id}" onclick="go('${it.id}')">
+        <i class="ph ${it.icon} text-lg"></i><span>${it.n}</span>
+        <i class="ph-fill ph-check-circle nav-check"></i></button>`;
+    ul.appendChild(li);
+  });
+  navList.appendChild(ul);
+});
+
+/* ===================== BUILD PIPELINE (overview) ===================== */
+const pipe = document.getElementById('pipeline');
+PHASES.forEach(it=>{
+  const d = document.createElement('button');
+  d.className='card card-hover p-4 flex items-center gap-3 text-left';
+  d.onclick=()=>go(it.id);
+  d.innerHTML=`<div class="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-white flex-shrink-0" style="background:var(--primary)">${it.num}</div>
+     <div class="min-w-0"><p class="font-semibold t truncate">${it.n.replace(/^\d+\.\s/,'')}</p>
+     <p class="text-xs t-faint">Phase ${it.num}</p></div>
+     <i class="ph ph-arrow-right ml-auto t-faint"></i>`;
+  pipe.appendChild(d);
+});
+
+/* ===================== BUILD SECTION FOOTERS ===================== */
+ORDER.forEach((it,i)=>{
+  const sec = document.getElementById(it.id); if(!sec) return;
+  const prev = ORDER[i-1], next = ORDER[i+1];
+  const f = document.createElement('div'); f.className='sec-footer';
+  f.innerHTML =
+    (prev ? `<a class="foot-link" onclick="go('${prev.id}')"><i class="ph ph-arrow-left"></i><span><small>Previous</small>${prev.n.replace(/^\d+\.\s/,'')}</span></a>`
+          : `<span></span>`) +
+    `<div class="flex items-center gap-2">` +
+      (it.num ? `<button class="btn-done" data-done="${it.id}" onclick="toggleDone('${it.id}')"></button>` : ``) +
+      (next ? `<a class="foot-link" onclick="go('${next.id}')"><span class="text-right"><small>Next</small>${next.n.replace(/^\d+\.\s/,'')}</span><i class="ph ph-arrow-right"></i></a>` : ``) +
+    `</div>`;
+  sec.appendChild(f);
+});
+
+/* ===================== PROGRESS ===================== */
+function saveProgress(){ localStorage.setItem(PKEY, JSON.stringify([...done])); }
+function toggleDone(id){ done.has(id) ? done.delete(id) : done.add(id); saveProgress(); updateProgressUI(); }
+function updateProgressUI(){
+  document.querySelectorAll('.nav-item').forEach(b=> b.classList.toggle('done', done.has(b.dataset.id)));
+  document.querySelectorAll('[data-done]').forEach(b=>{
+    const d = done.has(b.dataset.done);
+    b.classList.toggle('is-done', d);
+    b.innerHTML = d ? '<i class="ph-fill ph-check-circle"></i> Completed' : '<i class="ph ph-circle"></i> Mark Complete';
+  });
+  const c = PHASES.filter(p=>done.has(p.id)).length;
+  document.getElementById('progLabel').textContent = `${c} / ${PHASES.length}`;
+  document.getElementById('progBar').style.width = (c/PHASES.length*100)+'%';
+}
+
+/* ===================== NAVIGATION ===================== */
+function go(id){
+  if(!document.getElementById(id)) return;
+  document.querySelectorAll('.section-content').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active', b.dataset.id===id));
+  history.replaceState(null,'','#'+id);
+  document.getElementById('main').scrollTo(0,0);
+  if(innerWidth < 768) document.getElementById('sidebar').classList.add('-translate-x-full');
+  closeCmd();
+}
+
+/* ===================== COMMAND PALETTE ===================== */
+const overlay=document.getElementById('cmdOverlay'), input=document.getElementById('cmdInput'), res=document.getElementById('cmdRes');
+let sel=0, list=[];
+function openCmd(){ overlay.classList.add('open'); input.value=''; renderCmd(''); input.focus(); }
+function closeCmd(){ overlay.classList.remove('open'); }
+function renderCmd(q){
+  q=q.toLowerCase().trim();
+  list = ORDER.filter(o=> !q || (o.n+' '+(o.kw||'')+' '+(o.id)).toLowerCase().includes(q));
+  sel=0;
+  res.innerHTML = list.length ? list.map((o,i)=>
+    `<div class="cmd-item ${i===0?'sel':''}" data-i="${i}" onclick="go('${o.id}')">
+      <i class="ph ${o.icon} text-lg"></i><span class="font-medium">${o.n}</span>
+      ${done.has(o.id)?'<i class="ph-fill ph-check-circle ml-auto" style="color:#16a34a"></i>':''}</div>`).join('')
+    : `<div class="p-6 text-center t-faint text-sm">No results.</div>`;
+  res.querySelectorAll('.cmd-item').forEach(el=>el.addEventListener('mousemove',()=>setSel(+el.dataset.i)));
+}
+function setSel(i){ sel=i; res.querySelectorAll('.cmd-item').forEach((el,x)=>el.classList.toggle('sel',x===i)); }
+input.addEventListener('input', e=>renderCmd(e.target.value));
+
+/* ===================== KEYBOARD ===================== */
+document.addEventListener('keydown', e=>{
+  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); openCmd(); return; }
+  if(e.key==='/' && !overlay.classList.contains('open') && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)){ e.preventDefault(); openCmd(); return; }
+  if(overlay.classList.contains('open')){
+    if(e.key==='Escape') closeCmd();
+    if(e.key==='ArrowDown'){ e.preventDefault(); setSel(Math.min(sel+1,list.length-1)); res.querySelector('.sel')?.scrollIntoView({block:'nearest'}); }
+    if(e.key==='ArrowUp'){ e.preventDefault(); setSel(Math.max(sel-1,0)); res.querySelector('.sel')?.scrollIntoView({block:'nearest'}); }
+    if(e.key==='Enter' && list[sel]) go(list[sel].id);
+    return;
+  }
+  const cur = ORDER.findIndex(o=>document.getElementById(o.id).classList.contains('active'));
+  if(e.key==='ArrowRight' && ORDER[cur+1]) go(ORDER[cur+1].id);
+  if(e.key==='ArrowLeft'  && ORDER[cur-1]) go(ORDER[cur-1].id);
+});
+
+/* ===================== COPY CODE ===================== */
+async function copyCode(id, btn){
+  const text = document.getElementById(id).innerText;
+  try{ await navigator.clipboard.writeText(text); }
+  catch(_){ const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+  const o = btn.innerHTML;
+  btn.innerHTML = '<i class="ph-fill ph-check" style="color:#4ade80"></i> Copied';
+  setTimeout(()=>btn.innerHTML=o, 1800);
+}
+
+/* ===================== SCROLL: progress bar + back-to-top ===================== */
+const main=document.getElementById('main'), readbar=document.getElementById('readbar'), topBtn=document.getElementById('topBtn');
+main.addEventListener('scroll',()=>{
+  const max = main.scrollHeight - main.clientHeight;
+  readbar.style.width = (max>0 ? (main.scrollTop/max*100):0)+'%';
+  const show = main.scrollTop>400;
+  topBtn.style.opacity = show?'1':'0';
+  topBtn.style.pointerEvents = show?'auto':'none';
+});
+
+/* ===================== MOBILE MENU ===================== */
+document.getElementById('mobileMenuBtn').addEventListener('click',()=>document.getElementById('sidebar').classList.toggle('-translate-x-full'));
+
+/* ===================== INIT ===================== */
+updateProgressUI();
+const hash = location.hash.slice(1);
+go(ORDER.some(o=>o.id===hash) ? hash : 'overview');
+</script>
 
 </body></html>
