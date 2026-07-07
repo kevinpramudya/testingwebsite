@@ -719,7 +719,7 @@ function applyTheme(t){
   const ic = document.getElementById('themeIcon');
   if(ic) ic.className = 'ph text-lg ' + (t==='dark' ? 'ph-sun' : 'ph-moon');
   localStorage.setItem(TKEY, t);
-  if(dashLoaded && document.getElementById('dashboard').classList.contains('active')) renderDash(lastData, lastName);
+  if(window._dashLoaded && document.getElementById('dashboard').classList.contains('active')) renderDash(lastData, lastName);
 }
 function toggleTheme(){ applyTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark'); }
 applyTheme(localStorage.getItem(TKEY) || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light'));
@@ -961,7 +961,7 @@ function handleFile(file){
   };
   fr.readAsArrayBuffer(file);
 }
-function ensureDash(){ if(!dashLoaded){ renderDash(SAMPLE, null); dashLoaded = true; } }
+function ensureDash(){ if(!dashLoaded){ renderDash(SAMPLE, null); dashLoaded = true; window._dashLoaded = true; } }
 
 const fileInput = document.getElementById('csvInput');
 if(fileInput) fileInput.addEventListener('change', e=>{ if(e.target.files[0]) handleFile(e.target.files[0]); });
