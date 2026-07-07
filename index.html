@@ -7,6 +7,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
+<!-- UPGRADE: charts + baca file excel/csv -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
 <script>
   tailwind.config = {
     darkMode: 'class',
@@ -81,8 +85,8 @@
   .nav-item:hover{background:var(--surface-2);color:var(--text);}
   .nav-item.active{background:var(--soft);color:var(--soft-fg);font-weight:600;}
   .nav-item.active::before{content:"";position:absolute;right:0;top:8px;bottom:8px;width:3px;border-radius:3px;background:var(--primary);}
-  .nav-check{margin-left:auto;color:#16a34a;font-size:1rem;opacity:0;transition:.2s;}
-  .nav-item.done .nav-check{opacity:1;}
+  .nav-pin{margin-left:auto;color:#f59e0b;font-size:1rem;opacity:0;transition:.2s;}
+  .nav-item.pinned .nav-pin{opacity:1;}
 
   /* Timeline */
   .tl{position:relative;border-left:2px solid var(--border);margin-left:1rem;}
@@ -113,8 +117,15 @@
   .foot-link:hover{border-color:var(--primary);color:var(--primary);}
   .foot-link small{color:var(--faint);font-weight:500;display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;}
   .btn-done{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.1rem;border-radius:.8rem;font-weight:600;font-size:.85rem;border:1px solid var(--border);background:var(--surface);color:var(--muted);transition:.18s;}
-  .btn-done:hover{border-color:#16a34a;color:#16a34a;}
-  .btn-done.is-done{background:#16a34a;border-color:#16a34a;color:#fff;}
+  .btn-done:hover{border-color:#f59e0b;color:#f59e0b;}
+  .btn-done.is-done{background:#f59e0b;border-color:#f59e0b;color:#fff;}
+
+  /* Notes */
+  .notes-area{width:100%;min-height:110px;background:var(--surface-2);border:1px solid var(--border);border-radius:.8rem;padding:.9rem 1rem;color:var(--text);font-size:.9rem;resize:vertical;outline:none;font-family:Inter,sans-serif;}
+  .notes-area:focus{border-color:var(--primary);}
+
+  /* Dashboard dropzone */
+  #dropZone.drag{border-color:var(--primary);background:var(--surface-2);}
 
   /* Command palette */
   .cmd-overlay{position:fixed;inset:0;z-index:80;background:rgba(2,6,23,.55);backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;padding-top:12vh;}
@@ -168,13 +179,13 @@
         <span class="ml-auto kbd">⌘K</span>
       </button>
 
-      <!-- Progress -->
+      <!-- Bookmarks -->
       <div class="mt-4">
         <div class="flex items-center justify-between text-[11px] font-semibold t-faint uppercase tracking-wider mb-1.5">
-          <span>Progress</span><span id="progLabel">0 / 7</span>
+          <span>Bookmarks</span><span id="progLabel">0 pinned</span>
         </div>
         <div class="h-1.5 rounded-full soft-2 overflow-hidden">
-          <div id="progBar" class="h-full rounded-full transition-all" style="width:0;background:linear-gradient(90deg,var(--primary),#22d3ee)"></div>
+          <div id="progBar" class="h-full rounded-full transition-all" style="width:0;background:linear-gradient(90deg,#f59e0b,#fbbf24)"></div>
         </div>
       </div>
     </div>
@@ -206,14 +217,20 @@
             <span class="badge badge-primary"><i class="ph ph-sparkle"></i> Start Here</span>
           </div>
           <h2 class="sec-title t">Djarum CM360 Operations Guide</h2>
-          <p class="sec-sub">End-to-end workflow untuk men-set up, mengontrol kualitas, dan melaporkan campaign Djarum Super &amp; LA di Campaign Manager 360. Ikuti 7 fase di bawah secara berurutan.</p>
+          <p class="sec-sub">End-to-end workflow untuk men-set up, mengontrol kualitas, dan melaporkan campaign Djarum Super &amp; LA di Campaign Manager 360. Referensi lengkap untuk backup saat cuti &amp; penggunaan pribadi.</p>
         </header>
 
         <div class="grid sm:grid-cols-3 gap-4 mb-10">
           <div class="card p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--soft)"><i class="ph-fill ph-stack t" style="color:var(--soft-fg)"></i></div><div><p class="text-xs t-faint font-semibold uppercase">Phases</p><p class="text-lg font-bold t">7 Steps</p></div></div>
           <div class="card p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(168,85,247,.15)"><i class="ph-fill ph-robot" style="color:#a855f7"></i></div><div><p class="text-xs t-faint font-semibold uppercase">Automation</p><p class="text-lg font-bold t">AppScript</p></div></div>
-          <div class="card p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(16,185,129,.15)"><i class="ph-fill ph-check-circle" style="color:#10b981"></i></div><div><p class="text-xs t-faint font-semibold uppercase">Output</p><p class="text-lg font-bold t">Tags &amp; Report</p></div></div>
+          <div class="card p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(16,185,129,.15)"><i class="ph-fill ph-chart-line-up" style="color:#10b981"></i></div><div><p class="text-xs t-faint font-semibold uppercase">Output</p><p class="text-lg font-bold t">Tags &amp; Dashboard</p></div></div>
         </div>
+
+        <button onclick="go('dashboard')" class="card card-hover p-5 flex items-center gap-4 mb-8 w-full text-left">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white flex-shrink-0" style="background:var(--primary)"><i class="ph-fill ph-chart-bar text-2xl"></i></div>
+          <div><p class="font-bold t">Buka Data Dashboard →</p><p class="text-sm t-muted">Visualisasi performa CM360 (Impressions, Clicks, CTR, Cost) dari file report.</p></div>
+          <i class="ph ph-arrow-right ml-auto t-faint text-xl"></i>
+        </button>
 
         <h3 class="font-bold text-lg t mb-4">The Pipeline</h3>
         <div id="pipeline" class="grid sm:grid-cols-2 gap-4"></div>
@@ -222,7 +239,7 @@
           <i class="ph-fill ph-keyboard ico text-2xl"></i>
           <div>
             <h4 class="font-bold">Pro tip</h4>
-            <p class="text-sm mt-1">Gunakan <span class="kbd">⌘K</span> / <span class="kbd">Ctrl K</span> untuk cari cepat, panah <span class="kbd">←</span> <span class="kbd">→</span> untuk pindah fase, dan toggle 🌙 untuk dark mode. Progress kamu tersimpan otomatis di browser ini.</p>
+            <p class="text-sm mt-1">Gunakan <span class="kbd">⌘K</span> / <span class="kbd">Ctrl K</span> untuk cari cepat, panah <span class="kbd">←</span> <span class="kbd">→</span> untuk pindah fase, dan toggle 🌙 untuk dark mode. Kamu bisa <strong>Bookmark</strong> fase penting &amp; menulis <strong>catatan pribadi</strong> di tiap halaman — tersimpan otomatis di browser ini.</p>
           </div>
         </div>
       </section>
@@ -589,7 +606,7 @@
         <div class="card p-8 text-center">
           <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6" style="background:var(--soft)"><i class="ph ph-chart-line-up text-4xl" style="color:var(--soft-fg)"></i></div>
           <h3 class="text-2xl font-bold t mb-2">CM360 Reporting Console</h3>
-          <p class="t-muted max-w-lg mx-auto mb-6">Tidak perlu bikin report dari nol. Ada template tersimpan langsung di Reporting dashboard.</p>
+          <p class="t-muted max-w-lg mx-auto mb-6">Tidak perlu bikin report dari nol. Ada template tersimpan langsung di Reporting dashboard. Setelah download, buka <strong>Data Dashboard</strong> untuk visualisasinya.</p>
 
           <div class="soft rounded-xl p-5 text-left max-w-2xl mx-auto mb-8" style="border:1px solid var(--border)">
             <h4 class="font-bold t mb-2 flex items-center gap-2"><i class="ph-fill ph-magnifying-glass" style="color:var(--primary)"></i> Cara menemukan template:</h4>
@@ -601,13 +618,47 @@
             </ol>
           </div>
 
-          <div class="mb-8 rounded-xl overflow-hidden card max-w-2xl mx-auto">
-            <img src="https://drive.google.com/thumbnail?id=1ZjkspWTtSS1qWxBx-Dxw9XJkl5rbOufK&amp;sz=w1200" alt="Reporting Template Search Preview" class="w-full h-auto object-cover">
-          </div>
-
           <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button onclick="go('dashboard')" class="inline-flex items-center gap-2 text-white px-6 py-3 rounded-xl font-semibold shadow-lg" style="background:#10b981"><i class="ph-fill ph-chart-bar"></i> Buka Data Dashboard</button>
             <a href="https://campaignmanager.google.com/reporting/?defaultDs=9911796%3A469802#/reports/instantList/9911796%3A469802" target="_blank" class="inline-flex items-center gap-2 text-white px-6 py-3 rounded-xl font-semibold shadow-lg" style="background:var(--text)">Launch CM360 Reporting <i class="ph ph-arrow-up-right"></i></a>
             <a href="https://insidemedia-my.sharepoint.com/:x:/r/personal/kevin_pramudya_wppmedia_com/Documents/2026/DJARUM/Djarum%202026%20-%20Total%20Cost%20CM360%20.xlsx?d=wfb06e5fc484147e484d165ea01e2adfa&amp;csf=1&amp;web=1&amp;e=bmjxgp" target="_blank" class="inline-flex items-center gap-2 text-white px-6 py-3 rounded-xl font-semibold shadow-lg" style="background:var(--primary)"><i class="ph-fill ph-file-xls"></i> Open Total Cost Tracker</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= DASHBOARD ================= -->
+      <section id="dashboard" class="section-content">
+        <header class="mb-8">
+          <div class="flex items-center gap-2 flex-wrap mb-3">
+            <span class="badge badge-primary"><i class="ph ph-chart-bar"></i> Analytics</span>
+            <span class="badge badge-soft"><i class="ph ph-upload-simple"></i> Upload .xlsx / .csv</span>
+          </div>
+          <h2 class="sec-title t">CM360 Data Dashboard</h2>
+          <p class="sec-sub">Download report dari CM360 Reporting (.xlsx atau .csv), lalu drop di sini untuk visualisasi otomatis. Data diproses 100% di browser kamu — tidak dikirim ke mana pun.</p>
+        </header>
+
+        <div id="dropZone" class="card p-6 mb-4 text-center" style="border:2px dashed var(--border-strong);cursor:pointer" onclick="document.getElementById('csvInput').click()">
+          <i class="ph ph-cloud-arrow-up text-4xl" style="color:var(--primary)"></i>
+          <p class="font-semibold t mt-2">Klik atau drag file report ke sini</p>
+          <p class="text-xs t-faint mt-1">Mendukung .xlsx &amp; .csv dari CM360 Reporting</p>
+          <input id="csvInput" type="file" accept=".csv,.xlsx,.xls" style="display:none">
+        </div>
+        <p id="dashStatus" class="text-xs t-faint mb-6"></p>
+
+        <div id="kpiCards" class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6"></div>
+
+        <div class="grid lg:grid-cols-3 gap-6">
+          <div class="card p-6 lg:col-span-2">
+            <h3 class="font-bold t mb-4">Performa Harian</h3>
+            <div style="height:260px"><canvas id="chDaily"></canvas></div>
+          </div>
+          <div class="card p-6">
+            <h3 class="font-bold t mb-4">Split CPD vs OTT</h3>
+            <div style="height:260px"><canvas id="chSplit"></canvas></div>
+          </div>
+          <div class="card p-6 lg:col-span-3">
+            <h3 class="font-bold t mb-4">Impressions per Publisher</h3>
+            <div style="height:260px"><canvas id="chPub"></canvas></div>
           </div>
         </div>
       </section>
@@ -651,12 +702,16 @@ const GROUPS = [
   { label:'Post-Setup', items:[
     {id:'preview', n:'6. Publisher Preview QA', icon:'ph-bug', num:'6', kw:'preview network inspect tracker firing devtools 200 status'},
     {id:'reporting', n:'7. Reporting', icon:'ph-chart-bar', num:'7', kw:'reporting analytics template cost console kevin'}
+  ]},
+  { label:'Analytics', items:[
+    {id:'dashboard', n:'Data Dashboard', icon:'ph-chart-pie-slice', kw:'dashboard chart visualisasi data report impressions clicks ctr cost publisher upload'}
   ]}
 ];
 const ORDER  = GROUPS.flatMap(g=>g.items);
 const PHASES = ORDER.filter(o=>o.num);
-const PKEY = 'cm360-progress-v1', TKEY = 'cm360-theme';
-let done = new Set(JSON.parse(localStorage.getItem(PKEY) || '[]'));
+const PKEY = 'cm360-bookmarks-v1', NKEY = 'cm360-notes-v1', TKEY = 'cm360-theme';
+let pinned = new Set(JSON.parse(localStorage.getItem(PKEY) || '[]'));
+let notes  = {}; try{ notes = JSON.parse(localStorage.getItem(NKEY) || '{}'); }catch(e){ notes = {}; }
 
 /* ===================== THEME ===================== */
 function applyTheme(t){
@@ -664,6 +719,7 @@ function applyTheme(t){
   const ic = document.getElementById('themeIcon');
   if(ic) ic.className = 'ph text-lg ' + (t==='dark' ? 'ph-sun' : 'ph-moon');
   localStorage.setItem(TKEY, t);
+  if(dashLoaded && document.getElementById('dashboard').classList.contains('active')) renderDash(lastData, lastName);
 }
 function toggleTheme(){ applyTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark'); }
 applyTheme(localStorage.getItem(TKEY) || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light'));
@@ -680,7 +736,7 @@ GROUPS.forEach(g=>{
     const li = document.createElement('li');
     li.innerHTML = `<button class="nav-item" data-id="${it.id}" onclick="go('${it.id}')">
         <i class="ph ${it.icon} text-lg"></i><span>${it.n}</span>
-        <i class="ph-fill ph-check-circle nav-check"></i></button>`;
+        <i class="ph-fill ph-push-pin nav-pin"></i></button>`;
     ul.appendChild(li);
   });
   navList.appendChild(ul);
@@ -699,34 +755,51 @@ PHASES.forEach(it=>{
   pipe.appendChild(d);
 });
 
-/* ===================== BUILD SECTION FOOTERS ===================== */
+/* ===================== BUILD NOTES + SECTION FOOTERS ===================== */
 ORDER.forEach((it,i)=>{
   const sec = document.getElementById(it.id); if(!sec) return;
+
+  /* Notes (skip overview & dashboard) */
+  if(it.id!=='overview' && it.id!=='dashboard'){
+    const noteWrap = document.createElement('div'); noteWrap.style.marginTop='2rem';
+    noteWrap.innerHTML = `<h4 class="font-bold t mb-2 flex items-center gap-2"><i class="ph ph-note-pencil" style="color:var(--primary)"></i> Catatan Pribadi</h4>
+      <textarea class="notes-area" data-note="${it.id}" placeholder="Catatan untuk fase ini (mis. Site ID Vidio = 12345, hal penting saat handover cuti...)"></textarea>`;
+    sec.appendChild(noteWrap);
+  }
+
+  /* Footer nav */
   const prev = ORDER[i-1], next = ORDER[i+1];
   const f = document.createElement('div'); f.className='sec-footer';
   f.innerHTML =
     (prev ? `<a class="foot-link" onclick="go('${prev.id}')"><i class="ph ph-arrow-left"></i><span><small>Previous</small>${prev.n.replace(/^\d+\.\s/,'')}</span></a>`
           : `<span></span>`) +
     `<div class="flex items-center gap-2">` +
-      (it.num ? `<button class="btn-done" data-done="${it.id}" onclick="toggleDone('${it.id}')"></button>` : ``) +
+      `<button class="btn-done" data-done="${it.id}" onclick="togglePin('${it.id}')"></button>` +
       (next ? `<a class="foot-link" onclick="go('${next.id}')"><span class="text-right"><small>Next</small>${next.n.replace(/^\d+\.\s/,'')}</span><i class="ph ph-arrow-right"></i></a>` : ``) +
     `</div>`;
   sec.appendChild(f);
 });
 
-/* ===================== PROGRESS ===================== */
-function saveProgress(){ localStorage.setItem(PKEY, JSON.stringify([...done])); }
-function toggleDone(id){ done.has(id) ? done.delete(id) : done.add(id); saveProgress(); updateProgressUI(); }
-function updateProgressUI(){
-  document.querySelectorAll('.nav-item').forEach(b=> b.classList.toggle('done', done.has(b.dataset.id)));
+/* Init notes values */
+document.querySelectorAll('.notes-area').forEach(ta=>{
+  const id = ta.dataset.note;
+  ta.value = notes[id] || '';
+  ta.addEventListener('input', ()=>{ notes[id]=ta.value; localStorage.setItem(NKEY, JSON.stringify(notes)); });
+});
+
+/* ===================== BOOKMARKS ===================== */
+function saveBookmarks(){ localStorage.setItem(PKEY, JSON.stringify([...pinned])); }
+function togglePin(id){ pinned.has(id) ? pinned.delete(id) : pinned.add(id); saveBookmarks(); updateBookmarkUI(); }
+function updateBookmarkUI(){
+  document.querySelectorAll('.nav-item').forEach(b=> b.classList.toggle('pinned', pinned.has(b.dataset.id)));
   document.querySelectorAll('[data-done]').forEach(b=>{
-    const d = done.has(b.dataset.done);
+    const d = pinned.has(b.dataset.done);
     b.classList.toggle('is-done', d);
-    b.innerHTML = d ? '<i class="ph-fill ph-check-circle"></i> Completed' : '<i class="ph ph-circle"></i> Mark Complete';
+    b.innerHTML = d ? '<i class="ph-fill ph-push-pin"></i> Bookmarked' : '<i class="ph ph-push-pin"></i> Bookmark fase ini';
   });
-  const c = PHASES.filter(p=>done.has(p.id)).length;
-  document.getElementById('progLabel').textContent = `${c} / ${PHASES.length}`;
-  document.getElementById('progBar').style.width = (c/PHASES.length*100)+'%';
+  const c = pinned.size;
+  document.getElementById('progLabel').textContent = c + ' pinned';
+  document.getElementById('progBar').style.width = (ORDER.length ? c/ORDER.length*100 : 0)+'%';
 }
 
 /* ===================== NAVIGATION ===================== */
@@ -739,6 +812,7 @@ function go(id){
   document.getElementById('main').scrollTo(0,0);
   if(innerWidth < 768) document.getElementById('sidebar').classList.add('-translate-x-full');
   closeCmd();
+  if(id==='dashboard') setTimeout(ensureDash, 60);
 }
 
 /* ===================== COMMAND PALETTE ===================== */
@@ -753,7 +827,7 @@ function renderCmd(q){
   res.innerHTML = list.length ? list.map((o,i)=>
     `<div class="cmd-item ${i===0?'sel':''}" data-i="${i}" onclick="go('${o.id}')">
       <i class="ph ${o.icon} text-lg"></i><span class="font-medium">${o.n}</span>
-      ${done.has(o.id)?'<i class="ph-fill ph-check-circle ml-auto" style="color:#16a34a"></i>':''}</div>`).join('')
+      ${pinned.has(o.id)?'<i class="ph-fill ph-push-pin ml-auto" style="color:#f59e0b"></i>':''}</div>`).join('')
     : `<div class="p-6 text-center t-faint text-sm">No results.</div>`;
   res.querySelectorAll('.cmd-item').forEach(el=>el.addEventListener('mousemove',()=>setSel(+el.dataset.i)));
 }
@@ -771,6 +845,7 @@ document.addEventListener('keydown', e=>{
     if(e.key==='Enter' && list[sel]) go(list[sel].id);
     return;
   }
+  if(/INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
   const cur = ORDER.findIndex(o=>document.getElementById(o.id).classList.contains('active'));
   if(e.key==='ArrowRight' && ORDER[cur+1]) go(ORDER[cur+1].id);
   if(e.key==='ArrowLeft'  && ORDER[cur-1]) go(ORDER[cur-1].id);
@@ -799,8 +874,106 @@ main.addEventListener('scroll',()=>{
 /* ===================== MOBILE MENU ===================== */
 document.getElementById('mobileMenuBtn').addEventListener('click',()=>document.getElementById('sidebar').classList.toggle('-translate-x-full'));
 
+/* ===================== DASHBOARD ===================== */
+const SAMPLE = {
+  kpis:{impressions:8452310,clicks:41230,ctr:0.49,cost:187500000},
+  daily:[{date:'01 Jul',impressions:720000,clicks:3400},{date:'02 Jul',impressions:810000,clicks:3900},{date:'03 Jul',impressions:690000,clicks:3100},{date:'04 Jul',impressions:940000,clicks:4700},{date:'05 Jul',impressions:1020000,clicks:5200},{date:'06 Jul',impressions:880000,clicks:4100},{date:'07 Jul',impressions:990000,clicks:4800}],
+  byPublisher:[{publisher:'Vidio',impressions:2400000},{publisher:'WeTV',impressions:1800000},{publisher:'Detik',impressions:1600000},{publisher:'Kompas',impressions:1300000},{publisher:'Others',impressions:1352310}],
+  split:[{name:'CPD',value:62},{name:'OTT',value:38}]
+};
+let charts = {}, dashLoaded = false, lastData = SAMPLE, lastName = null;
+
+const cssVar = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmtNum = n => new Intl.NumberFormat('id-ID').format(Math.round(n));
+const rupiah = n => 'Rp ' + new Intl.NumberFormat('id-ID').format(Math.round(n));
+const toNum  = v => Number(String(v).replace(/[^0-9.\-]/g,'')) || 0;
+function pick(row, names){
+  const ks = Object.keys(row);
+  for(const n of names){ const k = ks.find(k=>k.toLowerCase().trim()===n); if(k) return row[k]; }
+  for(const n of names){ const k = ks.find(k=>k.toLowerCase().includes(n)); if(k) return row[k]; }
+  return '';
+}
+function rowsFromWorkbook(wb){
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  const aoa = XLSX.utils.sheet_to_json(ws,{header:1,blankrows:false,raw:false});
+  let h = aoa.findIndex(r=>r.some(c=>/impressions/i.test(String(c))));
+  if(h<0) h = aoa.findIndex(r=>r.some(c=>/^date$/i.test(String(c).trim())));
+  if(h<0) h = 0;
+  const headers = aoa[h].map(x=>String(x).trim()); const rows=[];
+  for(let i=h+1;i<aoa.length;i++){
+    const r = aoa[i]; if(!r || !r.length) continue;
+    if(/grand total/i.test(String(r[0]||''))) break;
+    const o={}; headers.forEach((hd,j)=>o[hd]=r[j]);
+    if(Object.values(o).some(v=>v!=='' && v!=null)) rows.push(o);
+  }
+  return rows;
+}
+function aggregate(rows){
+  let imp=0,clk=0,cost=0,cpd=0,ott=0; const daily=new Map(),pub=new Map();
+  rows.forEach(r=>{
+    const date = String(pick(r,['date'])||'');
+    const site = String(pick(r,['site (cm360)','site','publisher','placement'])||'—');
+    const i = toNum(pick(r,['impressions'])), c = toNum(pick(r,['clicks'])), m = toNum(pick(r,['media cost','total media cost','spend','cost']));
+    imp+=i; clk+=c; cost+=m;
+    if(date){ const d=daily.get(date)||{impressions:0,clicks:0}; d.impressions+=i; d.clicks+=c; daily.set(date,d); }
+    const p=pub.get(site)||{impressions:0}; p.impressions+=i; pub.set(site,p);
+    const blob = (site+' '+(pick(r,['ad','placement','campaign'])||'')).toLowerCase();
+    (blob.includes('ott') || /1x1/.test(blob)) ? ott+=i : cpd+=i;
+  });
+  const byPublisher = [...pub.entries()].map(([publisher,v])=>({publisher,...v})).sort((a,b)=>b.impressions-a.impressions).slice(0,8);
+  const split = (cpd||ott) ? [{name:'CPD',value:cpd},{name:'OTT',value:ott}] : [{name:'Total',value:imp}];
+  return { kpis:{impressions:imp,clicks:clk,ctr:imp?(clk/imp*100):0,cost}, daily:[...daily.entries()].map(([date,v])=>({date,...v})), byPublisher, split };
+}
+function renderDash(data, name){
+  lastData = data; lastName = name;
+  const s = document.getElementById('dashStatus');
+  if(s) s.textContent = name ? ('Sumber: '+name) : 'Menampilkan data contoh — upload report CM360 untuk data asli.';
+  const k = data.kpis;
+  document.getElementById('kpiCards').innerHTML = [
+    ['Impressions', fmtNum(k.impressions), 'ph-eye', cssVar('--primary')],
+    ['Clicks', fmtNum(k.clicks), 'ph-cursor-click', '#a855f7'],
+    ['CTR', k.ctr.toFixed(2)+'%', 'ph-percent', '#10b981'],
+    ['Total Cost', rupiah(k.cost), 'ph-money', '#f59e0b']
+  ].map(([l,v,ic,col])=>`<div class="card p-5"><div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background:${col}22"><i class="ph-fill ${ic}" style="color:${col}"></i></div><p class="text-xs t-faint font-semibold uppercase">${l}</p><p class="text-2xl font-bold t mt-1">${v}</p></div>`).join('');
+
+  const primary=cssVar('--primary'), border=cssVar('--border'), faint=cssVar('--faint'), text=cssVar('--text');
+  Chart.defaults.color = faint; Chart.defaults.font.family = 'Inter';
+  const mk = (id,cfg)=>{ if(charts[id]) charts[id].destroy(); charts[id] = new Chart(document.getElementById(id), cfg); };
+
+  mk('chDaily',{type:'line',data:{labels:data.daily.map(d=>d.date),datasets:[
+    {label:'Impressions',data:data.daily.map(d=>d.impressions),borderColor:primary,tension:.35,pointRadius:0},
+    {label:'Clicks',data:data.daily.map(d=>d.clicks),borderColor:'#10b981',tension:.35,pointRadius:0,yAxisID:'y1'}
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{grid:{color:border}},y:{grid:{color:border}},y1:{position:'right',grid:{drawOnChartArea:false}}},plugins:{legend:{labels:{color:text}}}}});
+
+  mk('chPub',{type:'bar',data:{labels:data.byPublisher.map(p=>p.publisher),datasets:[{label:'Impressions',data:data.byPublisher.map(p=>p.impressions),backgroundColor:primary,borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{grid:{display:false}},y:{grid:{color:border}}},plugins:{legend:{display:false}}}});
+
+  mk('chSplit',{type:'doughnut',data:{labels:data.split.map(s=>s.name),datasets:[{data:data.split.map(s=>s.value),backgroundColor:[primary,'#a855f7','#10b981','#f59e0b','#ef4444']}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{color:text}}}}});
+}
+function handleFile(file){
+  const fr = new FileReader();
+  fr.onload = e=>{
+    try{
+      const wb = XLSX.read(e.target.result,{type:'array'});
+      const rows = rowsFromWorkbook(wb);
+      if(!rows.length){ alert('Tidak menemukan baris data. Pastikan report punya kolom Impressions / Date.'); return; }
+      renderDash(aggregate(rows), file.name);
+    }catch(err){ alert('Gagal membaca file: '+err); }
+  };
+  fr.readAsArrayBuffer(file);
+}
+function ensureDash(){ if(!dashLoaded){ renderDash(SAMPLE, null); dashLoaded = true; } }
+
+const fileInput = document.getElementById('csvInput');
+if(fileInput) fileInput.addEventListener('change', e=>{ if(e.target.files[0]) handleFile(e.target.files[0]); });
+const dz = document.getElementById('dropZone');
+if(dz){
+  ['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{ e.preventDefault(); dz.classList.add('drag'); }));
+  ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{ e.preventDefault(); dz.classList.remove('drag'); }));
+  dz.addEventListener('drop', e=>{ const f=e.dataTransfer.files[0]; if(f) handleFile(f); });
+}
+
 /* ===================== INIT ===================== */
-updateProgressUI();
+updateBookmarkUI();
 const hash = location.hash.slice(1);
 go(ORDER.some(o=>o.id===hash) ? hash : 'overview');
 </script>
