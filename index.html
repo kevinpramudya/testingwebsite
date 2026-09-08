@@ -747,9 +747,6 @@
           <p class="text-xs t-faint mt-1">Mendukung .xlsx &amp; .csv dari CM360 Reporting</p>
           <input id="csvInput" type="file" accept=".csv,.xlsx,.xls" style="display:none">
         </div>
-        <button onclick="autoSyncDashboard()" class="w-full mt-3 card card-hover p-4 flex items-center justify-center gap-2 font-bold text-white shadow-lg" style="background:#10b981; border:none; cursor:pointer;">
-  <i class="ph-bold ph-arrows-clockwise text-xl"></i> Sync Real-time dari API
-</button>
         <p id="dashStatus" class="text-xs t-faint mb-2"></p>
         <div id="dashActions" class="flex flex-wrap items-center gap-2 mb-6" style="display:none">
           <button onclick="exportDashCSV()" class="px-3 py-1.5 rounded-lg text-xs font-semibold soft-2 t-muted flex items-center gap-1.5"><i class="ph ph-download-simple"></i> Export summary (CSV)</button>
@@ -1170,33 +1167,7 @@ if(dz){
   ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{ e.preventDefault(); dz.classList.remove('drag'); }));
   dz.addEventListener('drop', e=>{ const f=e.dataTransfer.files[0]; if(f) handleFile(f); });
 }
-/* ===================== AUTO SYNC API ===================== */
-// HAPUS TEKS DI BAWAH DAN PASTE URL WEB APP DARI STEP 4 DI SINI:
-const WEB_APP_URL = "https://script.google.com/a/macros/wppmedia.com/s/AKfycbxJF9GYuyJtpYtXy2jzXqbelS4aPcYzugOofZN2jqqE5ri-GxbbRoJ5Gq_et84BEAqj/exec"; 
 
-async function autoSyncDashboard() {
-  const status = document.getElementById('dashStatus');
-  if(status) status.textContent = 'Menarik data real-time dari Google Sheets...';
-  
-  try {
-    const response = await fetch(WEB_APP_URL);
-    const rows = await response.json();
-    
-    if(!rows || rows.length === 0) {
-      toast('Data kosong dari Sheet', 'ph-warning');
-      if(status) status.textContent = 'Data gagal ditarik atau sheet kosong.';
-      return;
-    }
-    
-    // Ini akan memproses data ke chart otomatis
-    renderDash(aggregate(rows), 'Auto-Sync API (Real-time)');
-    toast('Dashboard berhasil di-sync!');
-    
-  } catch(err) {
-    toast('Gagal sync data: ' + err.message, 'ph-warning');
-    if(status) status.textContent = 'Gagal terhubung ke API. Coba lagi.';
-  }
-}
 /* ===================== INIT ===================== */
 updateDoneUI();
 const hash = location.hash.slice(1);
