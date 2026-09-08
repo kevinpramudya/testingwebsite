@@ -1,10 +1,11 @@
+<!DOCTYPE html>
 <html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Djarum CM360 Operations Guide</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
 <!-- UPGRADE: charts + baca file excel/csv -->
@@ -79,6 +80,9 @@
   .c-blue{background:rgba(37,99,235,.10);border-color:rgba(37,99,235,.35);}
   .c-blue .ico,.c-blue h4{color:#2563eb;} .dark .c-blue .ico,.dark .c-blue h4{color:#60a5fa;}
   .c-blue p{color:#1e40af;} .dark .c-blue p{color:#bfdbfe;}
+  .c-green{background:rgba(16,185,129,.10);border-color:rgba(16,185,129,.35);}
+  .c-green .ico,.c-green h4{color:#059669;} .dark .c-green .ico,.dark .c-green h4{color:#34d399;}
+  .c-green p{color:#065f46;} .dark .c-green p{color:#a7f3d0;}
 
   /* Navigation */
   .nav-item{position:relative;width:100%;display:flex;align-items:center;gap:.75rem;padding:.7rem 1.5rem;font-size:.875rem;font-weight:500;color:var(--muted);text-align:left;transition:.18s;border-radius:0;}
@@ -87,6 +91,8 @@
   .nav-item.active::before{content:"";position:absolute;right:0;top:8px;bottom:8px;width:3px;border-radius:3px;background:var(--primary);}
   .nav-pin{margin-left:auto;color:#f59e0b;font-size:1rem;opacity:0;transition:.2s;}
   .nav-item.pinned .nav-pin{opacity:1;}
+  .nav-check{width:1.1rem;height:1.1rem;border-radius:999px;border:1.5px solid var(--border-strong);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:transparent;transition:.15s;}
+  .nav-check.done{background:#10b981;border-color:#10b981;color:#fff;}
 
   /* Timeline */
   .tl{position:relative;border-left:2px solid var(--border);margin-left:1rem;}
@@ -103,7 +109,7 @@
   .keyword{color:#c792ea;} .string{color:#9ece6a;} .function{color:#7aa2f7;} .comment{color:#5c6b85;font-style:italic;}
   code.inline{font-family:'JetBrains Mono',monospace;font-size:.82em;background:var(--surface-3);color:var(--soft-fg);padding:.1rem .4rem;border-radius:.35rem;}
 
-  .copy-btn{padding:.3rem .55rem;border-radius:.45rem;color:#94a3b8;background:rgba(255,255,255,.06);font-size:.85rem;transition:.15s;display:inline-flex;align-items:center;gap:.3rem;}
+  .copy-btn{padding:.3rem .55rem;border-radius:.45rem;color:#94a3b8;background:rgba(255,255,255,.06);font-size:.85rem;transition:.15s;display:inline-flex;align-items:center;gap:.3rem;border:none;cursor:pointer;}
   .copy-btn:hover{color:#fff;background:rgba(255,255,255,.14);}
 
   /* Sections + animation */
@@ -113,16 +119,17 @@
 
   /* Footer nav */
   .sec-footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
-  .foot-link{display:flex;align-items:center;gap:.6rem;padding:.7rem 1rem;border-radius:.8rem;border:1px solid var(--border);background:var(--surface);color:var(--text);font-weight:600;font-size:.85rem;transition:.18s;max-width:48%;}
+  .foot-link{display:flex;align-items:center;gap:.6rem;padding:.7rem 1rem;border-radius:.8rem;border:1px solid var(--border);background:var(--surface);color:var(--text);font-weight:600;font-size:.85rem;transition:.18s;max-width:48%;cursor:pointer;}
   .foot-link:hover{border-color:var(--primary);color:var(--primary);}
   .foot-link small{color:var(--faint);font-weight:500;display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;}
-  .btn-done{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.1rem;border-radius:.8rem;font-weight:600;font-size:.85rem;border:1px solid var(--border);background:var(--surface);color:var(--muted);transition:.18s;}
+  .btn-done{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.1rem;border-radius:.8rem;font-weight:600;font-size:.85rem;border:1px solid var(--border);background:var(--surface);color:var(--muted);transition:.18s;cursor:pointer;}
   .btn-done:hover{border-color:#f59e0b;color:#f59e0b;}
   .btn-done.is-done{background:#f59e0b;border-color:#f59e0b;color:#fff;}
 
   /* Notes */
   .notes-area{width:100%;min-height:110px;background:var(--surface-2);border:1px solid var(--border);border-radius:.8rem;padding:.9rem 1rem;color:var(--text);font-size:.9rem;resize:vertical;outline:none;font-family:Inter,sans-serif;}
   .notes-area:focus{border-color:var(--primary);}
+  .note-status{font-size:.7rem;color:var(--faint);margin-top:.4rem;height:1rem;}
 
   /* Dashboard dropzone */
   #dropZone.drag{border-color:var(--primary);background:var(--surface-2);}
@@ -135,11 +142,17 @@
   .cmd-res{max-height:50vh;overflow-y:auto;padding:.4rem;}
   .cmd-item{display:flex;align-items:center;gap:.8rem;padding:.7rem .8rem;border-radius:.6rem;cursor:pointer;color:var(--muted);}
   .cmd-item.sel,.cmd-item:hover{background:var(--soft);color:var(--soft-fg);}
+  .cmd-item .grp{margin-left:auto;font-size:.68rem;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;}
 
   .kbd{font-family:'JetBrains Mono',monospace;font-size:.7rem;background:var(--surface-3);border:1px solid var(--border);color:var(--muted);padding:.1rem .4rem;border-radius:.35rem;}
 
+  /* Toast */
+  #toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(8px);background:var(--text);color:var(--bg);font-size:.82rem;font-weight:600;padding:.65rem 1.1rem;border-radius:.7rem;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.2s;z-index:95;display:flex;align-items:center;gap:.5rem;}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
   ::-webkit-scrollbar{width:10px;} ::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:5px;}
   a,button{outline:none;} a:focus-visible,button:focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:.4rem;}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important;transition-duration:.001ms !important;} }
 </style>
 </head>
 
@@ -147,15 +160,17 @@
 
   <!-- Reading progress bar -->
   <div id="readbar" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--primary),#22d3ee);z-index:90;transition:width .1s;"></div>
+  <div id="toast"></div>
 
   <!-- Mobile Header -->
   <div class="md:hidden fixed top-0 left-0 right-0 h-16 z-50 flex items-center px-4 justify-between card" style="border-radius:0;border-left:0;border-right:0;border-top:0;">
     <h1 class="font-bold text-lg flex items-center gap-2 t"><i class="ph-fill ph-target" style="color:var(--primary)"></i> CM360 Ops</h1>
     <div class="flex items-center gap-2">
-      <button onclick="openCmd()" class="p-2 rounded-lg soft t-muted"><i class="ph ph-magnifying-glass text-xl"></i></button>
-      <button id="mobileMenuBtn" class="p-2 rounded-lg soft t-muted"><i class="ph ph-list text-xl"></i></button>
+      <button onclick="openCmd()" class="p-2 rounded-lg soft t-muted" aria-label="Search"><i class="ph ph-magnifying-glass text-xl"></i></button>
+      <button id="mobileMenuBtn" class="p-2 rounded-lg soft t-muted" aria-label="Menu"><i class="ph ph-list text-xl"></i></button>
     </div>
   </div>
+  <div id="sidebarScrim" class="md:hidden fixed inset-0 bg-black/40 z-30 hidden"></div>
 
   <!-- Sidebar -->
   <aside id="sidebar" class="fixed md:relative top-0 left-0 z-40 h-full w-72 card transform -translate-x-full md:translate-x-0 transition-transform duration-300 pt-16 md:pt-0 flex flex-col" style="border-radius:0;border-top:0;border-bottom:0;border-left:0;">
@@ -168,7 +183,7 @@
           <h1 class="text-lg font-bold t leading-tight">CM360 Ops</h1>
           <p class="text-[11px] t-faint font-semibold uppercase tracking-wider mt-0.5">Djarum Workflow</p>
         </div>
-        <button onclick="toggleTheme()" class="ml-auto p-2 rounded-lg soft t-muted hover:t" title="Toggle theme">
+        <button onclick="toggleTheme()" class="ml-auto p-2 rounded-lg soft t-muted hover:t" title="Toggle theme" aria-label="Toggle theme">
           <i id="themeIcon" class="ph ph-moon text-lg"></i>
         </button>
       </div>
@@ -176,16 +191,16 @@
       <!-- Search trigger -->
       <button onclick="openCmd()" class="mt-4 w-full flex items-center gap-2 text-sm soft bd rounded-xl px-3 py-2.5 t-faint hover:t-muted transition" style="border:1px solid var(--border)">
         <i class="ph ph-magnifying-glass"></i> Search guide…
-        <span class="ml-auto kbd">⌘K</span>
+        <span class="ml-auto kbd" id="cmdKbdHint">⌘K</span>
       </button>
 
-      <!-- Bookmarks -->
+      <!-- Progress -->
       <div class="mt-4">
         <div class="flex items-center justify-between text-[11px] font-semibold t-faint uppercase tracking-wider mb-1.5">
-          <span>Bookmarks</span><span id="progLabel">0 pinned</span>
+          <span>Progress fase</span><span id="progLabel">0 / 0 selesai</span>
         </div>
         <div class="h-1.5 rounded-full soft-2 overflow-hidden">
-          <div id="progBar" class="h-full rounded-full transition-all" style="width:0;background:linear-gradient(90deg,#f59e0b,#fbbf24)"></div>
+          <div id="progBar" class="h-full rounded-full transition-all" style="width:0;background:linear-gradient(90deg,#10b981,#34d399)"></div>
         </div>
       </div>
     </div>
@@ -195,7 +210,7 @@
     <div class="p-5 soft bd" style="border-top:1px solid var(--border)">
       <div class="flex items-center gap-3">
         <div class="relative">
-          <img src="https://ui-avatars.com/api/?name=Kevin+Pramudya&amp;background=2563eb&amp;color=fff" class="w-9 h-9 rounded-full shadow-sm">
+          <img src="https://ui-avatars.com/api/?name=Kevin+Pramudya&background=2563eb&color=fff" class="w-9 h-9 rounded-full shadow-sm" alt="">
           <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 rounded-full" style="border-color:var(--surface)"></div>
         </div>
         <div class="min-w-0">
@@ -235,11 +250,19 @@
         <h3 class="font-bold text-lg t mb-4">The Pipeline</h3>
         <div id="pipeline" class="grid sm:grid-cols-2 gap-4"></div>
 
-        <div class="callout c-blue mt-8">
+        <div class="callout c-green mt-8">
+          <i class="ph-fill ph-megaphone-simple ico text-2xl"></i>
+          <div>
+            <h4 class="font-bold">CM360 platform updates (2026)</h4>
+            <p class="text-sm mt-1">Google terus mengubah CM360 sepanjang 2025–2026. Cek fase <button class="underline font-semibold" style="color:inherit" onclick="go('updates')">"Platform Updates"</button> di sidebar sebelum onboarding campaign baru — beberapa langkah lama (Creative Projects, Natural Search) sudah tidak berlaku.</p>
+          </div>
+        </div>
+
+        <div class="callout c-blue mt-4">
           <i class="ph-fill ph-keyboard ico text-2xl"></i>
           <div>
             <h4 class="font-bold">Pro tip</h4>
-            <p class="text-sm mt-1">Gunakan <span class="kbd">⌘K</span> / <span class="kbd">Ctrl K</span> untuk cari cepat, panah <span class="kbd">←</span> <span class="kbd">→</span> untuk pindah fase, dan toggle 🌙 untuk dark mode. Kamu bisa <strong>Bookmark</strong> fase penting &amp; menulis <strong>catatan pribadi</strong> di tiap halaman — tersimpan otomatis di browser ini.</p>
+            <p class="text-sm mt-1">Gunakan <span class="kbd">⌘K</span> / <span class="kbd">Ctrl K</span> untuk cari cepat (bisa cari isi catatan juga), panah <span class="kbd">←</span> <span class="kbd">→</span> untuk pindah fase, dan toggle 🌙 untuk dark mode. Kamu bisa tandai fase <strong>Selesai</strong> &amp; menulis <strong>catatan pribadi</strong> di tiap halaman — tersimpan otomatis di browser ini (lihat tombol <strong>Export Notes</strong> di footer tiap fase untuk backup ke file).</p>
           </div>
         </div>
       </section>
@@ -259,14 +282,23 @@
           <div class="card card-hover p-6">
             <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(239,68,68,.12)"><i class="ph-fill ph-user-circle text-2xl" style="color:#ef4444"></i></div>
             <h3 class="text-lg font-bold t">For Djarum Super</h3>
-            <p class="text-sm t-muted mt-2 mb-4 font-mono">hendra.halim@wppmedia.com</p>
+            <div class="flex items-center gap-2 mt-2 mb-4">
+              <p class="text-sm t-muted font-mono">hendra.halim@wppmedia.com</p>
+              <button onclick="copyText('hendra.halim@wppmedia.com',this)" class="p-1.5 rounded-md soft-2 t-faint hover:t-muted" title="Copy email"><i class="ph ph-copy text-sm"></i></button>
+            </div>
             <a href="mailto:hendra.halim@wppmedia.com" class="inline-flex items-center gap-2 text-sm font-semibold" style="color:var(--primary)">Send Email <i class="ph ph-envelope-simple"></i></a>
           </div>
           <div class="card card-hover p-6">
             <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 soft-2"><i class="ph-fill ph-user-circle text-2xl t-muted"></i></div>
             <h3 class="text-lg font-bold t">For LA</h3>
-            <p class="text-sm t-muted mt-2 mb-4 font-mono">hilda.fauziyah@wppmedia.com</p>
-            <p class="text-sm t-muted mt-2 mb-4 font-mono">ichsan.hasmi@wppmedia.com</p>
+            <div class="flex items-center gap-2 mt-2">
+              <p class="text-sm t-muted font-mono">hilda.fauziyah@wppmedia.com</p>
+              <button onclick="copyText('hilda.fauziyah@wppmedia.com',this)" class="p-1.5 rounded-md soft-2 t-faint hover:t-muted" title="Copy email"><i class="ph ph-copy text-sm"></i></button>
+            </div>
+            <div class="flex items-center gap-2 mt-1 mb-4">
+              <p class="text-sm t-muted font-mono">ichsan.hasmi@wppmedia.com</p>
+              <button onclick="copyText('ichsan.hasmi@wppmedia.com',this)" class="p-1.5 rounded-md soft-2 t-faint hover:t-muted" title="Copy email"><i class="ph ph-copy text-sm"></i></button>
+            </div>
             <a href="mailto:hilda.fauziyah@wppmedia.com" class="inline-flex items-center gap-2 text-sm font-semibold" style="color:var(--primary)">Send Email <i class="ph ph-envelope-simple"></i></a>
           </div>
         </div>
@@ -297,13 +329,13 @@
             <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(37,99,235,.12)"><i class="ph ph-image-square text-2xl" style="color:var(--primary)"></i></div>
             <h3 class="text-lg font-bold t">CPD (Full Serve)</h3>
             <p class="text-sm t-muted mt-2 mb-4">Display/banner standar — kita host &amp; upload kreatif HTML5 langsung ke CM360.</p>
-            <a href="https://docs.google.com/spreadsheets/d/16hKiU1hrZHnfsUfJYVody8MQoOatf7AwuCDWg9Ddwhc/edit?gid=107155785#gid=107155785" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold" style="color:var(--primary)">Open Original CPD Brief <i class="ph ph-arrow-up-right"></i></a>
+            <a href="https://docs.google.com/spreadsheets/d/16hKiU1hrZHnfsUfJYVody8MQoOatf7AwuCDWg9Ddwhc/edit?gid=107155785#gid=107155785" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold" style="color:var(--primary)">Open Original CPD Brief <i class="ph ph-arrow-up-right"></i></a>
           </div>
           <div class="card card-hover p-6">
             <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(168,85,247,.12)"><i class="ph ph-device-mobile-camera text-2xl" style="color:#a855f7"></i></div>
             <h3 class="text-lg font-bold t">OTT / Direct Vendor</h3>
             <p class="text-sm t-muted mt-2 mb-4">Tracking-only (1×1 tracker). Vendor host kreatifnya, kita hanya beri tracking pixel.</p>
-            <a href="https://docs.google.com/spreadsheets/d/1_ftwUgOpmrOjzlRvL2xYBFh7-npNCK8-/edit?gid=910089789#gid=910089789" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold" style="color:#a855f7">Open Original OTT Brief <i class="ph ph-arrow-up-right"></i></a>
+            <a href="https://docs.google.com/spreadsheets/d/1_ftwUgOpmrOjzlRvL2xYBFh7-npNCK8-/edit?gid=910089789#gid=910089789" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold" style="color:#a855f7">Open Original OTT Brief <i class="ph ph-arrow-up-right"></i></a>
           </div>
         </div>
 
@@ -312,6 +344,14 @@
           <div>
             <h4 class="font-bold">Mandatory: Purchase Order (PO) Number</h4>
             <p class="text-sm mt-1">Selalu minta <strong>PO Number</strong> ke planner! Copy &amp; sertakan PO Number di taxonomy untuk semua tipe campaign (CPD/OTT). Jangan lanjut tanpa itu. <strong>UTM link</strong> juga harus diminta/diupdate oleh planner.</p>
+          </div>
+        </div>
+
+        <div class="callout c-blue mt-4">
+          <i class="ph-fill ph-scales ico text-2xl"></i>
+          <div>
+            <h4 class="font-bold">EU political ads declaration</h4>
+            <p class="text-sm mt-1">Setiap pembuatan Campaign baru di CM360 kini wajib menjawab pertanyaan deklarasi iklan politik UE (biasanya jawab <em>"No, this campaign doesn't have EU political ads"</em> untuk campaign Djarum). Jangan sampai terlewat, campaign tidak bisa disave tanpa ini.</p>
           </div>
         </div>
       </section>
@@ -331,13 +371,18 @@
         <div class="card p-6 mb-8">
           <div class="flex items-center justify-between flex-wrap gap-3 mb-4">
             <h3 class="text-xl font-bold t">HTML5 Ad Tester</h3>
-            <a href="https://www.previewads.com/html5-ad-tester" target="_blank" class="px-4 py-2 rounded-lg text-sm font-medium text-white flex items-center gap-2" style="background:var(--text)">Launch Tester <i class="ph ph-rocket-launch"></i></a>
+            <div class="flex items-center gap-2 flex-wrap">
+              <a href="https://h5validator.appspot.com/dcm/asset" target="_blank" rel="noopener" class="px-4 py-2 rounded-lg text-sm font-medium t soft-2 flex items-center gap-2">Google's Official Validator <i class="ph ph-shield-check"></i></a>
+              <a href="https://www.previewads.com/html5-ad-tester" target="_blank" rel="noopener" class="px-4 py-2 rounded-lg text-sm font-medium text-white flex items-center gap-2" style="background:var(--text)">Launch Quick Tester <i class="ph ph-rocket-launch"></i></a>
+            </div>
           </div>
           <ul class="space-y-3 t-muted text-sm">
             <li class="flex items-start gap-2"><i class="ph-fill ph-check-circle text-green-500 mt-0.5 text-lg"></i> Extract/Upload ZIP dari creative team.</li>
             <li class="flex items-start gap-2"><i class="ph-fill ph-check-circle text-green-500 mt-0.5 text-lg"></i> Verifikasi animasi load tanpa layar kosong.</li>
             <li class="flex items-start gap-2"><i class="ph-fill ph-check-circle text-green-500 mt-0.5 text-lg"></i> Klik banner — apakah membuka tab baru?</li>
             <li class="flex items-start gap-2"><i class="ph-fill ph-check-circle text-green-500 mt-0.5 text-lg"></i> Dimensi sesuai media plan?</li>
+            <li class="flex items-start gap-2"><i class="ph-fill ph-check-circle text-green-500 mt-0.5 text-lg"></i> File size di bawah limit CM360 (umumnya 5.5MB max initial load — cek limit terbaru per placement di Ad Settings).</li>
+            <li class="flex items-start gap-2"><i class="ph-fill ph-check-circle text-green-500 mt-0.5 text-lg"></i> Validasi juga lewat <strong>Google's Official HTML5 Validator</strong> di atas — lebih akurat mendeteksi error clickTag dibanding tester pihak ketiga.</li>
           </ul>
         </div>
 
@@ -348,12 +393,15 @@
           <div class="grid sm:grid-cols-2 gap-3">
             <div class="soft rounded-xl p-4 bd" style="border:1px solid var(--border)">
               <code class="inline">%%CLICK_URL_UNESC%%</code>
-              <p class="text-xs t-muted mt-2">Un-escaped — dipakai saat URL <strong>langsung diteruskan</strong> ke <code class="inline">window.open()</code> / variabel clickTag. <span class="font-semibold">Default untuk HTML5.</span></p>
+              <p class="text-xs t-muted mt-2">Un-escaped — dipakai saat URL <strong>langsung diteruskan</strong> ke <code class="inline">window.open()</code> / variabel clickTag. <span class="font-semibold">Default untuk HTML5.</span> Masih valid per dokumentasi CM360 terbaru.</p>
             </div>
             <div class="soft rounded-xl p-4 bd" style="border:1px solid var(--border)">
               <code class="inline">%%CLICK_URL_ESC%%</code>
               <p class="text-xs t-muted mt-2">Escaped — dipakai saat URL <strong>di-append sebelum landing page</strong> (mis. redirect bertingkat / di-encode lagi).</p>
             </div>
+          </div>
+          <div class="mt-3 soft-2 rounded-xl p-4 text-xs t-muted" style="border:1px solid var(--border)">
+            <strong class="t">Catatan:</strong> jika kreatif punya lebih dari satu area klik (multiple clickTags), setiap area butuh variabel clickTag terpisah (mis. <code class="inline">clickTag2</code>, <code class="inline">clickTag3</code>) yang masing-masing di-assign ke Landing Page berbeda saat Creative Assignment di CM360.
           </div>
         </div>
 
@@ -426,6 +474,14 @@
           <p class="sec-sub">Tutorial lengkap memakai otomasi Google Sheets AppScript untuk generate naming convention &amp; format Import CM360 hanya dengan 1-Klik.</p>
         </header>
 
+        <div class="callout c-red mb-6">
+          <i class="ph-fill ph-warning-circle ico text-2xl"></i>
+          <div>
+            <h4 class="font-bold">Wajib: simpan sebagai CSV sebelum import</h4>
+            <p class="text-sm mt-1">Dokumentasi resmi CM360 mensyaratkan file bulk sheet di-save sebagai <strong>.csv</strong> sebelum diupload lewat tombol Import — file <code class="inline">.xlsx</code> hasil export AppScript sering ditolak atau kolomnya salah baca. Buka file Excel-nya, <strong>File › Save As › CSV (Comma delimited)</strong>, baru upload versi CSV itu ke CM360.</p>
+          </div>
+        </div>
+
         <div class="space-y-8">
           <!-- CPD -->
           <div class="card overflow-hidden">
@@ -437,14 +493,14 @@
                   <p class="text-sm t-muted">Pakai menu <strong style="background:var(--soft);color:var(--soft-fg)" class="px-1.5 py-0.5 rounded">🤖 CM360 Tools</strong> di top bar Spreadsheet.</p>
                 </div>
               </div>
-              <a href="https://docs.google.com/spreadsheets/d/1eSwvL8f2sckfBtC0OZJVCGz9-Laa6Fwf53C42QkaMYw/edit?gid=1007685084#gid=1007685084" target="_blank" class="inline-flex items-center gap-2 card px-4 py-2 font-semibold text-sm whitespace-nowrap" style="color:var(--primary)">Open CPD Taxonomy Sheet <i class="ph ph-arrow-up-right"></i></a>
+              <a href="https://docs.google.com/spreadsheets/d/1eSwvL8f2sckfBtC0OZJVCGz9-Laa6Fwf53C42QkaMYw/edit?gid=1007685084#gid=1007685084" target="_blank" rel="noopener" class="inline-flex items-center gap-2 card px-4 py-2 font-semibold text-sm whitespace-nowrap" style="color:var(--primary)">Open CPD Taxonomy Sheet <i class="ph ph-arrow-up-right"></i></a>
             </div>
             <div class="p-6">
               <div class="tl space-y-7 pb-1">
                 <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">1</div><h4 class="font-bold t">Run Taxonomy Sync</h4><p class="t-muted text-sm mt-1">Pilih <strong>🤖 CM360 Tools › 1. Generate &amp; Sync Taxonomy (Active Sheet)</strong>. Script membaca nama publisher, mengidentifikasi PO Number (akan prompt jika kosong), dan generate taxonomy standar.</p></div>
                 <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">2</div><h4 class="font-bold t">Initial Setup di CM360</h4><p class="t-muted text-sm mt-1 mb-2">Buat base assets dulu di CM360:</p>
                   <ul class="list-disc list-inside text-sm t-muted space-y-1 soft p-3 rounded-lg" style="border:1px solid var(--border)">
-                    <li><strong>Campaign:</strong> buat campaign baru. Advertiser = <strong>Djarum_ID</strong>. Untuk EU political ads pilih <i>"No, this campaign doesn't have EU political ads"</i>. Set start &amp; end date persis.</li>
+                    <li><strong>Campaign:</strong> buat campaign baru. Advertiser = <strong>Djarum_ID</strong>. Jawab pertanyaan EU political ads dengan <i>"No, this campaign doesn't have EU political ads"</i>. Set start &amp; end date persis.</li>
                     <li><strong>Landing Pages:</strong> Landing Page › Batch. Copy kolom "LP Name" &amp; "LP URL" dari sheet, paste, save.</li>
                     <li><strong>Creatives:</strong> New › Creative › Batch Upload. Upload semua ZIP HTML5 yang sudah lolos QA.</li>
                   </ul>
@@ -455,7 +511,8 @@
                     <li><strong>LP ID:</strong> buka Campaign <i>Properties</i> › section Landing Pages, copy teks berisi ID (mis. <code class="inline">Detik_FC_Apps 42576935</code>). Ambil angkanya, paste ke sheet.</li>
                   </ul>
                 </div>
-                <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">4</div><h4 class="font-bold t">Generate Export &amp; Import</h4><p class="t-muted text-sm mt-1">Setelah ID terisi, klik <strong>🤖 CM360 Tools › 2. Generate Format CM360 Import</strong>. Download sebagai Excel (.xlsx). Lalu di Campaign CM360 klik <strong>Import</strong> (kanan atas), upload file, Save — semua ads, placements, &amp; assignment terbentuk otomatis!</p></div>
+                <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">4</div><h4 class="font-bold t">Generate Export &amp; Import</h4><p class="t-muted text-sm mt-1">Setelah ID terisi, klik <strong>🤖 CM360 Tools › 2. Generate Format CM360 Import</strong>. Download sebagai Excel, lalu <strong>save-as CSV</strong> (lihat catatan merah di atas). Di Campaign CM360 klik <strong>Import</strong> (kanan atas), upload file CSV, Save — semua ads, placements, &amp; assignment terbentuk otomatis. Placeholder ID baris baru harus mengandung minimal satu huruf/simbol (mis. <code class="inline">PL-01</code>), tidak boleh angka murni.</p></div>
+                <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">5</div><h4 class="font-bold t">Cek Sheet Status</h4><p class="t-muted text-sm mt-1">Setelah upload, klik <strong>Sheet Status</strong> di campaign untuk memantau progress import — proses berjalan async dan bisa perlu beberapa menit untuk campaign besar. Jika ada baris error, CM360 menandai baris & alasan spesifiknya di kolom status.</p></div>
               </div>
             </div>
           </div>
@@ -470,14 +527,14 @@
                   <p class="text-sm t-muted">Pakai menu <strong style="background:rgba(168,85,247,.2);color:#a855f7" class="px-1.5 py-0.5 rounded">🎬 OTT/Tracker Tools</strong>.</p>
                 </div>
               </div>
-              <a href="https://docs.google.com/spreadsheets/d/1G75tFLf2iGx8V050tu7eHiKhzr5qQ_5q0k7bu-C7YRY/edit?gid=41561794#gid=41561794" target="_blank" class="inline-flex items-center gap-2 card px-4 py-2 font-semibold text-sm whitespace-nowrap" style="color:#a855f7">Open OTT Taxonomy Sheet <i class="ph ph-arrow-up-right"></i></a>
+              <a href="https://docs.google.com/spreadsheets/d/1G75tFLf2iGx8V050tu7eHiKhzr5qQ_5q0k7bu-C7YRY/edit?gid=41561794#gid=41561794" target="_blank" rel="noopener" class="inline-flex items-center gap-2 card px-4 py-2 font-semibold text-sm whitespace-nowrap" style="color:#a855f7">Open OTT Taxonomy Sheet <i class="ph ph-arrow-up-right"></i></a>
             </div>
             <div class="p-6">
               <div class="tl space-y-7 pb-1">
                 <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">1</div><h4 class="font-bold t">Run Taxonomy OTT</h4><p class="t-muted text-sm mt-1">Pilih <strong>🎬 OTT/Tracker Tools › 1. Generate &amp; Sync Taxonomy OTT</strong>. Script mengekstrak platform (WeTV, Vidio) &amp; konteks campaign (SeaGames, Mobile) untuk membangun <i>Smart Contextual Landing Page Logic</i>.</p></div>
-                <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">2</div><h4 class="font-bold t">Setup Trackers di CM360</h4><p class="t-muted text-sm mt-1">Buat Campaign &amp; Batch Upload Landing pages seperti CPD. Tapi untuk Creatives, buat manual <strong>New › Creative › Tracking</strong> tiap placement (bukan upload HTML5).</p></div>
+                <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">2</div><h4 class="font-bold t">Setup Trackers di CM360</h4><p class="t-muted text-sm mt-1">Buat Campaign &amp; Batch Upload Landing pages seperti CPD. Tapi untuk Creatives, buat manual <strong>New › Creative › Tracking</strong> tiap placement (bukan upload HTML5), atau pakai fitur <strong>Batch Upload Third-Party Asset URLs</strong> jika volume tracker banyak.</p></div>
                 <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">3</div><h4 class="font-bold t">Isi Kolom Kuning</h4><p class="t-muted text-sm mt-1">Copy Tracking Creative ID &amp; LP ID dari CM360, paste ke kolom kuning di sheet taxonomy.</p></div>
-                <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">4</div><h4 class="font-bold t">Generate Export &amp; Import</h4><p class="t-muted text-sm mt-1">Jalankan <strong>🎬 OTT/Tracker Tools › 2. Generate Format CM360 Import</strong>. Download Excel &amp; import via tombol Import di CM360. <i>Berbeda dgn CPD, script otomatis set Ad &amp; Creative Type = "Tracking" dan dimensi = "1×1".</i></p></div>
+                <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">4</div><h4 class="font-bold t">Generate Export &amp; Import</h4><p class="t-muted text-sm mt-1">Jalankan <strong>🎬 OTT/Tracker Tools › 2. Generate Format CM360 Import</strong>. Download, <strong>save-as CSV</strong>, lalu import via tombol Import di CM360. <i>Berbeda dgn CPD, script otomatis set Ad &amp; Creative Type = "Tracking" dan dimensi = "1×1".</i></p></div>
               </div>
               <div class="mt-6 callout c-blue">
                 <i class="ph-fill ph-info ico text-xl"></i>
@@ -504,9 +561,9 @@
         </header>
 
         <div class="tl space-y-8 pb-4">
-          <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">1</div><h3 class="font-bold text-lg t">Campaign Creation</h3><p class="t-muted mt-1 text-sm">Create Campaign › isi Campaign Name › Advertiser: <strong>Djarum_ID</strong> › set Schedule Start &amp; End date.</p></div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">1</div><h3 class="font-bold text-lg t">Campaign Creation</h3><p class="t-muted mt-1 text-sm">Create Campaign › isi Campaign Name › Advertiser: <strong>Djarum_ID</strong> › set Schedule Start &amp; End date › jawab deklarasi EU political ads.</p></div>
           <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">2</div><h3 class="font-bold text-lg t">Landing Pages</h3><p class="t-muted mt-1 text-sm">Klik tombol Landing Page. URL tunggal: isi Name &amp; URL. Banyak: klik <strong>Batch</strong> (butuh 2 kolom Excel: Name &amp; URL) lalu paste.</p></div>
-          <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">3</div><h3 class="font-bold text-lg t">Upload Creatives</h3><p class="t-muted mt-1 text-sm">Klik <strong>New › Creative › Batch Upload</strong>. Upload ZIP HTML5 yang lolos QA.</p></div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">3</div><h3 class="font-bold text-lg t">Upload Creatives</h3><p class="t-muted mt-1 text-sm">Klik <strong>New › Creative › Batch Upload</strong>. Upload ZIP HTML5 yang lolos QA. <span class="t-faint">Catatan: fitur "Creative Projects"/Ads Creative Studio sudah di-sunset — gunakan alur Batch Upload standar ini.</span></p></div>
           <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">4</div><h3 class="font-bold text-lg t">Setup Placement</h3><p class="t-muted mt-1 text-sm">Klik <strong>New › Placement</strong>. Pilih Publisher (mis. Kompas). Isi Placement Name, set Dimensi sesuai brief, Save.</p></div>
           <div class="relative pl-8"><div class="tl-dot" style="background:var(--primary)">5</div><h3 class="font-bold text-lg t">Ad &amp; Assignments</h3>
             <div class="soft p-4 rounded-xl mt-3 space-y-2 text-sm t-muted" style="border:1px solid var(--border)">
@@ -543,7 +600,7 @@
         </div>
 
         <div class="tl space-y-8 pb-4">
-          <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">1</div><h3 class="font-bold text-lg t">Campaign Creation</h3><p class="t-muted mt-1 text-sm">Create Campaign › OTT Campaign Name › Advertiser: <strong>Djarum_ID</strong> › set Schedule Start &amp; End date.</p></div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">1</div><h3 class="font-bold text-lg t">Campaign Creation</h3><p class="t-muted mt-1 text-sm">Create Campaign › OTT Campaign Name › Advertiser: <strong>Djarum_ID</strong> › set Schedule Start &amp; End date › jawab deklarasi EU political ads.</p></div>
           <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">2</div><h3 class="font-bold text-lg t">Landing Pages</h3><p class="t-muted mt-1 text-sm">Set Landing Pages. Bisa pakai Batch entry jika punya banyak contextual landing page.</p></div>
           <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">3</div><h3 class="font-bold text-lg t">Create Tracking Creative</h3><p class="t-muted mt-1 text-sm">JANGAN Batch Upload. Klik <strong>New › Creative › Tracking</strong>. Beri nama identik dgn placement.</p></div>
           <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">4</div><h3 class="font-bold text-lg t">Setup 1×1 Placement</h3><p class="t-muted mt-1 text-sm">Klik <strong>New › Placement</strong>. Pilih Publisher (mis. Vidio.com). Isi Placement Name. <strong>Crucial:</strong> set dimensi strictly ke <strong>1×1</strong>.</p></div>
@@ -554,7 +611,7 @@
               <p><strong class="t">3. Placement Assignment:</strong> assign Standard Ad ke 1×1 Placement, Save.</p>
             </div>
           </div>
-          <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">6</div><h3 class="font-bold text-lg t">Generate Tags</h3><p class="t-muted mt-1 text-sm">Klik <strong>Tags</strong> (kanan atas), download Excel tags. Berikan tracking pixel ini ke OTT vendor.</p></div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:#a855f7">6</div><h3 class="font-bold text-lg t">Generate Tags</h3><p class="t-muted mt-1 text-sm">Klik <strong>Tags</strong> (kanan atas), download Excel tags. Berikan tracking pixel ini ke OTT vendor. Jika publisher butuh pixel tambahan (viewability/verification pihak ketiga), gunakan kolom <strong>Third-Party Vendor Tracking Tag</strong> yang sekarang mendukung multi-event (impression, start, firstQuartile, midpoint, complete).</p></div>
         </div>
       </section>
 
@@ -583,7 +640,15 @@
           <div class="card p-5"><div class="flex items-center gap-3 mb-3"><span class="w-6 h-6 rounded-md flex items-center justify-center font-bold text-xs" style="background:var(--soft);color:var(--soft-fg)">4</span><h4 class="font-bold t">Verify Status</h4></div><p class="text-sm t-muted">Pastikan ad visible &amp; clickable. Cek Network: request fired dengan Status <strong>200 (OK)</strong>.</p></div>
         </div>
 
-        <div class="callout c-red mt-6">
+        <div class="callout c-blue mt-6">
+          <i class="ph-fill ph-cookie ico text-2xl"></i>
+          <div>
+            <h4 class="font-bold">Catatan cookie & pengukuran (2026)</h4>
+            <p class="text-sm mt-1">Google Marketing Platform kini menambah dukungan <strong>CHIPS (partitioned cookies)</strong> dan first-party local storage untuk Floodlight, jadi jangan panik kalau angka klik di 3rd-party publisher sedikit berbeda dari CM360 — ini normal karena metode atribusinya makin privacy-safe. Selisih besar (bukan cuma beda kecil) baru dianggap "not firing".</p>
+          </div>
+        </div>
+
+        <div class="callout c-red mt-4">
           <i class="ph-fill ph-warning-circle ico text-2xl"></i>
           <div>
             <h4 class="font-bold">Not Firing?</h4>
@@ -609,7 +674,7 @@
           <h3 class="text-2xl font-bold t mb-2">CM360 Reporting Console</h3>
           <p class="t-muted max-w-lg mx-auto mb-6">Tidak perlu bikin report dari nol. Ada template tersimpan langsung di Reporting dashboard. Setelah download, buka <strong>Data Dashboard</strong> untuk visualisasinya.</p>
 
-          <div class="soft rounded-xl p-5 text-left max-w-2xl mx-auto mb-8" style="border:1px solid var(--border)">
+          <div class="soft rounded-xl p-5 text-left max-w-2xl mx-auto mb-6" style="border:1px solid var(--border)">
             <h4 class="font-bold t mb-2 flex items-center gap-2"><i class="ph-fill ph-magnifying-glass" style="color:var(--primary)"></i> Cara menemukan template:</h4>
             <ol class="list-decimal list-inside text-sm t-muted space-y-2 ml-1">
               <li>Buka interface Reporting via tombol di bawah.</li>
@@ -619,10 +684,48 @@
             </ol>
           </div>
 
+          <div class="callout c-amber text-left max-w-2xl mx-auto mb-8">
+            <i class="ph-fill ph-warning-circle ico text-xl"></i>
+            <div>
+              <h5 class="text-sm font-bold">Field yang sudah hilang/berubah di 2026</h5>
+              <p class="text-xs mt-1">Field <strong>"Natural Search"</strong> sudah dihapus dari UI &amp; API CM360. Metrik <strong>Paid Social</strong> yang bersumber dari Search Ads 360 (mis. data Meta) juga sudah tidak muncul lagi di report template CM360 — cek langsung di SA360 untuk data itu. Kalau template lama tiba-tiba kosong di kolom tsb, ini penyebabnya, bukan bug.</p>
+            </div>
+          </div>
+
           <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button onclick="go('dashboard')" class="inline-flex items-center gap-2 text-white px-6 py-3 rounded-xl font-semibold shadow-lg" style="background:#10b981"><i class="ph-fill ph-chart-bar"></i> Buka Data Dashboard</button>
-            <a href="https://campaignmanager.google.com/reporting/?defaultDs=9911796%3A469802#/reports/instantList/9911796%3A469802" target="_blank" class="inline-flex items-center gap-2 text-white px-6 py-3 rounded-xl font-semibold shadow-lg" style="background:var(--text)">Launch CM360 Reporting <i class="ph ph-arrow-up-right"></i></a>
-            <a href="https://insidemedia-my.sharepoint.com/:x:/r/personal/kevin_pramudya_wppmedia_com/Documents/2026/DJARUM/Djarum%202026%20-%20Total%20Cost%20CM360%20.xlsx?d=wfb06e5fc484147e484d165ea01e2adfa&amp;csf=1&amp;web=1&amp;e=bmjxgp" target="_blank" class="inline-flex items-center gap-2 text-white px-6 py-3 rounded-xl font-semibold shadow-lg" style="background:var(--primary)"><i class="ph-fill ph-file-xls"></i> Open Total Cost Tracker</a>
+            <a href="https://campaignmanager.google.com/reporting/?defaultDs=9911796%3A469802#/reports/instantList/9911796%3A469802" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-white px-6 py-3 rounded-xl font-semibold shadow-lg" style="background:var(--text)">Launch CM360 Reporting <i class="ph ph-arrow-up-right"></i></a>
+            <a href="https://insidemedia-my.sharepoint.com/:x:/r/personal/kevin_pramudya_wppmedia_com/Documents/2026/DJARUM/Djarum%202026%20-%20Total%20Cost%20CM360%20.xlsx?d=wfb06e5fc484147e484d165ea01e2adfa&csf=1&web=1&e=bmjxgp" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-white px-6 py-3 rounded-xl font-semibold shadow-lg" style="background:var(--primary)"><i class="ph-fill ph-file-xls"></i> Open Total Cost Tracker</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 8. PLATFORM UPDATES ================= -->
+      <section id="updates" class="section-content">
+        <header class="mb-8">
+          <div class="flex items-center gap-2 flex-wrap mb-3">
+            <span class="badge badge-primary" style="background:rgba(16,185,129,.15);color:#059669"><i class="ph ph-megaphone-simple"></i> Living Doc</span>
+            <span class="badge badge-soft"><i class="ph ph-clock"></i> ~4 min</span>
+          </div>
+          <h2 class="sec-title t">CM360 Platform Updates (2025–2026)</h2>
+          <p class="sec-sub">Ringkasan perubahan resmi Google Marketing Platform yang paling relevan untuk workflow Djarum. Cek fase ini tiap kuartal — Google mengumumkan update di "Coming soon" release notes CM360.</p>
+        </header>
+
+        <div class="tl space-y-7 pb-1">
+          <div class="relative pl-8"><div class="tl-dot" style="background:#ef4444"><i class="ph-fill ph-x text-xs"></i></div><h4 class="font-bold t">Ads Creative Studio &amp; "Creative Projects" — sunset</h4><p class="t-muted text-sm mt-1">Ads Creative Studio sudah di-retire, dan section <strong>Creative Projects</strong> dihapus dari UI CM360. Creative yang dulu ada di creative project tetap bisa diassign/serve seperti biasa dan dapat diakses dari Creative Library milik Advertiser masing-masing; ads yang dibuat dari creative project jadi Standard Ad biasa.</p></div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:#ef4444"><i class="ph-fill ph-x text-xs"></i></div><h4 class="font-bold t">Field "Natural Search" dihapus</h4><p class="t-muted text-sm mt-1">Karena traffic hampir seluruhnya sudah HTTPS, dimensi/metrik Natural Search resmi dihapus dari UI &amp; API CM360 (efektif awal 2026). Update template report yang masih mereferensikan field ini.</p></div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:#ef4444"><i class="ph-fill ph-x text-xs"></i></div><h4 class="font-bold t">Paid Social (dari SA360) tidak lagi muncul di CM360</h4><p class="t-muted text-sm mt-1">Metrik &amp; dimensi Paid Social yang sebelumnya bersumber dari Search Ads 360 (mis. data Meta) sudah di-deprecate dari report template CM360. Untuk insight paid social lengkap, cek langsung di interface Search Ads 360.</p></div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:#10b981"><i class="ph-fill ph-plus text-xs"></i></div><h4 class="font-bold t">Self-serve Google Ads pixel linking</h4><p class="t-muted text-sm mt-1">CM360 sekarang mendukung link langsung ke akun Google Ads untuk apply click/impression pixel secara instan (self-service), tanpa perlu request manual — berguna untuk campaign YouTube &amp; Display yang overlap dengan Google Ads.</p></div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:#10b981"><i class="ph-fill ph-plus text-xs"></i></div><h4 class="font-bold t">Multi-event Third-Party Vendor Tracking Tag</h4><p class="t-muted text-sm mt-1">Kolom "Third-party vendor tracking tag" di tag sheet sekarang mendukung banyak tag sekaligus (impression, start, firstQuartile, midpoint, complete, error) — relevan untuk placement video/OTT yang butuh verifikasi pihak ketiga lengkap.</p></div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:#10b981"><i class="ph-fill ph-plus text-xs"></i></div><h4 class="font-bold t">CHIPS &amp; first-party storage untuk Floodlight</h4><p class="t-muted text-sm mt-1">Floodlight kini memakai partitioned cookies (CHIPS) dan local storage first-party untuk memulihkan pengukuran conversion di tengah pembatasan cookie browser modern. Tidak perlu aksi manual, tapi baik untuk dipahami saat menjelaskan diskrepansi angka ke klien.</p></div>
+          <div class="relative pl-8"><div class="tl-dot" style="background:#f59e0b"><i class="ph-fill ph-warning text-xs"></i></div><h4 class="font-bold t">Rebranding partner exchange: Unruly → Nexxen</h4><p class="t-muted text-sm mt-1">Nama exchange "Unruly" berubah jadi "Nexxen" di filter/inventory source CM360 — perubahan brand saja, tidak ada perubahan serving.</p></div>
+        </div>
+
+        <div class="callout c-blue mt-8">
+          <i class="ph-fill ph-link ico text-2xl"></i>
+          <div>
+            <h4 class="font-bold">Sumber resmi</h4>
+            <p class="text-sm mt-1">Selalu cek <a href="https://support.google.com/campaignmanager/announcements" target="_blank" rel="noopener" class="underline font-semibold">halaman "Announcements" Campaign Manager 360 Help</a> untuk update ter-terbaru sebelum onboarding campaign besar — dokumen ini dirangkum manual dan bisa tertinggal beberapa minggu dari rilis resmi Google.</p>
           </div>
         </div>
       </section>
@@ -638,13 +741,17 @@
           <p class="sec-sub">Download report dari CM360 Reporting (.xlsx atau .csv), lalu drop di sini untuk visualisasi otomatis. Data diproses 100% di browser kamu — tidak dikirim ke mana pun.</p>
         </header>
 
-        <div id="dropZone" class="card p-6 mb-4 text-center" style="border:2px dashed var(--border-strong);cursor:pointer" onclick="document.getElementById('csvInput').click()">
+        <div id="dropZone" class="card p-6 mb-4 text-center" style="border:2px dashed var(--border-strong);cursor:pointer" onclick="document.getElementById('csvInput').click()" role="button" tabindex="0">
           <i class="ph ph-cloud-arrow-up text-4xl" style="color:var(--primary)"></i>
           <p class="font-semibold t mt-2">Klik atau drag file report ke sini</p>
           <p class="text-xs t-faint mt-1">Mendukung .xlsx &amp; .csv dari CM360 Reporting</p>
           <input id="csvInput" type="file" accept=".csv,.xlsx,.xls" style="display:none">
         </div>
-        <p id="dashStatus" class="text-xs t-faint mb-6"></p>
+        <p id="dashStatus" class="text-xs t-faint mb-2"></p>
+        <div id="dashActions" class="flex flex-wrap items-center gap-2 mb-6" style="display:none">
+          <button onclick="exportDashCSV()" class="px-3 py-1.5 rounded-lg text-xs font-semibold soft-2 t-muted flex items-center gap-1.5"><i class="ph ph-download-simple"></i> Export summary (CSV)</button>
+          <button onclick="resetDash()" class="px-3 py-1.5 rounded-lg text-xs font-semibold soft-2 t-muted flex items-center gap-1.5"><i class="ph ph-arrow-counter-clockwise"></i> Reset ke data contoh</button>
+        </div>
 
         <div id="kpiCards" class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6"></div>
 
@@ -668,14 +775,14 @@
   </main>
 
   <!-- Back to top -->
-  <button id="topBtn" onclick="document.getElementById('main').scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 z-40 w-11 h-11 rounded-full text-white shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition" style="background:var(--primary)"><i class="ph-bold ph-arrow-up"></i></button>
+  <button id="topBtn" onclick="document.getElementById('main').scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 z-40 w-11 h-11 rounded-full text-white shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition" style="background:var(--primary)" aria-label="Back to top"><i class="ph-bold ph-arrow-up"></i></button>
 
   <!-- Command Palette -->
   <div id="cmdOverlay" class="cmd-overlay" onclick="if(event.target===this)closeCmd()">
     <div class="cmd-box">
       <div class="flex items-center px-4 bd" style="border-bottom:1px solid var(--border)">
         <i class="ph ph-magnifying-glass t-faint text-lg"></i>
-        <input id="cmdInput" class="cmd-input" placeholder="Cari fase, topik, atau kata kunci…" autocomplete="off">
+        <input id="cmdInput" class="cmd-input" placeholder="Cari fase, topik, catatan, atau kata kunci…" autocomplete="off">
         <span class="kbd">Esc</span>
       </div>
       <div id="cmdRes" class="cmd-res"></div>
@@ -689,30 +796,41 @@ const GROUPS = [
     {id:'overview', n:'Overview', icon:'ph-house', kw:'home start pipeline ringkasan workflow'}
   ]},
   { label:'Contacts', items:[
-    {id:'pic-planner', n:'PIC Planner Djarum', icon:'ph-address-book', kw:'contact planner natasha hilda email super la po utm'}
+    {id:'pic-planner', n:'PIC Planner Djarum', icon:'ph-address-book', kw:'contact planner hendra hilda ichsan email super la po utm'}
   ]},
   { label:'Campaign Phases', items:[
-    {id:'brief', n:'1. Brief & PO', icon:'ph-envelope-open', num:'1', kw:'brief purchase order po media plan cpd ott full serve vendor'},
-    {id:'qa', n:'2. Creative QA & Tags', icon:'ph-magic-wand', num:'2', kw:'clicktag html5 creative qa banner click macro unesc esc tester'},
-    {id:'taxonomy', n:'3. Taxonomy on AppScript', icon:'ph-code', num:'3', kw:'taxonomy appscript naming convention import sync sitemap automation'}
+    {id:'brief', n:'1. Brief & PO', icon:'ph-envelope-open', num:'1', kw:'brief purchase order po media plan cpd ott full serve vendor eu political ads'},
+    {id:'qa', n:'2. Creative QA & Tags', icon:'ph-magic-wand', num:'2', kw:'clicktag html5 creative qa banner click macro unesc esc tester validator'},
+    {id:'taxonomy', n:'3. Taxonomy on AppScript', icon:'ph-code', num:'3', kw:'taxonomy appscript naming convention import sync sitemap automation csv sheet status'}
   ]},
   { label:'CM360 Setup', items:[
     {id:'cpd', n:'4. Manual Setup: CPD', icon:'ph-desktop', num:'4', kw:'cpd manual placement ad creative full serve upload tags'},
     {id:'ott', n:'5. Manual Setup: OTT', icon:'ph-device-mobile', num:'5', kw:'ott tracking 1x1 pixel vendor vidio wetv tracker'}
   ]},
   { label:'Post-Setup', items:[
-    {id:'preview', n:'6. Publisher Preview QA', icon:'ph-bug', num:'6', kw:'preview network inspect tracker firing devtools 200 status'},
-    {id:'reporting', n:'7. Reporting', icon:'ph-chart-bar', num:'7', kw:'reporting analytics template cost console kevin'}
+    {id:'preview', n:'6. Publisher Preview QA', icon:'ph-bug', num:'6', kw:'preview network inspect tracker firing devtools 200 status chips cookie'},
+    {id:'reporting', n:'7. Reporting', icon:'ph-chart-bar', num:'7', kw:'reporting analytics template cost console kevin natural search paid social'}
   ]},
-  { label:'Analytics', items:[
-    {id:'dashboard', n:'Data Dashboard', icon:'ph-chart-pie-slice', kw:'dashboard chart visualisasi data report impressions clicks ctr cost publisher upload'}
+  { label:'Reference', items:[
+    {id:'updates', n:'Platform Updates', icon:'ph-megaphone-simple', kw:'update 2026 changelog creative projects natural search nexxen unruly chips announcements'},
+    {id:'dashboard', n:'Data Dashboard', icon:'ph-chart-pie-slice', kw:'dashboard chart visualisasi data report impressions clicks ctr cost publisher upload export'}
   ]}
 ];
 const ORDER  = GROUPS.flatMap(g=>g.items);
 const PHASES = ORDER.filter(o=>o.num);
-const PKEY = 'cm360-bookmarks-v1', NKEY = 'cm360-notes-v1', TKEY = 'cm360-theme';
-let pinned = new Set(JSON.parse(localStorage.getItem(PKEY) || '[]'));
-let notes  = {}; try{ notes = JSON.parse(localStorage.getItem(NKEY) || '{}'); }catch(e){ notes = {}; }
+const PKEY = 'cm360-done-v2', NKEY = 'cm360-notes-v1', TKEY = 'cm360-theme';
+let done  = new Set(JSON.parse(localStorage.getItem(PKEY) || '[]'));
+let notes = {}; try{ notes = JSON.parse(localStorage.getItem(NKEY) || '{}'); }catch(e){ notes = {}; }
+
+/* ===================== TOAST ===================== */
+let toastTimer = null;
+function toast(msg, icon){
+  const el = document.getElementById('toast');
+  el.innerHTML = `<i class="ph-fill ${icon||'ph-check-circle'}"></i> ${msg}`;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.classList.remove('show'), 2200);
+}
 
 /* ===================== THEME ===================== */
 function applyTheme(t){
@@ -720,10 +838,13 @@ function applyTheme(t){
   const ic = document.getElementById('themeIcon');
   if(ic) ic.className = 'ph text-lg ' + (t==='dark' ? 'ph-sun' : 'ph-moon');
   localStorage.setItem(TKEY, t);
-  if(window._dashLoaded && document.getElementById('dashboard').classList.contains('active')) renderDash(lastData, lastName);
+  if(window._dashLoaded) renderDash(lastData, lastName);
 }
 function toggleTheme(){ applyTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark'); }
 applyTheme(localStorage.getItem(TKEY) || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light'));
+if(navigator.platform && navigator.platform.toUpperCase().indexOf('MAC')<0 && !/Mac/.test(navigator.userAgent)){
+  const h = document.getElementById('cmdKbdHint'); if(h) h.textContent = 'Ctrl K';
+}
 
 /* ===================== BUILD SIDEBAR ===================== */
 const navList = document.getElementById('navList');
@@ -735,8 +856,10 @@ GROUPS.forEach(g=>{
   const ul = document.createElement('ul'); ul.className='space-y-0.5 mb-2';
   g.items.forEach(it=>{
     const li = document.createElement('li');
+    const showCheck = !!it.num;
     li.innerHTML = `<button class="nav-item" data-id="${it.id}" onclick="go('${it.id}')">
-        <i class="ph ${it.icon} text-lg"></i><span>${it.n}</span>
+        ${showCheck ? `<span class="nav-check" data-check="${it.id}"><i class="ph-fill ph-check"></i></span>` : `<i class="ph ${it.icon} text-lg"></i>`}
+        <span>${it.n}</span>
         <i class="ph-fill ph-push-pin nav-pin"></i></button>`;
     ul.appendChild(li);
   });
@@ -763,21 +886,22 @@ ORDER.forEach((it,i)=>{
   /* Notes (skip overview & dashboard) */
   if(it.id!=='overview' && it.id!=='dashboard'){
     const noteWrap = document.createElement('div'); noteWrap.style.marginTop='2rem';
-    noteWrap.innerHTML = `<h4 class="font-bold t mb-2 flex items-center gap-2"><i class="ph ph-note-pencil" style="color:var(--primary)"></i> Catatan Pribadi</h4>
-      <textarea class="notes-area" data-note="${it.id}" placeholder="Catatan untuk fase ini (mis. Site ID Vidio = 12345, hal penting saat handover cuti...)"></textarea>`;
+    noteWrap.innerHTML = `<div class="flex items-center justify-between flex-wrap gap-2 mb-2">
+        <h4 class="font-bold t flex items-center gap-2"><i class="ph ph-note-pencil" style="color:var(--primary)"></i> Catatan Pribadi</h4>
+        <button class="text-xs font-semibold t-faint hover:t-muted flex items-center gap-1" onclick="exportNotes()"><i class="ph ph-download-simple"></i> Export semua catatan</button>
+      </div>
+      <textarea class="notes-area" data-note="${it.id}" placeholder="Catatan untuk fase ini (mis. Site ID Vidio = 12345, hal penting saat handover cuti...)"></textarea>
+      <p class="note-status" data-note-status="${it.id}"></p>`;
     sec.appendChild(noteWrap);
   }
 
   /* Footer nav */
   const prev = ORDER[i-1], next = ORDER[i+1];
   const f = document.createElement('div'); f.className='sec-footer';
-  f.innerHTML =
-    (prev ? `<a class="foot-link" onclick="go('${prev.id}')"><i class="ph ph-arrow-left"></i><span><small>Previous</small>${prev.n.replace(/^\d+\.\s/,'')}</span></a>`
-          : `<span></span>`) +
-    `<div class="flex items-center gap-2">` +
-      `<button class="btn-done" data-done="${it.id}" onclick="togglePin('${it.id}')"></button>` +
-      (next ? `<a class="foot-link" onclick="go('${next.id}')"><span class="text-right"><small>Next</small>${next.n.replace(/^\d+\.\s/,'')}</span><i class="ph ph-arrow-right"></i></a>` : ``) +
-    `</div>`;
+  const prevBtn = prev ? `<button type="button" class="foot-link" onclick="go('${prev.id}')"><i class="ph ph-arrow-left"></i><span><small>Previous</small>${prev.n.replace(/^\d+\.\s/,'')}</span></button>` : `<span></span>`;
+  const nextBtn = next ? `<button type="button" class="foot-link" onclick="go('${next.id}')"><span class="text-right"><small>Next</small>${next.n.replace(/^\d+\.\s/,'')}</span><i class="ph ph-arrow-right"></i></button>` : ``;
+  const doneBtn = it.num ? `<button type="button" class="btn-done" data-done="${it.id}" onclick="toggleDone('${it.id}')"></button>` : ``;
+  f.innerHTML = prevBtn + `<div class="flex items-center gap-2">${doneBtn}${nextBtn}</div>`;
   sec.appendChild(f);
 });
 
@@ -785,22 +909,36 @@ ORDER.forEach((it,i)=>{
 document.querySelectorAll('.notes-area').forEach(ta=>{
   const id = ta.dataset.note;
   ta.value = notes[id] || '';
-  ta.addEventListener('input', ()=>{ notes[id]=ta.value; localStorage.setItem(NKEY, JSON.stringify(notes)); });
-});
-
-/* ===================== BOOKMARKS ===================== */
-function saveBookmarks(){ localStorage.setItem(PKEY, JSON.stringify([...pinned])); }
-function togglePin(id){ pinned.has(id) ? pinned.delete(id) : pinned.add(id); saveBookmarks(); updateBookmarkUI(); }
-function updateBookmarkUI(){
-  document.querySelectorAll('.nav-item').forEach(b=> b.classList.toggle('pinned', pinned.has(b.dataset.id)));
-  document.querySelectorAll('[data-done]').forEach(b=>{
-    const d = pinned.has(b.dataset.done);
-    b.classList.toggle('is-done', d);
-    b.innerHTML = d ? '<i class="ph-fill ph-push-pin"></i> Bookmarked' : '<i class="ph ph-push-pin"></i> Bookmark fase ini';
+  let t;
+  ta.addEventListener('input', ()=>{
+    notes[id]=ta.value;
+    localStorage.setItem(NKEY, JSON.stringify(notes));
+    const s = document.querySelector(`[data-note-status="${id}"]`);
+    if(s){ s.textContent='Tersimpan otomatis…'; clearTimeout(t); t=setTimeout(()=>s.textContent='',1200); }
   });
-  const c = pinned.size;
-  document.getElementById('progLabel').textContent = c + ' pinned';
-  document.getElementById('progBar').style.width = (ORDER.length ? c/ORDER.length*100 : 0)+'%';
+});
+function exportNotes(){
+  const withContent = Object.entries(notes).filter(([,v])=>v && v.trim());
+  if(!withContent.length){ toast('Belum ada catatan untuk di-export','ph-info'); return; }
+  const labelOf = id => (ORDER.find(o=>o.id===id)||{}).n || id;
+  const text = withContent.map(([id,v])=>`## ${labelOf(id)}\n${v}\n`).join('\n');
+  downloadFile('cm360-catatan-pribadi.txt', text, 'text/plain');
+  toast('Catatan berhasil di-export');
+}
+
+/* ===================== DONE / PROGRESS ===================== */
+function saveDone(){ localStorage.setItem(PKEY, JSON.stringify([...done])); }
+function toggleDone(id){ done.has(id) ? done.delete(id) : done.add(id); saveDone(); updateDoneUI(); if(done.has(id)) toast('Fase ditandai selesai'); }
+function updateDoneUI(){
+  document.querySelectorAll('[data-check]').forEach(el=> el.classList.toggle('done', done.has(el.dataset.check)));
+  document.querySelectorAll('[data-done]').forEach(b=>{
+    const d = done.has(b.dataset.done);
+    b.classList.toggle('is-done', d);
+    b.innerHTML = d ? '<i class="ph-fill ph-check-circle"></i> Selesai' : '<i class="ph ph-circle"></i> Tandai selesai';
+  });
+  const total = PHASES.length, c = [...done].filter(id=>PHASES.some(p=>p.id===id)).length;
+  document.getElementById('progLabel').textContent = c + ' / ' + total + ' selesai';
+  document.getElementById('progBar').style.width = (total ? c/total*100 : 0)+'%';
 }
 
 /* ===================== NAVIGATION ===================== */
@@ -811,10 +949,12 @@ function go(id){
   document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active', b.dataset.id===id));
   history.replaceState(null,'','#'+id);
   document.getElementById('main').scrollTo(0,0);
-  if(innerWidth < 768) document.getElementById('sidebar').classList.add('-translate-x-full');
+  closeSidebar();
   closeCmd();
   if(id==='dashboard') setTimeout(ensureDash, 60);
 }
+function openSidebar(){ document.getElementById('sidebar').classList.remove('-translate-x-full'); document.getElementById('sidebarScrim').classList.remove('hidden'); }
+function closeSidebar(){ if(innerWidth < 768){ document.getElementById('sidebar').classList.add('-translate-x-full'); document.getElementById('sidebarScrim').classList.add('hidden'); } }
 
 /* ===================== COMMAND PALETTE ===================== */
 const overlay=document.getElementById('cmdOverlay'), input=document.getElementById('cmdInput'), res=document.getElementById('cmdRes');
@@ -823,13 +963,18 @@ function openCmd(){ overlay.classList.add('open'); input.value=''; renderCmd('')
 function closeCmd(){ overlay.classList.remove('open'); }
 function renderCmd(q){
   q=q.toLowerCase().trim();
-  list = ORDER.filter(o=> !q || (o.n+' '+(o.kw||'')+' '+(o.id)).toLowerCase().includes(q));
+  list = ORDER.filter(o=>{
+    if(!q) return true;
+    const hay = (o.n+' '+(o.kw||'')+' '+o.id+' '+(notes[o.id]||'')).toLowerCase();
+    return hay.includes(q);
+  });
   sel=0;
-  res.innerHTML = list.length ? list.map((o,i)=>
-    `<div class="cmd-item ${i===0?'sel':''}" data-i="${i}" onclick="go('${o.id}')">
+  res.innerHTML = list.length ? list.map((o,i)=>{
+    const noteHit = q && notes[o.id] && notes[o.id].toLowerCase().includes(q);
+    return `<div class="cmd-item ${i===0?'sel':''}" data-i="${i}" onclick="go('${o.id}')">
       <i class="ph ${o.icon} text-lg"></i><span class="font-medium">${o.n}</span>
-      ${pinned.has(o.id)?'<i class="ph-fill ph-push-pin ml-auto" style="color:#f59e0b"></i>':''}</div>`).join('')
-    : `<div class="p-6 text-center t-faint text-sm">No results.</div>`;
+      ${noteHit ? '<span class="grp">di catatan</span>' : (done.has(o.id)?'<i class="ph-fill ph-check-circle ml-auto" style="color:#10b981"></i>':'')}</div>`;
+  }).join('') : `<div class="p-6 text-center t-faint text-sm">No results.</div>`;
   res.querySelectorAll('.cmd-item').forEach(el=>el.addEventListener('mousemove',()=>setSel(+el.dataset.i)));
 }
 function setSel(i){ sel=i; res.querySelectorAll('.cmd-item').forEach((el,x)=>el.classList.toggle('sel',x===i)); }
@@ -852,14 +997,34 @@ document.addEventListener('keydown', e=>{
   if(e.key==='ArrowLeft'  && ORDER[cur-1]) go(ORDER[cur-1].id);
 });
 
-/* ===================== COPY CODE ===================== */
+/* ===================== COPY HELPERS ===================== */
+async function copyToClipboard(text){
+  try{ await navigator.clipboard.writeText(text); return true; }
+  catch(_){
+    try{
+      const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); return true;
+    }catch(e){ return false; }
+  }
+}
 async function copyCode(id, btn){
   const text = document.getElementById(id).innerText;
-  try{ await navigator.clipboard.writeText(text); }
-  catch(_){ const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+  const ok = await copyToClipboard(text);
   const o = btn.innerHTML;
-  btn.innerHTML = '<i class="ph-fill ph-check" style="color:#4ade80"></i> Copied';
+  btn.innerHTML = ok ? '<i class="ph-fill ph-check" style="color:#4ade80"></i> Copied' : '<i class="ph ph-x" style="color:#f87171"></i> Failed';
   setTimeout(()=>btn.innerHTML=o, 1800);
+}
+async function copyText(text, btn){
+  const ok = await copyToClipboard(text);
+  if(ok){ toast('Email disalin: '+text); if(btn){ const o=btn.innerHTML; btn.innerHTML='<i class="ph-fill ph-check text-sm" style="color:#10b981"></i>'; setTimeout(()=>btn.innerHTML=o,1500); } }
+  else toast('Gagal menyalin','ph-warning');
+}
+function downloadFile(filename, content, mime){
+  const blob = new Blob([content], {type: mime || 'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download=filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 2000);
 }
 
 /* ===================== SCROLL: progress bar + back-to-top ===================== */
@@ -873,7 +1038,12 @@ main.addEventListener('scroll',()=>{
 });
 
 /* ===================== MOBILE MENU ===================== */
-document.getElementById('mobileMenuBtn').addEventListener('click',()=>document.getElementById('sidebar').classList.toggle('-translate-x-full'));
+document.getElementById('mobileMenuBtn').addEventListener('click',()=>{
+  const sb = document.getElementById('sidebar');
+  sb.classList.contains('-translate-x-full') ? openSidebar() : closeSidebar();
+});
+document.getElementById('sidebarScrim').addEventListener('click', closeSidebar);
+window.addEventListener('resize', ()=>{ if(innerWidth>=768) document.getElementById('sidebarScrim').classList.add('hidden'); });
 
 /* ===================== DASHBOARD ===================== */
 const SAMPLE = {
@@ -885,9 +1055,9 @@ const SAMPLE = {
 let charts = {}, dashLoaded = false, lastData = SAMPLE, lastName = null;
 
 const cssVar = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
-const fmtNum = n => new Intl.NumberFormat('id-ID').format(Math.round(n));
-const rupiah = n => 'Rp ' + new Intl.NumberFormat('id-ID').format(Math.round(n));
-const toNum  = v => Number(String(v).replace(/[^0-9.\-]/g,'')) || 0;
+const fmtNum = n => new Intl.NumberFormat('id-ID').format(Math.round(n||0));
+const rupiah = n => 'Rp ' + new Intl.NumberFormat('id-ID').format(Math.round(n||0));
+const toNum  = v => Number(String(v==null?'':v).replace(/[^0-9.\-]/g,'')) || 0;
 function pick(row, names){
   const ks = Object.keys(row);
   for(const n of names){ const k = ks.find(k=>k.toLowerCase().trim()===n); if(k) return row[k]; }
@@ -929,6 +1099,7 @@ function renderDash(data, name){
   lastData = data; lastName = name;
   const s = document.getElementById('dashStatus');
   if(s) s.textContent = name ? ('Sumber: '+name) : 'Menampilkan data contoh — upload report CM360 untuk data asli.';
+  document.getElementById('dashActions').style.display = name ? 'flex' : 'none';
   const k = data.kpis;
   document.getElementById('kpiCards').innerHTML = [
     ['Impressions', fmtNum(k.impressions), 'ph-eye', cssVar('--primary')],
@@ -937,6 +1108,10 @@ function renderDash(data, name){
     ['Total Cost', rupiah(k.cost), 'ph-money', '#f59e0b']
   ].map(([l,v,ic,col])=>`<div class="card p-5"><div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background:${col}22"><i class="ph-fill ${ic}" style="color:${col}"></i></div><p class="text-xs t-faint font-semibold uppercase">${l}</p><p class="text-2xl font-bold t mt-1">${v}</p></div>`).join('');
 
+  if(typeof Chart === 'undefined'){
+    if(s) s.textContent = (s.textContent||'') + ' (Chart.js gagal dimuat — cek koneksi internet)';
+    return;
+  }
   const primary=cssVar('--primary'), border=cssVar('--border'), faint=cssVar('--faint'), text=cssVar('--text');
   Chart.defaults.color = faint; Chart.defaults.font.family = 'Inter';
   const mk = (id,cfg)=>{ if(charts[id]) charts[id].destroy(); charts[id] = new Chart(document.getElementById(id), cfg); };
@@ -951,30 +1126,50 @@ function renderDash(data, name){
   mk('chSplit',{type:'doughnut',data:{labels:data.split.map(s=>s.name),datasets:[{data:data.split.map(s=>s.value),backgroundColor:[primary,'#a855f7','#10b981','#f59e0b','#ef4444']}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{color:text}}}}});
 }
 function handleFile(file){
+  if(typeof XLSX === 'undefined'){ toast('Gagal memuat parser file — cek koneksi internet','ph-warning'); return; }
+  const status = document.getElementById('dashStatus'); if(status) status.textContent = 'Membaca '+file.name+'…';
   const fr = new FileReader();
+  fr.onerror = ()=>toast('Gagal membaca file','ph-warning');
   fr.onload = e=>{
     try{
       const wb = XLSX.read(e.target.result,{type:'array'});
       const rows = rowsFromWorkbook(wb);
-      if(!rows.length){ alert('Tidak menemukan baris data. Pastikan report punya kolom Impressions / Date.'); return; }
+      if(!rows.length){ toast('Tidak menemukan baris data — pastikan report punya kolom Impressions / Date','ph-warning'); if(status) status.textContent=''; return; }
       renderDash(aggregate(rows), file.name);
-    }catch(err){ alert('Gagal membaca file: '+err); }
+      toast('Dashboard diperbarui dari '+file.name);
+    }catch(err){ toast('Gagal membaca file: '+err.message,'ph-warning'); }
   };
   fr.readAsArrayBuffer(file);
+}
+function resetDash(){ renderDash(SAMPLE, null); toast('Kembali ke data contoh'); }
+function exportDashCSV(){
+  const d = lastData;
+  let csv = 'Metric,Value\n';
+  csv += `Impressions,${d.kpis.impressions}\n`;
+  csv += `Clicks,${d.kpis.clicks}\n`;
+  csv += `CTR (%),${d.kpis.ctr.toFixed(2)}\n`;
+  csv += `Total Cost,${d.kpis.cost}\n\n`;
+  csv += 'Date,Impressions,Clicks\n';
+  d.daily.forEach(r=>csv+=`${r.date},${r.impressions},${r.clicks}\n`);
+  csv += '\nPublisher,Impressions\n';
+  d.byPublisher.forEach(r=>csv+=`"${r.publisher}",${r.impressions}\n`);
+  downloadFile('cm360-dashboard-summary.csv', csv, 'text/csv;charset=utf-8');
+  toast('Summary CSV di-download');
 }
 function ensureDash(){ if(!dashLoaded){ renderDash(SAMPLE, null); dashLoaded = true; window._dashLoaded = true; } }
 
 const fileInput = document.getElementById('csvInput');
-if(fileInput) fileInput.addEventListener('change', e=>{ if(e.target.files[0]) handleFile(e.target.files[0]); });
+if(fileInput) fileInput.addEventListener('change', e=>{ if(e.target.files[0]) handleFile(e.target.files[0]); e.target.value=''; });
 const dz = document.getElementById('dropZone');
 if(dz){
+  dz.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); document.getElementById('csvInput').click(); } });
   ['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{ e.preventDefault(); dz.classList.add('drag'); }));
   ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{ e.preventDefault(); dz.classList.remove('drag'); }));
   dz.addEventListener('drop', e=>{ const f=e.dataTransfer.files[0]; if(f) handleFile(f); });
 }
 
 /* ===================== INIT ===================== */
-updateBookmarkUI();
+updateDoneUI();
 const hash = location.hash.slice(1);
 go(ORDER.some(o=>o.id===hash) ? hash : 'overview');
 </script>
